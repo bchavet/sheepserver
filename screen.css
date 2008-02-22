@@ -8,3 +8,15 @@ body {
     text-align: center;
     width: 600px;
 }
+
+table.setupform th {
+    text-align: right;
+}
+
+table.setupform td {
+    text-align: left;
+}
+
+table.setupform input[type="text"] {
+    width: 100%;
+}

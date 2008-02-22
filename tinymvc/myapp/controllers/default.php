@@ -17,8 +17,12 @@ class Default_Controller extends TinyMVC_Controller
             exit;
 
         } else {
-            $this->view->assign('css', dirname($_SERVER['PHP_SELF']) . '/screen.css');
-            $this->view->display('setup_view');
+
+            // Redirect to setup screen
+            header('Location: ' . $_SERVER['PHP_SELF'] . '/setup');
+            exit;
+
         }
     }
+
 }
