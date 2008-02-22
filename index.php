@@ -14,17 +14,9 @@ error_reporting(E_ALL);
 /* if the /tinymvc/ dir is not up one directory, uncomment and set here */
 define('TMVC_BASEDIR', 'tinymvc/');
 
-/* if the /myapp/ dir is not inside the /tinymvc/ dir, uncomment and set here */
-//define('TMVC_MYAPPDIR', '/path/to/myapp/');
-
 /* directory separator alias */
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
-}
-
-/* set the base directory */
-if (!defined('TMVC_BASEDIR')) {
-    define('TMVC_BASEDIR', dirname(__FILE__) . DS . '..' . DS . 'tinymvc' . DS);
 }
 
 /* tally-ho! */
