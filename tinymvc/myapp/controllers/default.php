@@ -9,17 +9,16 @@ class Default_Controller extends TinyMVC_Controller
 {
     function index()
     {
-        if (file_exists(TMVC_MYAPPDIR . 'configs' . DS . 'database.php')) {
+        include TMVC_MYAPPDIR . 'configs' . DS . 'database.php';
+        if (isset($config)) {
 
-            //TODO: Check that the apache redirects are in place somehow
-
-            header('Location: ' . $_SERVER['PHP_SELF'] . '/cgi');
+            header('Location: ' . HTTP_BASEDIR . '/cgi');
             exit;
 
         } else {
 
             // Redirect to setup screen
-            header('Location: ' . $_SERVER['PHP_SELF'] . '/setup');
+            header('Location: ' . HTTP_BASEDIR . '/setup');
             exit;
 
         }

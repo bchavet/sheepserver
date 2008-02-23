@@ -74,7 +74,7 @@ class TinyMVC_Load
     
     /* get instance of tmvc object */
     $tmvc = tmvc::instance();
-    
+
     /* instantiate the object as a property */
     $tmvc->$model_alias = new $model_name;
     
