@@ -12,13 +12,13 @@ class Default_Controller extends TinyMVC_Controller
         include TMVC_MYAPPDIR . 'configs' . DS . 'database.php';
         if (isset($config)) {
 
-            header('Location: ' . HTTP_BASEDIR . '/cgi');
+            header('Location: /cgi');
             exit;
 
         } else {
 
             // Redirect to setup screen
-            header('Location: ' . HTTP_BASEDIR . '/setup');
+            header('Location: /setup');
             exit;
 
         }

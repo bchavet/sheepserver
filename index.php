@@ -4,7 +4,6 @@ error_reporting(E_ALL);
 
 define('TMVC_BASEDIR', 'tinymvc/');
 define('ES_BASEDIR', dirname(__FILE__));
-define('HTTP_BASEDIR', '/mysheep');
 
 /* directory separator alias */
 if (!defined('DS')) {

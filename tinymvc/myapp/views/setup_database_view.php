@@ -3,7 +3,7 @@
 <head>
   <title>Welcome to PHP Electric Sheep Server</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <link href="<?= $css ?>" rel="stylesheet" type="text/css" />
+  <link href="/screen.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>

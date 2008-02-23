@@ -15,8 +15,7 @@ class setup_Controller extends TinyMVC_Controller
         }
 
         //TODO: remove hard-coded path to stylesheet
-        $this->view->assign('css', HTTP_BASEDIR . '/screen.css');
-        $this->view->assign('action', HTTP_BASEDIR . '/index.php/database');
+        $this->view->assign('action', '/setup/database');
         $this->view->assign(array('type' => 'mysql',
                                   'host' => '',
                                   'name' => '',
@@ -58,8 +57,7 @@ class setup_Controller extends TinyMVC_Controller
 
         if (!$db_ok || $_POST['button'] == 'Test') {
 
-            //TODO: remove hard-coded path to stylesheet
-            $this->view->assign('action', $_SERVER['PHP_SELF']);
+            $this->view->assign('action', '/setup/database');
             $this->view->assign('db_ok', $db_ok);
             $this->view->assign($_SESSION['db_config']);
             $this->view->display('setup_database_view');
@@ -130,8 +128,8 @@ class setup_Controller extends TinyMVC_Controller
         $this->view->assign('apache_ok', $this->setup->test_apache());
         $this->view->assign('apache_config', $this->setup->get_apache_config());
 
-        $this->view->assign('continue', HTTP_BASEDIR);
-        $this->view->assign('retry', HTTP_BASEDIR . '/index.php/setup/test');
+        $this->view->assign('continue', '/');
+        $this->view->assign('retry', '/setup/test');
 
         // Display test results
         $this->view->display('setup_test_view');

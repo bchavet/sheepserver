@@ -48,11 +48,11 @@ class Setup_Model extends TinyMVC_Model
     {
         $text = 
             'RewriteEngine On' . "\n" .
-            'RewriteRule ^' . HTTP_BASEDIR . '/cgi/list$ ' . HTTP_BASEDIR . '/index.php/cgi/listsheep [L]' . "\n" .
-            'RewriteRule ^' . HTTP_BASEDIR . '/cgi/list[\?/](.*)$ ' . HTTP_BASEDIR . '/index.php/cgi/listsheep/$1 [L]' . "\n" .
+            'RewriteRule ^/cgi/list$ /index.php/cgi/listsheep [L]' . "\n" .
+            'RewriteRule ^/cgi/list[\?/](.*)$ /index.php/cgi/listsheep/$1 [L]' . "\n" .
             'RewriteCond %{REQUEST_FILENAME} !-f' . "\n" .
             'RewriteCond %{REQUEST_FILENAME} !-d' . "\n" .
-            'RewriteRule ^' . HTTP_BASEDIR . '/(.*)$ ' . HTTP_BASEDIR . '/index.php/$1 [L]' . "\n";
+            'RewriteRule ^/(.*)$ /index.php/$1 [L]' . "\n";
         
         return $text;
     }
@@ -266,7 +266,7 @@ class Setup_Model extends TinyMVC_Model
     function test_apache()
     {
         if (ini_get('allow_url_fopen')) {
-            $headers = get_headers('http://' . $_SERVER['SERVER_NAME'] . HTTP_BASEDIR . '/setup/test');
+            $headers = get_headers('http://' . $_SERVER['SERVER_NAME'] . '/setup/test');
             if (strpos($headers[0], '404') !== false) {
                 return false;
             }
