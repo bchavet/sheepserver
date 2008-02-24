@@ -33,4 +33,5 @@ class cgi_Controller extends TinyMVC_Controller
     function put()
     {
     }
+
 }

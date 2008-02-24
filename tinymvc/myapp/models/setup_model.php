@@ -62,7 +62,7 @@ class Setup_Model extends TinyMVC_Model
      */
     function get_flock_table_schema()
     {
-        $query = 'CREATE TABLE flock (id INT NOT NULL)';
+        $query = 'CREATE TABLE flock (id INT NOT NULL, frames INT NOT NULL, height INT NOT NULL, width INT NOT NULL)';
         return $query;
     }
 
@@ -127,7 +127,7 @@ class Setup_Model extends TinyMVC_Model
      */
     function get_sheep_table_schema()
     {
-        $query = 'CREATE TABLE sheep (id INT NOT NULL, flock_id INT)';
+        $query = 'CREATE TABLE sheep (id INT NOT NULL, flock_id INT, start INT NOT NULL, end INT NOT NULL)';
         return $query;
     }
 
@@ -192,7 +192,7 @@ class Setup_Model extends TinyMVC_Model
      */
     function get_frame_table_schema()
     {
-        $query = 'CREATE TABLE frame (id INT NOT NULL, sheep_id INT)';
+        $query = 'CREATE TABLE frame (id INT NOT NULL, sheep_id INT, frameindex INT NOT NULL, status VARCHAR(255), credit VARCHAR(255))';
         return $query;
     }
 
