@@ -2,12 +2,32 @@
 
 class Config_Model extends TinyMVC_Model
 {
-    function get($id)
+
+    /**
+     * Get configuration value
+     */
+    function get($name)
     {
-        return $this->db->query_one('select value from config where id=?', array($id));
+        $result = $this->db->query_init('select value from config where name=?', array($name), PDO::FETCH_ASSOC);
+        if ($result === false) {
+            return false;
+        }
+        return $result['value'];
     }
 
-    function set($id, $value)
+    /**
+     * Set configuration value
+     */
+    function set($name, $value)
     {
+        $exists = $this->get($name);
+        if ($exists === false) {
+            // The value does not exist in the configuration table, insert it
+            $result = $this->db->query('insert into config values (?, ?)', array($name, $value));
+        } else {
+            // The value already exists in the configuration table, update it
+            $result = $this->db->query('update config set value=? where name=?', array($value, $name));
+        }
+        return $result;
     }
 }

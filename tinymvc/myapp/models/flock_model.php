@@ -2,11 +2,18 @@
 
 class Flock_Model extends TinyMVC_Model
 {
-    /**
-     * Returns a list of the sheep in the flock.
-     */
-    function get_sheep($flock)
+
+    function create($generation)
     {
-        $this->db->query_all('select * from sheep where flock_id=?', $flock, PDO::FETCH_ASSOC);
+        // If flock dir already exists, exit
+        if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $generation)) {
+            return false;
+        }
+
+        // Create flock dir
+        mkdir(ES_BASEDIR . DS . 'gen' . DS . $generation, '0777', true);
+
+        return true;
     }
+
 }
