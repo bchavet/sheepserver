@@ -10,6 +10,11 @@ class Sheep_Model extends TinyMVC_Model
      */
     function create($generation, $sheep)
     {
+        // If the generation dir does not exist, exit
+        if (!file_exists(ES_BASEDIR . DS . 'gen' . DS . $generation)) {
+            return false;
+        }
+
         // If sheep dir already exists, exit
         if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $generation . DS . $sheep)) {
             return false;
