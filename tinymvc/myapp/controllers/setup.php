@@ -65,9 +65,7 @@ class setup_Controller extends TinyMVC_Controller
         } else {
 
             // Attempt to create the database tables
-            $flock_table = $this->setup->create_flock_table($_SESSION['db_config']);
-            $sheep_table = $this->setup->create_sheep_table($_SESSION['db_config']);
-            $frame_table = $this->setup->create_frame_table($_SESSION['db_config']);
+            $config_table = $this->setup->create_config_table($_SESSION['db_config']);
 
             $this->test();
         }
@@ -87,9 +85,7 @@ class setup_Controller extends TinyMVC_Controller
         $db_configured = isset($config);
         if ($db_configured) {
             $db_ok = $this->setup->db->pdo instanceof PDO;
-            $this->view->assign('flock_table_ok', $this->setup->test_flock_table());
-            $this->view->assign('sheep_table_ok', $this->setup->test_sheep_table());
-            $this->view->assign('frame_table_ok', $this->setup->test_frame_table());
+            $this->view->assign('config_table_ok', $this->setup->test_config_table());
         } else {
             $db_config = $this->setup->get_database_config($_SESSION['db_config']['type'],
                                                            $_SESSION['db_config']['host'],
@@ -106,27 +102,19 @@ class setup_Controller extends TinyMVC_Controller
                                            $_SESSION['db_config']['pass'],
                                            $_SESSION['db_config']['persistent']);
 
-            $this->view->assign('flock_table_ok', $this->setup->test_flock_table($_SESSION['db_config']));
-            $this->view->assign('sheep_table_ok', $this->setup->test_sheep_table($_SESSION['db_config']));
-            $this->view->assign('frame_table_ok', $this->setup->test_frame_table($_SESSION['db_config']));
+            $this->view->assign('config_table_ok', $this->setup->test_config_table($_SESSION['db_config']));
         }
 
         $this->view->assign('db_configured', $db_configured);
         $this->view->assign('db_ok', $db_ok);
         $this->view->assign('db_config_file', TMVC_MYAPPDIR . 'configs' . DS . 'database.php');
 
-        $this->view->assign('flock_table_schema', $this->setup->get_flock_table_schema());
-        $this->view->assign('sheep_table_schema', $this->setup->get_sheep_table_schema());
-        $this->view->assign('frame_table_schema', $this->setup->get_frame_table_schema());
+        $this->view->assign('config_table_schema', $this->setup->get_config_table_schema());
 
         // Check for needed, apache-writable folder(s)
         $gen_folder_ok = $this->setup->test_gen_folder();
         $this->view->assign('gen_folder_ok', $gen_folder_ok);
         $this->view->assign('gen_folder_path', ES_BASEDIR . '/gen');
-
-        // Check apache config
-        $this->view->assign('apache_ok', $this->setup->test_apache());
-        $this->view->assign('apache_config', $this->setup->get_apache_config());
 
         $this->view->assign('continue', '/');
         $this->view->assign('retry', '/setup/test');
