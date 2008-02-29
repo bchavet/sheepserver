@@ -8,7 +8,7 @@
 
 <body>
 
-Sheep
+<a href="/admin/reset">Reset</a>
 
 </body>
 

@@ -1,0 +1,10 @@
+<flame size="640 480"
+       scale="240"
+       oversample="3"
+       filter="1.0"
+       quality="100"
+       batches="100"
+       background="0 0 0"
+       brightness="1"
+       gamma="4"
+       vibrancy="0" />

@@ -67,7 +67,7 @@ class Setup_Model extends TinyMVC_Model
 
     function get_config_table_schema()
     {
-        $query = 'CREATE TABLE config (name VARCHAR(255) NOT NULL, value VARCHAR(255))';
+        $query = 'CREATE TABLE config (name VARCHAR(255) NOT NULL, value VARCHAR(255), PRIMARY KEY (name))';
         return $query;
     }
 

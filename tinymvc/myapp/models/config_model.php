@@ -8,11 +8,20 @@ class Config_Model extends TinyMVC_Model
      */
     function get($name)
     {
-        $result = $this->db->query_init('select value from config where name=?', array($name), PDO::FETCH_ASSOC);
-        if ($result === false) {
-            return false;
+        static $config;
+        if (!is_array($config)) {
+            $config = array();
         }
-        return $result['value'];
+
+        if (!isset($config[$name])) {
+            $result = $this->db->query_init('select value from config where name=?', array($name), PDO::FETCH_ASSOC);
+            if ($result === false) {
+                return false;
+            }
+            $config[$name] = $result['value'];
+        }
+
+        return $config[$name];
     }
 
     /**
