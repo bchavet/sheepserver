@@ -1,6 +1,6 @@
 <?php
 
-class Queue_Model extends TinyMVC_Model
+class Server_Model extends TinyMVC_Model
 {
     function get_job($generation)
     {
