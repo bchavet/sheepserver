@@ -2,6 +2,8 @@
 
 class cgi_Controller extends TinyMVC_Controller
 {
+    var $method_map = array('list' => 'listsheep');
+
     function index()
     {
         $this->view->display('test_view');
@@ -12,6 +14,13 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function listsheep()
     {
+        $this->load->model('config_model', 'config');
+        $generation = $this->config->get('generation');
+
+        // Output contents of list file
+        $file = ES_BASEDIR . DS . 'gen' . DS . $generation . DS . 'txt' . DS . 'list.txt.gz';
+        $contents = file_get_contents($file);
+        echo $contents;
     }
 
     /**
@@ -45,6 +54,8 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function put()
     {
+        // Get raw POST data
+        $contents = file_get_contents('php://input');
     }
 
 }

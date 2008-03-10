@@ -12,4 +12,9 @@ class Server_Model extends TinyMVC_Model
     {
         $result = $this->db->query('update frame set state=? where generation=? and sheep=? and frame=?', array('assigned|' . $uid, $job['generation'], $job['sheep'], $job['frame']));
     }
+
+    function get_queue($generation)
+    {
+        $result = $this->db->query('select * from frame where generation=? and state=? or state like ?', array($generation, 'ready', 'assigned|%'));
+    }
 }

@@ -117,6 +117,11 @@ set_error_handler('tmvc_error_handler');
 /* see if controller class method exists */
 $controller_method = !empty($path_info[2]) ? $path_info[2] : 'index';
 
+/* see if method map exists */
+if (!empty($tmvc->method_map[$controller_method])) {
+    $controller_method = $tmvc->method_map[$controller_method];
+}
+
 /* cannot call method names starting with underscore */
 if (substr($controller_method,0,1)=='_') {
     trigger_error("Private method name not allowed '{$controller_method}'",E_USER_ERROR);
