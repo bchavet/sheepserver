@@ -54,8 +54,19 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function put()
     {
+        $this->load->model('config_model', 'config');
+        $this->load->model('server_model', 'server');
+
+        $generation = $this->config->get('generation');
+
         // Get raw POST data
         $contents = file_get_contents('php://input');
+ 
+        $job = array('generation' => $generation,
+                     'sheep' => $_GET['id'],
+                     'frame' => $_GET['f']);
+
+        $result = $this->server->complete_job($job, $_GET['u'], $contents);
     }
 
 }

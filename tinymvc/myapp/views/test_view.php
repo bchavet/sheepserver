@@ -10,6 +10,12 @@
 
 Sheep
 
+<pre>
+curl --silent --show-error 'http://sheep.badllama.com/cgi/list?v=LNX_2.6.8&u=12E9BF142392243E'| gunzip -c
+curl --silent --show-error 'http://sheep.badllama.com/cgi/get?n=&w=&v=LNX_2.6.8&u=12E9BF142392243E' | gunzip -c
+curl --silent --show-error --upload-file /home/ben/0.jpg 'http://sheep.badllama.com/cgi/put?f=25&id=0&s=258382&g=65&v=LNX_2.6.8&u=12E9BF142392243E'
+</pre>
+
 </body>
 
 </html>
