@@ -30,6 +30,23 @@ class Sheep_Model extends TinyMVC_Model
     }
 
     /**
+     * Get the next available sheep id for the given generation
+     */
+    function next_sheep_id($generation)
+    {
+        $result = $this->db->query_init('select sheep from animation where generation=? order by sheep desc', array($generation));
+        return $result['sheep'] + 1;
+    }
+
+    /**
+     * Get the frames for the given sheep
+     */
+    function get_frames($generation, $sheep)
+    {
+        return $this->db->query_all('select * from frame where generation=? and sheep=?', array($generation, $sheep));
+    }
+
+    /**
      * Generate a sheep spex file with a random rotation
      */
     function random_rotation($generation, $sheep, $nframes, $p0id = null, $p1id = null)

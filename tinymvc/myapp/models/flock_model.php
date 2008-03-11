@@ -56,4 +56,9 @@ class Flock_Model extends TinyMVC_Model
         return true;
     }
 
+    function get_sheep($generation)
+    {
+        return $this->db->query_all('select * from animation where generation=? order by sheep asc', array($generation));
+    }
+
 }

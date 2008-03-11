@@ -43,6 +43,23 @@ class admin_Controller extends TinyMVC_Controller
 
         // Generate spex file for first sheep
         $this->sheep->random_rotation($generation, 0, $nframes, 0, 0);
+
+        $this->view->display('admin_view');
     }
 
+    function newsheep()
+    {
+        $this->load->model('Config_Model', 'config');
+        $this->load->model('Sheep_Model', 'sheep');
+
+        // Get configuration values
+        $generation = $this->config->get('generation');
+        $nframes = $this->config->get('total_frames');
+
+        $id = $this->sheep->next_sheep_id($generation);
+        $this->sheep->init($generation, $id);
+        $this->sheep->random_rotation($generation, $id, $nframes, $id, $id);
+
+        $this->view->display('admin_view');
+    }
 }

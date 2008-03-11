@@ -8,10 +8,9 @@
 
 <body>
 
-<ul>
-<li><a href="/admin/reset">Reset</a></li>
-<li><a href="/admin/newsheep">New Sheep</a></li>
-</ul>
+<pre>
+<?php echo var_dump($sheep); ?>
+</pre>
 
 </body>
 
