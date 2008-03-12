@@ -29,6 +29,11 @@ class Server_Model extends TinyMVC_Model
             $fh = fopen($file, 'w+');
             fwrite($fh, $frame);
             fclose($fh);
+
+            // Generate a thumbnail
+            $thumbnail = ES_BASEDIR . DS . 'gen' . DS . $job['generation'] . DS . $job['sheep'] . DS . $job['frame'] . '.thumbnail.jpg';
+            $command = '/usr/bin/convert -size 100x100 -resize 100x100 ' . $file . ' +profile "*" jpeg:"' . $thumbnail . '" 2>&1';
+            exec($command, $output, $retval);
             
             return true;
         }

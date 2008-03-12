@@ -1,3 +1,9 @@
+* {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
 body {
     background: #9dbde1 url(http://www.tinymvc.com/images/bg-gradient.gif) top repeat-x;
     color: #666666;
@@ -54,4 +60,9 @@ pre {
 div.setup_test {
     padding: 10px;
     border-bottom: 1px solid #666666;
+}
+
+img.thumbnail {
+    padding: 2px;
+    vertical-align: middle;
 }

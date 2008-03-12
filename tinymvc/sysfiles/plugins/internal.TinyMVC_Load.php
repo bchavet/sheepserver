@@ -95,7 +95,6 @@ class TinyMVC_Load
 	 */    
   public function library($class_name,$alias=null,$filename=null)
   {
-
     /* if no alias, use the class name */
     if(!isset($alias))
       $alias = $class_name;

@@ -9,13 +9,13 @@
 <body>
 
 <?php
-foreach ($sheep as $s) {
-     echo '<a href="/status/sheep/' . $s['sheep'] . '">';
-     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['generation'] . DS . $s['sheep'] . DS . '0.thumbnail.jpg')) {
-         echo '<img src="/gen/' . $s['generation'] . '/' . $s['sheep'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
+foreach ($frames as $frame) {
+     echo '<a href="/status/frame/' . $frame['sheep'] . '/' . $frame['frame'] . '">';
+     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['generation'] . DS . $frame['sheep'] . DS . $frame['frame'] . '.thumbnail.jpg')) {
+         echo '<img src="/gen/' . $frame['generation'] . '/' . $frame['sheep'] . '/' . $frame['frame'] . '.thumbnail.jpg" alt="" class="thumbnail" />';
      } else {
          echo '<img src="/images/anon-icon.jpg" class="thumbnail" />';
-     }
+     }         
      echo '</a>';
  }
 ?>

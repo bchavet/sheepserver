@@ -56,9 +56,12 @@ class Flock_Model extends TinyMVC_Model
         return true;
     }
 
-    function get_sheep($generation)
+    function get_sheep($generation, $sheep = null)
     {
-        return $this->db->query_all('select * from animation where generation=? order by sheep asc', array($generation));
+        if ($sheep === null) {
+            return $this->db->query_all('select * from animation where generation=? order by sheep asc', array($generation));
+        } else {
+            return $this->db->query_init('select * from animation where generation=? and sheep=?', array($generation, $sheep));
+        }
     }
-
 }

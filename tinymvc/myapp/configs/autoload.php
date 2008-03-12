@@ -11,7 +11,7 @@
 
 
 /* auto-loaded libraries */
-$config['libraries'] = array();
+$config['libraries'] = array('uri');
 
 /* auto-loaded scripts */
 $config['scripts'] = array();
