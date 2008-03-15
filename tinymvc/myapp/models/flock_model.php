@@ -147,4 +147,26 @@ class Flock_Model extends TinyMVC_Model
         $result = $this->db->query_init('select sheep_id from sheep where flock_id=? order by sheep_id desc', array($this->generation));
         return $result['sheep_id'] + 1;
     }
+
+    function findRandomEdge()
+    {
+        $loops = $this->db->query_all('select sheep_id from sheep where flock_id=? and first = last', array($this->generation));
+        $found = false;
+        for ($i = 0; $i < 20 && !$found; $i++) {
+            $sheep[0] = rand(1, count($loops));
+            $sheep[1] = rand(1, count($loops));
+            if ($sheep[0] != $sheep[1]) {
+                $result = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=?', array($this->generation, $sheep[0], $sheep[1]));
+                if ($result === false) {
+                    $found = true;
+                }
+            }
+        }
+
+        if ($found) {
+            return $sheep;
+        }
+
+        return false;
+    }
 }

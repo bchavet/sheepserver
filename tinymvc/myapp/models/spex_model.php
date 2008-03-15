@@ -24,5 +24,18 @@ class Spex_Model extends TinyMVC_Model
         }
         return $spex;
     }
+
+    function edge($flock, $sheep0, $sheep1, $nframes)
+    {
+        // Get the spex information for sheep0
+        $spex0 = file_get_contents(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep0 . DS . 'spex');
+
+        // Get the spex information for sheep1
+        $spex1 = file_get_contents(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep1 . DS . 'spex');
+        $spex1 = str_replace('time="0"', 'time="' . $nframes . '"', $spex1);
+
+        // Return the merged spex file
+        return $spex0 . $spex1;
+    }
     
 }

@@ -51,6 +51,20 @@ class admin_Controller extends TinyMVC_Controller
 
     function newedge()
     {
+        // Try to find a random edge
+        $sheep = $this->flock->findRandomEdge();
+        
+        if (is_array($sheep)) {
+            // Generate spex information for th edge
+            $spex = $this->spex->edge($this->config->generation, $sheep[0], $sheep[1], $this->config->nframes);
+            echo '<pre>'; echo htmlspecialchars($spex); echo '</pre>';
+
+            // Create new sheep with the spex information
+            $this->flock->newSheep($spex, $this->config->nframes, $sheep[0], $sheep[1]);
+        }
+
+        // TODO: Display something meaningful
+        $this->view->display('admin_view');
     }
 
 }
