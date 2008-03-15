@@ -15,12 +15,21 @@ body {
 /*    width: 700px; */
 }
 
-table.setupform th {
-    text-align: right;
+table {
+      display: block;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
 }
 
-table.setupform td {
+th {
+    text-align: right;
+    padding-right: 2px;
+}
+
+td {
     text-align: left;
+    padding-left: 2px;
 }
 
 table.setupform input[type="text"] {

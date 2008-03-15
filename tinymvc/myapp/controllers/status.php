@@ -47,9 +47,8 @@ class Status_Controller extends TinyMVC_Controller
 
     function _frame($sheep, $frame)
     {
-        $this->view->assign(array('flock' => $this->config->generation,
-                                  'sheep' => $sheep,
-                                  'frame' => $frame));
+        $frame = $this->flock->getFrame($sheep, $frame);
+        $this->view->assign('frame', $frame);
         $this->view->display('frame_view');
     }
 }

@@ -180,4 +180,29 @@ class Flock_Model extends TinyMVC_Model
         $result = $this->db->query_init('select count(*) from frame where flock_id=? and sheep_id=? and state=?', array($this->generation, $sheep, 'done'));
         return $result['count(*)'];
     }
+
+    function getFrame($sheep, $frame)
+    {
+        $result = $this->db->query_init('select * from frame where flock_id=? and sheep_id=? and frame_id=?', array($this->generation, $sheep, $frame));
+        return $result;
+    }
+
+    function deleteFrame($sheep, $frame)
+    {
+        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $this->generation . DS . $sheep;
+        
+        // Delete jpeg
+        if (file_exists($sheepdir . DS . $frame . '.jpg')) {
+            unlink($sheepdir . DS . $frame . '.jpg');
+        }
+
+        // Delete thumbnail
+        if (file_exists($sheepdir . DS . $frame . '.thumbnail.jpg')) {
+            unlink($sheepdir . DS . $frame . '.thumbnail.jpg');
+        }
+
+        // Reset database entry
+        $result = $this->db->query('update frame set state=?, ip=?, uid=?, nick=?, start_time=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
+                                   array('ready', null, null, null, null, null, $this->generation, $sheep, $frame));
+    }
 }

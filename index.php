@@ -10,5 +10,7 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
+date_default_timezone_set('America/Chicago');
+
 session_start();
 require TMVC_BASEDIR . 'sysfiles' . DS . 'TinyMVC.php';

@@ -67,4 +67,17 @@ class admin_Controller extends TinyMVC_Controller
         $this->view->display('admin_view');
     }
 
+    function delete()
+    {
+        $sheep = isset($_GET['sheep']) ? $_GET['sheep'] : null;
+        $frame = isset($_GET['frame']) ? $_GET['frame'] : null;
+
+        if ($sheep !== null && $frame !== null) {
+            $this->flock->deleteFrame($sheep, $frame);
+            header('Location: /status?sheep=' . $sheep . '&frame=' . $frame);
+            exit;
+        }
+
+    }
+
 }
