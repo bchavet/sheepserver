@@ -81,10 +81,15 @@ class Flock_Model extends TinyMVC_Model
     function getSheep($sheep = null)
     {
         if ($sheep === null) {
-            return $this->db->query_all('select * from animation where generation=? order by sheep asc', array($this->generation));
+            return $this->db->query_all('select * from sheep where flock_id=? order by sheep_id asc', array($this->generation));
         } else {
-            return $this->db->query_init('select * from animation where generation=? and sheep=?', array($this->generation, $sheep));
+            return $this->db->query_init('select * from sheep where flock_id=? and sheep_id=?', array($this->generation, $sheep));
         }
+    }
+
+    function getFrames($sheep)
+    {
+        return $this->db->query_all('select * from frame where flock_id=? and sheep_id=? order by sheep_id, frame_id asc', array($this->generation, $sheep));
     }
 
     /**
@@ -168,5 +173,11 @@ class Flock_Model extends TinyMVC_Model
         }
 
         return false;
+    }
+
+    function countCompletedFrames($sheep)
+    {
+        $result = $this->db->query_init('select count(*) from frame where flock_id=? and sheep_id=? and state=?', array($this->generation, $sheep, 'done'));
+        return $result['count(*)'];
     }
 }

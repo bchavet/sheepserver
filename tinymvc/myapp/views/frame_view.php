@@ -9,8 +9,8 @@
 <body>
 
 <?php
-if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $generation . DS . $sheep . DS . $frame . '.thumbnail.jpg')) {
-    echo '<img src="/gen/' . $generation . '/' . $sheep . '/' . $frame . '.jpg" alt="" />';
+if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep . DS . $frame . '.thumbnail.jpg')) {
+    echo '<img src="/gen/' . $flock . '/' . $sheep . '/' . $frame . '.jpg" alt="" />';
 } else {
     echo '<img src="/images/anon-icon.jpg" alt="" />';
 }

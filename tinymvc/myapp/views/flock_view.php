@@ -10,9 +10,9 @@
 
 <?php
 foreach ($sheep as $s) {
-     echo '<a href="/status/sheep/' . $s['sheep'] . '">';
-     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['generation'] . DS . $s['sheep'] . DS . '0.thumbnail.jpg')) {
-         echo '<img src="/gen/' . $s['generation'] . '/' . $s['sheep'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
+     echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
+     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['sheep_id'] . DS . '0.thumbnail.jpg')) {
+         echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
      } else {
          echo '<img src="/images/anon-icon.jpg" class="thumbnail" />';
      }

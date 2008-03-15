@@ -10,15 +10,18 @@
 
 <?php
 foreach ($frames as $frame) {
-     echo '<a href="/status/frame/' . $frame['sheep'] . '/' . $frame['frame'] . '">';
-     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['generation'] . DS . $frame['sheep'] . DS . $frame['frame'] . '.thumbnail.jpg')) {
-         echo '<img src="/gen/' . $frame['generation'] . '/' . $frame['sheep'] . '/' . $frame['frame'] . '.thumbnail.jpg" alt="" class="thumbnail" />';
-     } else {
-         echo '<img src="/images/anon-icon.jpg" class="thumbnail" />';
+     echo '<a href="/status?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">';
+     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame['sheep_id'] . DS . $frame['frame_id'] . '.thumbnail.jpg')) {
+         echo '<img src="/gen/' . $frame['flock_id'] . '/' . $frame['sheep_id'] . '/' . $frame['frame_id'] . '.thumbnail.jpg" alt="" class="thumbnail" />';
      }         
      echo '</a>';
  }
 ?>
+
+<p>
+<?= $completed ?> frames complete (<?php echo (int)($completed / ($completed + $remaining) * 100) . '%'; ?>).
+<?php if ($remaining > 0) { echo $remaining . ' frames remaining.'; } ?>
+</p>
 
 </body>
 

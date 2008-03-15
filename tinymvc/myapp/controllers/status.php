@@ -2,67 +2,54 @@
 
 class Status_Controller extends TinyMVC_Controller
 {
-    function index()
+
+    function __construct()
     {
-        $this->flock();
+        parent::__construct();
+        $this->load->model('config_model', 'config');
+        $this->load->model('flock_model', 'flock');
     }
 
-    function flock()
+    function index()
     {
-        $this->load->model('Config_Model', 'config');
-        $this->load->model('Flock_Model', 'flock');
+        $sheep = isset($_GET['sheep']) ? (int)$_GET['sheep'] : false;
+        $frame = isset($_GET['frame']) ? (int)$_GET['frame'] : false;
 
-        // Get config values
-        $generation = $this->config->get('generation');
+        if ($sheep !== false && $frame !== false) {
+            $this->_frame($sheep, $frame);
+        } else if ($sheep !== false) {
+            $this->_sheep($sheep);
+        } else {
+            $this->_flock();
+        }
+    }
 
+    function _flock()
+    {
         // Get the sheep in the current generation
-        $sheep = $this->flock->get_sheep($generation);
-
+        $sheep = $this->flock->getSheep();
+        
         $this->view->assign('sheep', $sheep);
         $this->view->display('flock_view');
     }
 
-    function sheep()
+    function _sheep($sheep)
     {
-        $this->load->model('Config_Model', 'config');
-        $generation = $this->config->get('generation');
+        $frames = $this->flock->getFrames($sheep);
+        $completed = $this->flock->countCompletedFrames($sheep);
+        $remaining = $this->config->nframes - $completed;
 
-        // Try to get the sheep ID
-        $sheep_id = $this->uri->segment(3);
-        if ($sheep_id === false) {
-            $this->flock();
-            return;
-        }
-
-        $this->load->model('Sheep_Model', 'sheep');
-        $frames = $this->sheep->get_frames($generation, $sheep_id);
-        
+        $this->view->assign('completed', $completed);
+        $this->view->assign('remaining', $remaining);
         $this->view->assign('frames', $frames);
         $this->view->display('sheep_view');
     }
 
-    function frame()
+    function _frame($sheep, $frame)
     {
-        $this->load->model('Config_Model', 'config');
-        $generation = $this->config->get('generation');
-
-        // Try to get the sheep ID
-        $sheep_id = $this->uri->segment(3);
-        if ($sheep_id === false) {
-            $this->flock();
-            return;
-        }
-
-        // Try to get the frame ID
-        $frame_id = $this->uri->segment(4);
-        if ($frame_id === false) {
-            $this->sheep();
-            return;
-        }
-
-        $this->view->assign(array('generation' => $generation,
-                                  'sheep' => $sheep_id,
-                                  'frame' => $frame_id));
+        $this->view->assign(array('flock' => $this->config->generation,
+                                  'sheep' => $sheep,
+                                  'frame' => $frame));
         $this->view->display('frame_view');
     }
 }
