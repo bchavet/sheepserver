@@ -3,6 +3,14 @@
 class admin_Controller extends TinyMVC_Controller
 {
 
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->model('config_model', 'config');
+        $this->load->model('flock_model', 'flock');
+        $this->load->model('spex_model', 'spex');
+    }
+
     /**
      * Show default admin page
      */
@@ -16,50 +24,33 @@ class admin_Controller extends TinyMVC_Controller
      */
     function reset()
     {
-        // Load the models
-        $this->load->model('Config_Model', 'config');
-        $this->load->model('Flock_Model', 'flock');
-        $this->load->model('Sheep_Model', 'sheep');
-        
-        // Get configuration values
-        $generation = $this->config->get('generation');
-        $nframes = $this->config->get('total_frames');
-
-        // Determine the next generation number
-        if ($generation === false) {
-            $generation = 1;
-        } else {
-            $generation++;
-        }
-
-        // Update generation number
-        $this->config->set('generation', $generation);
-
         // Initialize new flock
-        $this->flock->init($generation);
+        $this->flock->newFlock();
         
-        // Initialize first sheep in the flock;
-        $this->sheep->init($generation, 0);
+        // Generate spex information for first sheep
+        $spex = $this->spex->random_rotation($this->config->nframes);
 
-        // Generate spex file for first sheep
-        $this->sheep->random_rotation($generation, 0, $nframes, 0, 0);
+        // Create new sheep with the spex information
+        $this->flock->newSheep($spex, $this->config->nframes);
 
+        // TODO: Display something meaningful
         $this->view->display('admin_view');
     }
 
     function newsheep()
     {
-        $this->load->model('Config_Model', 'config');
-        $this->load->model('Sheep_Model', 'sheep');
+        // Generate spex information for new sheep
+        $spex = $this->spex->random_rotation($this->config->nframes);
 
-        // Get configuration values
-        $generation = $this->config->get('generation');
-        $nframes = $this->config->get('total_frames');
+        // Create new sheep with the spex information
+        $this->flock->newSheep($spex, $this->config->nframes);
 
-        $id = $this->sheep->next_sheep_id($generation);
-        $this->sheep->init($generation, $id);
-        $this->sheep->random_rotation($generation, $id, $nframes, $id, $id);
-
+        // TODO: Display something meaningful
         $this->view->display('admin_view');
     }
+
+    function newedge()
+    {
+    }
+
 }

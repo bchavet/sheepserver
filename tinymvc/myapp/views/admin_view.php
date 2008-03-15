@@ -11,6 +11,7 @@
 <ul>
 <li><a href="/admin/reset">Reset</a></li>
 <li><a href="/admin/newsheep">New Sheep</a></li>
+<li><a href="/admin/newedge">New Edge</a></li>
 </ul>
 
 </body>

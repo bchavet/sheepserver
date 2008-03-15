@@ -24,6 +24,11 @@ class Config_Model extends TinyMVC_Model
         return $config[$name];
     }
 
+    function __get($name)
+    {
+        return $this->get($name);
+    }
+
     /**
      * Set configuration value
      */
@@ -39,4 +44,10 @@ class Config_Model extends TinyMVC_Model
         }
         return $result;
     }
+
+    function __set($name, $value)
+    {
+        return $this->set($name, $value);
+    }
+
 }

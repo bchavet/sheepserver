@@ -2,11 +2,6 @@
 /**
  * Library to handle a URI sent to tinyMVC
  *
- * Copyright 2008 Ben Chavet
- *
- * See the enclosed file COPYING for license information (LGPL). If you
- * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
- *
  * @author Ben Chavet <ben@chavet.net>
  */
 
@@ -29,15 +24,15 @@ class URI
      *
      * @param int $segment  The segment number to return
      *
-     * @return requested segment of the URI
+     * @return requested segment of the URI if it exists.  False otherwise.
      */
     function segment($segment)
     {
-        if (!isset($this->uri[$segment])) {
-            return false;
+        if (isset($this->uri[$segment])) {
+            return $this->uri[$segment];
         }
+        return false;
 
-        return $this->uri[$segment];
     }
 
     /**
@@ -46,6 +41,9 @@ class URI
      *
      * Example: http://www.example.com/a/b/c/d/e/f
      *          returns array('a' => 'b', 'c' => 'd', 'e' => 'f');
+     *
+     * Example: http://www.example.com/a/b/c/d/e
+     *          returns array('a' => 'b', 'c' => 'd', 'e' => null);
      *
      * @return associative array of the URI values
      */
@@ -63,4 +61,22 @@ class URI
 
         return $hash;
     }
+
+    /**
+     * Returns the URI parameter value according to the given key and the
+     * key/value grouping done by $this->to_array().
+     *
+     * @param string $key  Parameter name.
+     *
+     * @return The value associated with the key if it exists.  False otherwise.
+     */
+    function get($key)
+    {
+        $param = $this->to_array();
+        if (isset($params[$key])) {
+            return $params[$key];
+        }
+        return false;
+    }
+
 }

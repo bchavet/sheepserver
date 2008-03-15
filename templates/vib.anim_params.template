@@ -1,5 +1,5 @@
 <flame size="1024 576"
-       scale="480"
+       scale="200"
        oversample="3"
        filter="1.0"
        quality="100"

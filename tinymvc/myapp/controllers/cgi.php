@@ -4,6 +4,12 @@ class cgi_Controller extends TinyMVC_Controller
 {
     var $method_map = array('list' => 'listsheep');
 
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->model('config_model', 'config');
+    }
+
     function index()
     {
         $this->view->display('test_view');
@@ -14,11 +20,8 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function listsheep()
     {
-        $this->load->model('config_model', 'config');
-        $generation = $this->config->get('generation');
-
         // Output contents of list file
-        $file = ES_BASEDIR . DS . 'gen' . DS . $generation . DS . 'txt' . DS . 'list.txt.gz';
+        $file = ES_BASEDIR . DS . 'gen' . DS . $this->config->generation . DS . 'txt' . DS . 'list.txt.gz';
         $contents = file_get_contents($file);
         echo $contents;
     }
@@ -29,24 +32,21 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function get()
     {
-        $this->load->model('config_model', 'config');
         $this->load->model('server_model', 'server');
 
-        $generation = $this->config->get('generation');
-
         // Attempt to get a job from the server
-        $job = $this->server->get_job($generation);
+        $job = $this->server->get_job($this->config->generation);
         if ($job === false) {
             return false;
         }
 
         // Return the job to the client to start processing
-        $file = ES_BASEDIR . DS . 'gen' . DS . $job['generation'] . DS . $job['sheep'] . DS . $job['frame'] . '.spex';
+        $file = ES_BASEDIR . DS . 'gen' . DS . $job['flock_id'] . DS . $job['sheep_id'] . DS . $job['frame_id'] . '.spex.gz';
         $contents = file_get_contents($file);
         echo $contents;
 
-        // Set the job status to 'assigned'
-        $this->server->assign_job($job, $_GET['u']);
+        // Assign the job to the requesting client
+        $this->server->assign($job['flock_id'], $job['sheep_id'], $job['frame_id'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), addslashes($_GET['n']));
     }
 
     /**
@@ -54,19 +54,13 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function put()
     {
-        $this->load->model('config_model', 'config');
         $this->load->model('server_model', 'server');
 
-        $generation = $this->config->get('generation');
-
         // Get raw POST data
-        $contents = file_get_contents('php://input');
+        $data = file_get_contents('php://input');
  
-        $job = array('generation' => $generation,
-                     'sheep' => $_GET['id'],
-                     'frame' => $_GET['f']);
-
-        $result = $this->server->complete_job($job, $_GET['u'], $contents);
+        // Submit the job
+        $result = $this->server->complete($this->config->generation, (int)$_GET['id'], (int)$_GET['f'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), $data);
     }
 
 }
