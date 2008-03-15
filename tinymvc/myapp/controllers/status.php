@@ -28,8 +28,10 @@ class Status_Controller extends TinyMVC_Controller
     {
         // Get the sheep in the current generation
         $sheep = $this->flock->getSheep();
+        $edges = $this->flock->getEdges();
         
         $this->view->assign('sheep', $sheep);
+        $this->view->assign('edges', $edges);
         $this->view->display('flock_view');
     }
 

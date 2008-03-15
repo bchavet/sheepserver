@@ -81,10 +81,15 @@ class Flock_Model extends TinyMVC_Model
     function getSheep($sheep = null)
     {
         if ($sheep === null) {
-            return $this->db->query_all('select * from sheep where flock_id=? order by sheep_id asc', array($this->generation));
+            return $this->db->query_all('select * from sheep where flock_id=? and first=last order by sheep_id asc', array($this->generation));
         } else {
             return $this->db->query_init('select * from sheep where flock_id=? and sheep_id=?', array($this->generation, $sheep));
         }
+    }
+
+    function getEdges()
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and first!=last order by sheep_id asc', array($this->generation));
     }
 
     function getFrames($sheep)

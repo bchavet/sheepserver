@@ -8,6 +8,7 @@
 
 <body>
 
+<div class="loops">
 <?php
 foreach ($sheep as $s) {
      echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
@@ -19,6 +20,27 @@ foreach ($sheep as $s) {
      echo '</a>';
  }
 ?>
+</div>
+
+<div class="edges">
+<?php
+foreach ($edges as $s) {
+     echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
+     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['first'] . DS . '0.thumbnail.jpg')) {
+         echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['first'] . '/0.thumbnail.jpg" alt="first" class="thumbnail edgefirst" />';
+     } else {
+         echo '<img src="/images/anon-icon.jpg" class="thumbnail edgefirst" />';
+     }
+     
+     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['last'] . DS . '0.thumbnail.jpg')) {
+         echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['last'] . '/0.thumbnail.jpg" alt="last" class="thumbnail edgelast" />';
+     } else {
+         echo '<img src="/images/anon-icon.jpg" class="thumbnail edgelast" />';
+     }
+     echo '</a>';
+ }
+?>
+</div>
 
 </body>
 

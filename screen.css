@@ -75,3 +75,11 @@ img.thumbnail {
     padding: 2px;
     vertical-align: middle;
 }
+
+img.edgefirst {
+    padding-right: 0;
+}
+
+img.edgelast {
+    padding-left: 0;
+}
