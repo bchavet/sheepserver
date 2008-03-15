@@ -43,9 +43,9 @@ class Server_Model extends TinyMVC_Model
                                        array('done', time(), $flock, $sheep, $frame));
 
             // See if there are any more frames to be rendered
-            $result = $this->db->query_init('select count(*) from frame where flock_id=? and sheep_id=? and status != ?',
+            $result = $this->db->query_init('select count(frame_id) from frame where flock_id=? and sheep_id=? and state != ?',
                                             array($flock, $sheep, 'done'));
-            if ($result['count(*)'] == 0) {
+            if ($result['count(frame_id)'] == 0) {
                 // Mark this sheep as ready to be compressed
                 $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?',
                                  array('ready', $flock, $sheep));
