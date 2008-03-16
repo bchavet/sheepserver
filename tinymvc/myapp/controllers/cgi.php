@@ -76,4 +76,19 @@ class cgi_Controller extends TinyMVC_Controller
         $this->load->model('server_model', 'server');
         $sheep = $this->server->encodeSheep($this->config->generation);
     }
+
+    /**
+     * Clean up stale assignments
+     */
+    function cleanup()
+    {
+        $this->load->model('server_model', 'server');
+        $assignments = $this->server->getStaleAssignments();
+        foreach ($assignments as $assignment) {
+            $this->server->unassign($assignment['flock_id'], $assignment['sheep_id'], $assignment['frame_id']);
+        }
+
+        header('Location: /status');
+        exit;
+    }
 }

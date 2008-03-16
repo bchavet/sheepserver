@@ -22,6 +22,13 @@ class Server_Model extends TinyMVC_Model
                                    array('assigned', $ip, $uid, $nick, time(), 0, $flock, $sheep, $frame));
     }
 
+    function getStaleAssignments($timeout = 3600)
+    {
+        $too_old = time() - $timeout;
+        return $this->db->query_all('select flock_id, sheep_id, frame_id from frame where state=? and start_time<?',
+                                    array('assigned', $too_old));
+    }
+
     function unassign($flock, $sheep, $frame)
     {
         $result = $this->db->query('update frame set state=?, ip=?, uid=?, nick=?, start_time=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
