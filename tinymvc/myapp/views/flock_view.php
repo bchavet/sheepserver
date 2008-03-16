@@ -9,7 +9,7 @@
 <body>
 
 <div class="loops complete">
-Complete Loops<br />
+Complete Loops (<?= count($completeSheep) ?>)<br />
 <?php
 foreach ($completeSheep as $s) {
      echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
@@ -24,7 +24,7 @@ foreach ($completeSheep as $s) {
 </div>
 
 <div class="edges complete">
-Complete Edges<br />
+Complete Edges (<?= count($completeEdges) ?>)<br />
 <?php
 foreach ($completeEdges as $s) {
      echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
@@ -45,7 +45,7 @@ foreach ($completeEdges as $s) {
 </div>
 
 <div class="loops incomplete">
-Incomplete Loops<br />
+Incomplete Loops (<?= count($busySheep) ?>)<br />
 <?php
 foreach ($busySheep as $s) {
      echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
@@ -60,7 +60,7 @@ foreach ($busySheep as $s) {
 </div>
 
 <div class="edges incomplete">
-Incomplete Edges<br />
+Incomplete Edges (<?= count($busyEdges) ?>)<br />
 <?php
 foreach ($busyEdges as $s) {
      echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
