@@ -163,8 +163,8 @@ class Flock_Model extends TinyMVC_Model
         $loops = $this->db->query_all('select sheep_id from sheep where flock_id=? and first = last', array($this->generation));
         $found = false;
         for ($i = 0; $i < 20 && !$found; $i++) {
-            $sheep[0] = rand(1, count($loops));
-            $sheep[1] = rand(1, count($loops));
+            $sheep[0] = $loops[rand(0, count($loops) - 1)]['sheep_id'];
+            $sheep[1] = $loops[rand(0, count($loops) - 1)]['sheep_id'];
             if ($sheep[0] != $sheep[1]) {
                 $result = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=?', array($this->generation, $sheep[0], $sheep[1]));
                 if ($result === false) {
