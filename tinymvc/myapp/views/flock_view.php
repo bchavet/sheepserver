@@ -8,9 +8,10 @@
 
 <body>
 
-<div class="loops">
+<div class="loops complete">
+Complete Loops<br />
 <?php
-foreach ($sheep as $s) {
+foreach ($completeSheep as $s) {
      echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
      if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['sheep_id'] . DS . '0.thumbnail.jpg')) {
          echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
@@ -22,9 +23,46 @@ foreach ($sheep as $s) {
 ?>
 </div>
 
-<div class="edges">
+<div class="edges complete">
+Complete Edges<br />
 <?php
-foreach ($edges as $s) {
+foreach ($completeEdges as $s) {
+     echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
+     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['first'] . DS . '0.thumbnail.jpg')) {
+         echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['first'] . '/0.thumbnail.jpg" alt="first" class="thumbnail edgefirst" />';
+     } else {
+         echo '<img src="/images/anon-icon.jpg" class="thumbnail edgefirst" />';
+     }
+     
+     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['last'] . DS . '0.thumbnail.jpg')) {
+         echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['last'] . '/0.thumbnail.jpg" alt="last" class="thumbnail edgelast" />';
+     } else {
+         echo '<img src="/images/anon-icon.jpg" class="thumbnail edgelast" />';
+     }
+     echo '</a>';
+ }
+?>
+</div>
+
+<div class="loops incomplete">
+Incomplete Loops<br />
+<?php
+foreach ($busySheep as $s) {
+     echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
+     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['sheep_id'] . DS . '0.thumbnail.jpg')) {
+         echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
+     } else {
+         echo '<img src="/images/anon-icon.jpg" class="thumbnail" />';
+     }
+     echo '</a>';
+ }
+?>
+</div>
+
+<div class="edges incomplete">
+Incomplete Edges<br />
+<?php
+foreach ($busyEdges as $s) {
      echo '<a href="/status?sheep=' . $s['sheep_id'] . '">';
      if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['first'] . DS . '0.thumbnail.jpg')) {
          echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['first'] . '/0.thumbnail.jpg" alt="first" class="thumbnail edgefirst" />';

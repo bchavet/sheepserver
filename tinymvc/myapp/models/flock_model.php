@@ -210,4 +210,28 @@ class Flock_Model extends TinyMVC_Model
         $result = $this->db->query('update frame set state=?, ip=?, uid=?, nick=?, start_time=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
                                    array('ready', null, null, null, null, null, $this->generation, $sheep, $frame));
     }
+
+    function getCompleteSheep()
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? and first=last order by sheep_id asc',
+                                    array($this->generation, 'done'));
+    }
+
+    function getCompleteEdges()
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? and first!=last order by sheep_id asc',
+                                    array($this->generation, 'done'));
+    }
+
+    function getBusySheep()
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and state!=? and first=last order by sheep_id asc',
+                                    array($this->generation, 'done'));
+    }
+
+    function getBusyEdges()
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and state!=? and first!=last order by sheep_id asc',
+                                    array($this->generation, 'done'));
+    }
 }
