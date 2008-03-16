@@ -20,6 +20,11 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function listsheep()
     {
+        $this->load->model('server_model', 'server');
+        $list = $this->server->getList($this->config->generation);
+        echo gzencode($list, 9);
+        return;
+
         // Output contents of list file
         $file = ES_BASEDIR . DS . 'gen' . DS . $this->config->generation . DS . 'txt' . DS . 'list.txt.gz';
         $contents = file_get_contents($file);
@@ -63,4 +68,12 @@ class cgi_Controller extends TinyMVC_Controller
         $result = $this->server->complete($this->config->generation, (int)$_GET['id'], (int)$_GET['f'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), $data);
     }
 
+    /**
+     * Encode any sheep that have all of their frames rendered
+     */
+    function encode()
+    {
+        $this->load->model('server_model', 'server');
+        $sheep = $this->server->encodeSheep($this->config->generation);
+    }
 }

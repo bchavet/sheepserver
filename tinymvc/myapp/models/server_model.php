@@ -66,9 +66,39 @@ class Server_Model extends TinyMVC_Model
         return false;
     }
 
-    function get_queue($generation)
+    function encodeSheep($flock)
     {
-        $result = $this->db->query('select * from frame where generation=? and state=? or state like ?', array($generation, 'ready', 'assigned|%'));
+        $result = $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc', array($flock, 'ready'));
+        if ($result) {
+            // mark our list of sheep as being encoded.  This process can take
+            // a while, and we don't want the next encoding round to step on
+            // our toes.
+            foreach ($result as $sheep) {
+                $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?', array('encoding', $flock, $sheep['sheep_id']));
+            }
+
+            // Encode each sheep
+            foreach ($result as $sheep) {
+                $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep['sheep_id'];
+                $cmd = 'jpeg2yuv -f 30 -I p -v 0 -j ./%d.jpg | mpeg2enc --format 9 --no-constraints --video-bitrate 9000 --video-buffer 500 --quantisation 1 --frame-rate 5 --aspect 3 -o sheep.mpg --multi-thread 0 > encode_output 2>&1';
+                shell_exec('cd ' . $sheepdir . ' && ' . $cmd);
+                $this->db->query('update sheep set state=?, size=?, time_done=? where flock_id=? and sheep_id=?', array('done', filesize($sheepdir . DS . 'sheep.mpg'), time(), $flock, $sheep['sheep_id']));
+            }
+        }
+    }
+
+    function getList($flock)
+    {
+        // Get a list of sheep that are ready to be downloaded
+        $sheeplist = $this->db->query_all('select * from sheep where flock_id=? and state=?', array($flock, 'done'));
+
+        // Generate list XML(?)
+        $list = "<list gen=\"$flock\">\n";
+        foreach ($sheeplist as $sheep) {
+            $list .= '<sheep id="' . $sheep['sheep_id'] . '" type="0" state="done" time="' . $sheep['time_done'] . '" size="' . $sheep['size'] . '" rating="' . $sheep['rating'] . '" first="' . $sheep['first'] . '" last="' . $sheep['last'] . '" url="http://sheep.badllama.com/gen/' . $sheep['flock_id'] . '/' . $sheep['sheep_id'] . '/sheep.mpg"/>' . "\n";
+        }
+        $list .= "</list>\n";
+        return $list;
     }
 
 }
