@@ -5,14 +5,14 @@
 }
 
 body {
-/*    background: #9dbde1 url(http://www.tinymvc.com/images/bg-gradient.gif) top repeat-x; */
+    background: #9dbde1 url(/images/bg-gradient.gif) top repeat-x;
     color: #666666;
     font-family: arial,sans;
     font-size: 100%;
     line-height: 1.7em;
     margin: 0 auto;
     text-align: center;
-/*    width: 700px; */
+    width: 700px;
 }
 
 table {
