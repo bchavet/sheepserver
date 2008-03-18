@@ -8,6 +8,8 @@
 
 <body>
 
+<?= $menu ?>
+
 <?php
 if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame['sheep_id'] . DS . $frame['frame_id'] . '.thumbnail.jpg')) {
     echo '<img src="/gen/' . $frame['flock_id'] . '/' . $frame['sheep_id'] . '/' . $frame['frame_id'] . '.jpg" alt="" />';

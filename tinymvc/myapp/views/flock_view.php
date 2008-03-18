@@ -8,6 +8,8 @@
 
 <body>
 
+<?= $menu ?>
+
 <div class="loops complete">
 Complete Loops (<?= count($completeSheep) ?>)<br />
 <?php

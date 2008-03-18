@@ -207,8 +207,10 @@ class Flock_Model extends TinyMVC_Model
         }
 
         // Reset database entry
-        $result = $this->db->query('update frame set state=?, ip=?, uid=?, nick=?, start_time=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
-                                   array('ready', null, null, null, null, null, $this->generation, $sheep, $frame));
+        $this->db->query('update frame set state=?, ip=?, uid=?, nick=?, start_time=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
+                         array('ready', null, null, null, null, null, $this->generation, $sheep, $frame));
+        $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?',
+                         array('incomplete', $this->generation, $sheep));
     }
 
     function getCompleteSheep()

@@ -8,6 +8,8 @@
 
 <body>
 
+<?= $menu ?>
+
 <?php
 foreach ($frames as $frame) {
      echo '<a href="/status?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">';

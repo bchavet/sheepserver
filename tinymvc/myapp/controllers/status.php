@@ -15,6 +15,8 @@ class Status_Controller extends TinyMVC_Controller
         $sheep = isset($_GET['sheep']) ? (int)$_GET['sheep'] : false;
         $frame = isset($_GET['frame']) ? (int)$_GET['frame'] : false;
 
+        $this->view->assign('menu', $this->view->fetch('menu_view'));
+
         if ($sheep !== false && $frame !== false) {
             $this->_frame($sheep, $frame);
         } else if ($sheep !== false) {
