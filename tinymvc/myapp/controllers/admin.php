@@ -9,6 +9,8 @@ class admin_Controller extends TinyMVC_Controller
         $this->load->model('config_model', 'config');
         $this->load->model('flock_model', 'flock');
         $this->load->model('spex_model', 'spex');
+
+        $this->view->assign('menu', $this->view->fetch('menu_view'));
     }
 
     /**
