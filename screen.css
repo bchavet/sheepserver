@@ -12,11 +12,20 @@ body {
     line-height: 1.7em;
     margin: 0 auto;
     text-align: center;
-    width: 700px;
+    width: 775px;
 }
 
 table.statistics {
     border: 1px solid black;
+}
+
+table.statistics td {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+td.icon {
+    white-space: nowrap;
 }
 
 table.frame {
