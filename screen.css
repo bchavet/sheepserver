@@ -121,3 +121,7 @@ img.edgelast {
 #mainmenu li.first {
     border: none;
 }
+
+a {
+    white-space: nowrap;
+}
