@@ -17,6 +17,31 @@
  }
 ?>
 </table>
+
+<table class="statistics">
+<tr><th>Sheep</th><th>IP Address</th><th>UID</th><th>Nick</th><th>Time</th></tr>
+<?php
+foreach ($assigned as $frame) {
+    echo '<tr>';
+
+    echo '<td><a href="/status?sheep=' . $frame['sheep_id'] . '">';
+    if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame['sheep_id'] . DS . '0.thumbnail.jpg')) {
+        echo '<img src="/gen/' . $frame['flock_id'] . '/' . $frame['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
+    } else {
+        echo '<img src="/images/busy-icon.jpg" alt="" class="thumbnail" />';
+    }
+    echo '</a></td>';
+
+    echo '<td>' . $frame['ip'] . '</td>';
+    echo '<td>' . $frame['uid'] . '</td>';
+    echo '<td>' . $frame['nick'] . '</td>';
+    echo '<td>' . date('F j, Y, g:i:s a', $frame['start_time']) . '</td>';
+
+    echo '</tr>';
+}
+?>
+</table>
+
 </body>
 
 </html>

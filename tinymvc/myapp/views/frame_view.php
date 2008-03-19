@@ -20,7 +20,7 @@ if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame[
 }
 ?>
 
-<table>
+<table class="frame">
 <tr>
   <th>Sheep</th>
   <td><?= $frame['sheep_id'] ?></td>

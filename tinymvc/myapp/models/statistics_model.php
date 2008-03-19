@@ -15,4 +15,9 @@ class Statistics_Model extends TinyMVC_Model
         return $count;
     }
 
+    function getAssignedFrames($flock)
+    {
+        return $this->db->query_all('select * from frame where flock_id=? and state=? order by sheep_id, frame_id asc',
+                                    array($flock, 'assigned'));
+    }
 }
