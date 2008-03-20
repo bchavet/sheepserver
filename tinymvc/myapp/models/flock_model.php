@@ -92,11 +92,6 @@ class Flock_Model extends TinyMVC_Model
         return $this->db->query_all('select * from sheep where flock_id=? and first!=last order by sheep_id asc', array($this->generation));
     }
 
-    function getFrames($sheep)
-    {
-        return $this->db->query_all('select * from frame where flock_id=? and sheep_id=? order by sheep_id, frame_id asc', array($this->generation, $sheep));
-    }
-
     /**
      * Creates a new sheep based on the given spex information
      */
@@ -180,12 +175,6 @@ class Flock_Model extends TinyMVC_Model
         return false;
     }
 
-    function countCompletedFrames($sheep)
-    {
-        $result = $this->db->query_init('select count(*) from frame where flock_id=? and sheep_id=? and state=?', array($this->generation, $sheep, 'done'));
-        return $result['count(*)'];
-    }
-
     function getFrame($sheep, $frame)
     {
         $result = $this->db->query_init('select * from frame where flock_id=? and sheep_id=? and frame_id=?', array($this->generation, $sheep, $frame));
@@ -225,15 +214,15 @@ class Flock_Model extends TinyMVC_Model
                                     array($this->generation, 'done'));
     }
 
-    function getBusySheep()
+    function getQueue()
     {
-        return $this->db->query_all('select * from sheep where flock_id=? and state!=? and first=last order by sheep_id asc',
-                                    array($this->generation, 'done'));
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc',
+                                    array($this->generation, 'incomplete'));
     }
 
-    function getBusyEdges()
+    function getPostQueue()
     {
-        return $this->db->query_all('select * from sheep where flock_id=? and state!=? and first!=last order by sheep_id asc',
-                                    array($this->generation, 'done'));
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc',
+                                    array($this->generation, 'ready'));
     }
 }

@@ -14,7 +14,7 @@ class Default_Controller extends TinyMVC_Controller
             // Redirect to setup screen
             header('Location: /setup');
         } else {
-            header('Location: /status');
+            header('Location: /flock');
         }
         exit;
     }
