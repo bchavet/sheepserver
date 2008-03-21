@@ -6,6 +6,9 @@ class admin_Controller extends TinyMVC_Controller
     function __construct()
     {
         parent::__construct();
+
+        // TODO: Check authentication here
+
         $this->load->model('config_model', 'config');
         $this->load->model('flock_model', 'flock');
         $this->load->model('spex_model', 'spex');
@@ -85,9 +88,17 @@ class admin_Controller extends TinyMVC_Controller
     function upload()
     {
         if (is_uploaded_file($_FILES['genome']['tmp_name'])) {
+            // Load the spex from the uploaded file
             $spex = file_get_contents($_FILES['genome']['tmp_name']);
+
+            // Make sure the size matches what is expected
+            $spex = preg_replace('/size="(\d+) (\d+)"/', 'size="' . $this->config->width . ' ' . $this->config->height . '"', $spex);
+
+            // Create a new sheep with the spex information
             $this->flock->newSheep($spex, $this->config->nframes);
         }
+
+        // TODO: Display something meaningful
         $this->view->display('admin_view');
     }
 }
