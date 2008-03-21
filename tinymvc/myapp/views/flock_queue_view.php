@@ -10,7 +10,7 @@
 
 <?= $menu ?>
 
-Queue (<?= count($queue) ?>)
+<p>Queue (<?= count($queue) ?>)</p>
 <?php
 foreach ($queue as $sheep) {
     echo '<div>';
@@ -43,7 +43,7 @@ foreach ($queue as $sheep) {
 }
 ?>
 
-Post-queue (<?= count($postqueue); ?>)
+<p>Post-queue (<?= count($postqueue); ?>)</p>
 <?php
 foreach ($postqueue as $sheep) {
     echo '<div>';
@@ -75,14 +75,14 @@ foreach ($postqueue as $sheep) {
 }
 ?>
 
-Assigned Frames
+<p>Assigned Frames</p>
 <table>
 <tr><th>Sheep</th><th>Frame</th><th>IP Address</th><th>UID</th><th>Nick</th><th>Time</th></tr>
 <?php
 foreach ($assigned as $frame) {
     echo '<tr>';
 
-    echo '<td class="icon"><a href="/status?sheep=' . $frame['sheep_id'] . '">';
+    echo '<td class="icon"><a href="/sheep?sheep=' . $frame['sheep_id'] . '">';
 
     if ($frame['first'] == $frame['last']) {
 
@@ -110,10 +110,10 @@ foreach ($assigned as $frame) {
 
     echo '</a></td>';
 
-    echo '<td><a href="/status?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">' . $frame['frame_id'] . '</a></td>';
+    echo '<td><a href="/frame?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">' . $frame['frame_id'] . '</a></td>';
     echo '<td>' . $frame['ip'] . '</td>';
     echo '<td>' . $frame['uid'] . '</td>';
-    echo '<td><a href="/statistics/nick?nick=' . $frame['nick'] . '">' . $frame['nick'] . '</a></td>';
+    echo '<td>' . $frame['nick'] . '</td>';
     echo '<td>' . date('F j, Y, g:i:s a', $frame['start_time']) . '</td>';
 
     echo '</tr>';
