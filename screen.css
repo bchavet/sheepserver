@@ -54,6 +54,8 @@ pre {
     border: 1px dashed; #666666;
     background-color: white;
     padding: 10px;
+    font-size: 90%;
+    overflow: scroll;
 }
 
 .success {
@@ -112,7 +114,6 @@ img.edgelast {
 
 #mainmenu li.first, #submenu li.first {
     padding-left: 15px;
-    background-color: #999999;
 }
 
 a {

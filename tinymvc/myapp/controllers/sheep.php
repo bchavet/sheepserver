@@ -65,12 +65,14 @@ class Sheep_Controller extends TinyMVC_Controller
     }
     */
 
-    /*
     function genome()
     {
-    }
-    */
+        $genome = $this->sheep->getGenome($this->flock_id, $this->sheep_id);
 
+        $this->view->assign('genome', $genome);
+        $this->view->display('sheep_genome_view');
+    }
+ 
     /*
     function credit()
     {
