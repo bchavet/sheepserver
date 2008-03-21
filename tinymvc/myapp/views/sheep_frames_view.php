@@ -10,6 +10,11 @@
 
 <?= $menu ?>
 
+<p>
+<?= $completed ?> frames complete (<?php echo (int)($completed / ($completed + $remaining) * 100) . '%'; ?>).
+<?php if ($remaining > 0) { echo $remaining . ' frames remaining.'; } ?>
+</p>
+
 <?php
 foreach ($frames as $frame) {
      echo '<a href="/frame?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">';
@@ -23,11 +28,6 @@ foreach ($frames as $frame) {
      echo '</a>';
  }
 ?>
-
-<p>
-<?= $completed ?> frames complete (<?php echo (int)($completed / ($completed + $remaining) * 100) . '%'; ?>).
-<?php if ($remaining > 0) { echo $remaining . ' frames remaining.'; } ?>
-</p>
 
 </body>
 

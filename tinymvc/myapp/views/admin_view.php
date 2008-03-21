@@ -10,11 +10,19 @@
 
 <?= $menu ?>
 
-<ul>
-<li><a href="/admin/reset">Reset</a></li>
+<div class="navigation">
+<ul id="submenu">
 <li><a href="/admin/newsheep">New Sheep</a></li>
 <li><a href="/admin/newedge">New Edge</a></li>
 </ul>
+</div>
+
+<div>
+<form name="upload" action="/admin/upload" method="post" enctype="multipart/form-data">
+<input type="file" name="genome" />
+<input type="submit" value="Submit" />
+</form>
+</div>
 
 </body>
 

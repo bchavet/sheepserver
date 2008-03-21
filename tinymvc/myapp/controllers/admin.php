@@ -82,4 +82,12 @@ class admin_Controller extends TinyMVC_Controller
 
     }
 
+    function upload()
+    {
+        if (is_uploaded_file($_FILES['genome']['tmp_name'])) {
+            $spex = file_get_contents($_FILES['genome']['tmp_name']);
+            $this->flock->newSheep($spex, $this->config->nframes);
+        }
+        $this->view->display('admin_view');
+    }
 }

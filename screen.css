@@ -11,7 +11,6 @@ body {
     font-size: 100%;
     line-height: 1.7em;
     margin: 0 auto;
-    width: 750px;
     text-align: center;
 }
 
@@ -102,8 +101,6 @@ img.edgelast {
 .navigation {
     display: table;
     margin: 3px auto;
-    background-color: white;
-    border: 1px solid blue;
 }
 
 #mainmenu li, #submenu li {
@@ -111,10 +108,15 @@ img.edgelast {
     padding-right: 15px;
     list-style-type: none;
     float: left;
+    background-color: #e0e0e0;
 }
 
 #mainmenu li.first, #submenu li.first {
     padding-left: 15px;
+}
+
+#menuitem li.current, #submentu li.current {
+    background-color: #999999;
 }
 
 a {
