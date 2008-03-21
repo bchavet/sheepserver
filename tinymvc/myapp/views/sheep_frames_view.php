@@ -12,7 +12,7 @@
 
 <?php
 foreach ($frames as $frame) {
-     echo '<a href="/status?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">';
+     echo '<a href="/frame?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">';
      if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame['sheep_id'] . DS . $frame['frame_id'] . '.thumbnail.jpg')) {
          echo '<img src="/gen/' . $frame['flock_id'] . '/' . $frame['sheep_id'] . '/' . $frame['frame_id'] . '.thumbnail.jpg" alt="" class="thumbnail" />';
      } else if ($frame['state'] == 'assigned') {

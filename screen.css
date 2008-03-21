@@ -11,8 +11,7 @@ body {
     font-size: 100%;
     line-height: 1.7em;
     margin: 0 auto;
-    text-align: center;
-    width: 775px;
+    width: 750px;
 }
 
 table.statistics {
@@ -97,31 +96,29 @@ img.edgelast {
     padding-left: 0;
 }
 
-#mainmenu {
-    margin: 3px;
-    padding: 0;
-    border: 1px solid blue;    
+.navigation {
     display: table;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 3px auto;
+    background-color: white;
+    border: 1px solid blue;
 }
 
-#mainmenu li {
-    margin: 0;
-    padding: 0;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    padding-left: 3px;
-    padding-right: 3px;
+#mainmenu li, #submenu li {
+    padding: 5px;
+    padding-right: 15px;
     list-style-type: none;
     float: left;
-    border-left: 1px solid black;
 }
 
-#mainmenu li.first {
-    border: none;
+#mainmenu li.first, #submenu li.first {
+    padding-left: 15px;
+    background-color: #999999;
 }
 
 a {
     white-space: nowrap;
+}
+
+.clr {
+    clear: both;
 }

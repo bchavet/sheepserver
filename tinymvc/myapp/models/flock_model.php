@@ -175,12 +175,6 @@ class Flock_Model extends TinyMVC_Model
         return false;
     }
 
-    function getFrame($sheep, $frame)
-    {
-        $result = $this->db->query_init('select * from frame where flock_id=? and sheep_id=? and frame_id=?', array($this->generation, $sheep, $frame));
-        return $result;
-    }
-
     function deleteFrame($sheep, $frame)
     {
         $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $this->generation . DS . $sheep;
@@ -202,27 +196,46 @@ class Flock_Model extends TinyMVC_Model
                          array('incomplete', $this->generation, $sheep));
     }
 
-    function getCompleteSheep()
+    function getCompleteSheep($flock)
     {
         return $this->db->query_all('select * from sheep where flock_id=? and state=? and first=last order by sheep_id asc',
-                                    array($this->generation, 'done'));
+                                    array($flock, 'done'));
     }
 
-    function getCompleteEdges()
+    function getCompleteEdges($flock)
     {
         return $this->db->query_all('select * from sheep where flock_id=? and state=? and first!=last order by sheep_id asc',
-                                    array($this->generation, 'done'));
+                                    array($flock, 'done'));
     }
 
-    function getQueue()
+    function getQueue($flock)
     {
         return $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc',
-                                    array($this->generation, 'incomplete'));
+                                    array($flock, 'incomplete'));
     }
 
-    function getPostQueue()
+    function getPostQueue($flock)
     {
         return $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc',
-                                    array($this->generation, 'ready'));
+                                    array($flock, 'ready'));
     }
+
+    function getCredit($flock)
+    {
+        $nicks = $this->db->query_all('select distinct nick from frame where nick is not null', array());
+        $count = array();
+        foreach ($nicks as $nick) {
+            $result = $this->db->query_init('select count(*) from frame where nick=?', array($nick['nick']));
+            $count[$nick['nick']] = $result['count(*)'];
+        }
+        arsort($count, SORT_NUMERIC);
+        return $count;
+    }
+
+    function getAssigned($flock)
+    {
+        return $this->db->query_all('select * from sheep, frame where frame.flock_id=? and frame.state=? and sheep.sheep_id=frame.sheep_id order by frame.sheep_id, frame.frame_id asc',
+                                    array($flock, 'assigned'));
+    }
+
 }

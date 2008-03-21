@@ -13,7 +13,7 @@
 Complete Loops (<?= count($sheep) ?>)<br />
 <?php
 foreach ($sheep as $s) {
-     echo '<a href="/sheep/frames?id=' . $s['sheep_id'] . '">';
+     echo '<a href="/sheep?sheep=' . $s['sheep_id'] . '">';
      if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $s['flock_id'] . DS . $s['sheep_id'] . DS . '0.thumbnail.jpg')) {
          echo '<img src="/gen/' . $s['flock_id'] . '/' . $s['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
      } else {
