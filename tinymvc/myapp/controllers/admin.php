@@ -79,7 +79,7 @@ class admin_Controller extends TinyMVC_Controller
 
         if ($sheep !== null && $frame !== null) {
             $this->flock->deleteFrame($sheep, $frame);
-            header('Location: /status?sheep=' . $sheep . '&frame=' . $frame);
+            header('Location: /frame?sheep=' . $sheep . '&frame=' . $frame);
             exit;
         }
 
