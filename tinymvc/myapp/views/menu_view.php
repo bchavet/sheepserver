@@ -10,17 +10,19 @@
 <div class="clr"></div>
 </div>
 
-<?php if (isset($_GET['sheep'])): ?>
-<?php $sheep_id = (int)$_GET['sheep']; ?>
+<?php if (isset($sheep)): ?>
 <div class="navigation">
 <ul id="submenu">
-  <li class="first"><a href="/sheep/status?sheep=<?= $sheep_id ?>">Status</a></li>
-  <li><a href="/sheep/frames?sheep=<?= $sheep_id ?>">Frames</a></li>
-  <li><a href="/sheep/motion?sheep=<?= $sheep_id ?>">Motion</a></li>
-  <li><a href="/sheep/lineage?sheep=<?= $sheep_id ?>">Lineage</a></li>
-  <li><a href="/sheep/genome?sheep=<?= $sheep_id ?>">Genome</a></li>
-  <li><a href="/sheep/credit?sheep=<?= $sheep_id ?>">Credit</a></li>
-  <li><a href="/sheep/stats?sheep=<?= $sheep_id ?>">Stats</a></li>
+  <li class="first"><a href="/sheep/status?sheep=<?= $sheep ?>">Status</a></li>
+  <li><a href="/sheep/frames?sheep=<?= $sheep ?>">Frames</a></li>
+  <li><a href="/sheep/motion?sheep=<?= $sheep ?>">Motion</a></li>
+  <li><a href="/sheep/lineage?sheep=<?= $sheep ?>">Lineage</a></li>
+  <li><a href="/sheep/genome?sheep=<?= $sheep ?>">Genome</a></li>
+  <li><a href="/sheep/credit?sheep=<?= $sheep ?>">Credit</a></li>
+  <li><a href="/sheep/stats?sheep=<?= $sheep ?>">Stats</a></li>
+  <?php if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep . DS . 'sheep.mpg')): ?>
+  <li><a href="/gen/<?= $flock ?>/<?= $sheep ?>/sheep.mpg">Download</a></li>
+  <?php endif; ?>
 </ul>
 <div class="clr"></div>
 </div>

@@ -8,7 +8,6 @@ class Sheep_Controller extends TinyMVC_Controller
         parent::__construct();
         $this->load->model('config_model', 'config');
         $this->load->model('sheep_model', 'sheep');
-        $this->view->assign('menu', $this->view->fetch('menu_view'));
 
         $this->flock_id = $this->config->generation;
         $this->sheep_id = isset($_GET['sheep']) ? (int)$_GET['sheep'] : null;
@@ -17,6 +16,10 @@ class Sheep_Controller extends TinyMVC_Controller
             header('Location: /flock');
             exit;
         }
+
+        $this->view->assign('flock', $this->flock_id);
+        $this->view->assign('sheep', $this->sheep_id);
+        $this->view->assign('menu', $this->view->fetch('menu_view'));
     }
 
     function __call($name, $args)
