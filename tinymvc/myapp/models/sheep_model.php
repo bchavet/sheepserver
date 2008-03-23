@@ -22,4 +22,18 @@ class Sheep_Model extends TinyMVC_Model
         $genome = file_get_contents($sheepdir . DS . 'spex');
         return $genome;
     }
+
+    function getFirst($flock, $sheep)
+    {
+        $result = $this->db->query_init('select first from sheep where flock_id=? and sheep_id=?',
+                                        array($flock, $sheep));
+        return $result['first'];
+    }
+
+    function getLast($flock, $sheep)
+    {
+        $result = $this->db->query_init('select last from sheep where flock_id=? and sheep_id=?',
+                                        array($flock, $sheep));
+        return $result['last'];
+    }
 }

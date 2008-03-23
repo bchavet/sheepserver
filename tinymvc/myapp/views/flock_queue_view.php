@@ -13,7 +13,6 @@
 <p>Queue (<?= count($queue) ?>)</p>
 <?php
 foreach ($queue as $sheep) {
-    echo '<div>';
     echo '<a href="/sheep/frames?sheep=' . $sheep['sheep_id'] . '">';
     if ($sheep['first'] == $sheep['last']) {
 
@@ -38,7 +37,6 @@ foreach ($queue as $sheep) {
         }
     }
     echo '</a>';
-    echo '</div>';
 
 }
 ?>
@@ -46,7 +44,6 @@ foreach ($queue as $sheep) {
 <p>Post-queue (<?= count($postqueue); ?>)</p>
 <?php
 foreach ($postqueue as $sheep) {
-    echo '<div>';
     echo '<a href="/sheep/frames?sheep=' . $sheep['sheep_id'] . '">';
     if ($sheep['first'] == $sheep['last']) {
 
@@ -71,7 +68,6 @@ foreach ($postqueue as $sheep) {
         }
     }
     echo '</a>';
-    echo '</div>';
 }
 ?>
 

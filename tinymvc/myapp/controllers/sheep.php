@@ -40,10 +40,15 @@ class Sheep_Controller extends TinyMVC_Controller
         $frames = $this->sheep->getFrames($this->flock_id, $this->sheep_id);
         $completed = $this->sheep->countCompletedFrames($this->flock_id, $this->sheep_id);
         $remaining = $this->config->nframes - $completed;
+        $first = $this->sheep->getFirst($this->flock_id, $this->sheep_id);
+        $last = $this->sheep->getLast($this->flock_id, $this->sheep_id);
 
+        $this->view->assign('flock', $this->flock_id);
         $this->view->assign('frames', $frames);
         $this->view->assign('completed', $completed);
         $this->view->assign('remaining', $remaining);
+        $this->view->assign('first', $first);
+        $this->view->assign('last', $last);
         $this->view->display('sheep_frames_view');
     }
 

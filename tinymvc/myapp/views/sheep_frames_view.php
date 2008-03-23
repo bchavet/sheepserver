@@ -10,6 +10,22 @@
 
 <?= $menu ?>
 
+<?php
+if ($first != $last) {
+    if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $first . DS . '0.thumbnail.jpg')) {
+        echo '<img src="/gen/' . $flock . '/' . $first . '/0.thumbnail.jpg" alt="" class="thumbnail edgefirst" />';
+    } else {
+        echo '<img src="/images/anon-icon.jpg" alt="ready" class="thumbnail edgefirst" />';
+    }
+
+    if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $last . DS . '0.thumbnail.jpg')) {
+        echo '<img src="/gen/' . $flock . '/' . $last . '/0.thumbnail.jpg" alt="" class="thumbnail edgelast" />';
+    } else {
+        echo '<img src="/images/anon-icon.jpg" alt="ready" class="thumbnail edgelast" />';
+    }
+}
+?>
+
 <p>
 <?= $completed ?> frames complete (<?php echo (int)($completed / ($completed + $remaining) * 100) . '%'; ?>).
 <?php if ($remaining > 0) { echo $remaining . ' frames remaining.'; } ?>
