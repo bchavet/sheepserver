@@ -100,12 +100,19 @@ class admin_Controller extends TinyMVC_Controller
             return;
         }
 
-        $sheep = isset($_GET['sheep']) ? $_GET['sheep'] : null;
-        $frame = isset($_GET['frame']) ? $_GET['frame'] : null;
+        $sheep_id = isset($_GET['sheep']) ? $_GET['sheep'] : null;
+        $frame_id = isset($_GET['frame']) ? $_GET['frame'] : null;
 
-        if ($sheep !== null && $frame !== null) {
-            $this->flock->deleteFrame($sheep, $frame);
-            header('Location: /frame?sheep=' . $sheep . '&frame=' . $frame);
+        if ($sheep_id !== null && $frame_id !== null) {
+            $this->flock->deleteFrame($sheep_id, $frame_id);
+            header('Location: /frame?sheep=' . $sheep_id . '&frame=' . $frame_id);
+            exit;
+        }
+
+        if ($sheep_id !== null) {
+            $this->load->model('sheep_model', 'sheep');
+            $this->sheep->deleteSheep($this->config->generation, $sheep_id);
+            header('Location: /flock');
             exit;
         }
 
