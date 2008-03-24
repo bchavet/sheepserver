@@ -57,7 +57,7 @@ class Server_Model extends TinyMVC_Model
             $result = $this->db->query('update frame set state=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
                                        array('done', time(), $flock, $sheep, $frame));
 
-            // See if there are any more frames to be rendered
+            // See if there are any more frames to be render
             $result = $this->db->query_init('select count(frame_id) from frame where flock_id=? and sheep_id=? and state != ?',
                                             array($flock, $sheep, 'done'));
             if ($result['count(frame_id)'] == 0) {
@@ -96,14 +96,22 @@ class Server_Model extends TinyMVC_Model
 
     function getList($flock)
     {
+        // Start list XML
+        $list = "<list gen=\"$flock\">\n";
+        
+        // Get a list of sheep that need to be deleted
+        $sheeplist = $this->db->query_all('select * from sheep where flock_id=? and state=?', array($flock, 'expunge'));
+        foreach ($sheeplist as $sheep) {
+            $list .= '<sheep id="' . $sheep['sheep_id'] . '" state="expunge" first="' . $sheep['first'] . '" last="' . $sheep['last'] . '"/>' . "\n";
+        }
+        
         // Get a list of sheep that are ready to be downloaded
         $sheeplist = $this->db->query_all('select * from sheep where flock_id=? and state=?', array($flock, 'done'));
-
-        // Generate list XML(?)
-        $list = "<list gen=\"$flock\">\n";
         foreach ($sheeplist as $sheep) {
             $list .= '<sheep id="' . $sheep['sheep_id'] . '" type="0" state="done" time="' . $sheep['time_done'] . '" size="' . $sheep['size'] . '" rating="' . $sheep['rating'] . '" first="' . $sheep['first'] . '" last="' . $sheep['last'] . '" url="http://sheep.badllama.com/gen/' . $sheep['flock_id'] . '/' . $sheep['sheep_id'] . '/sheep.mpg"/>' . "\n";
         }
+
+        // Finish list XML
         $list .= "</list>\n";
         return $list;
     }

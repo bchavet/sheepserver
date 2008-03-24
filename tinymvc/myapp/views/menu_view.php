@@ -5,7 +5,12 @@
   <li><a href="/flock/queue">Queue</a></li>
   <li><a href="/flock/credit">Credit</a></li>
   <li><a href="/flock/stats">Statistics</a></li>
+  <?php if (empty($_SESSION['logged_in'])): ?>
+  <li><a href="/admin">Login</a></li>
+  <?php else: ?>
   <li><a href="/admin">Admin</a></li>
+  <li><a href="/admin/logout">Logout</a></li>
+  <?php endif; ?>
 </ul>
 <div class="clr"></div>
 </div>

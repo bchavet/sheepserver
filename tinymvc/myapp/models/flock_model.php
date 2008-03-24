@@ -238,4 +238,11 @@ class Flock_Model extends TinyMVC_Model
                                     array($flock, 'assigned'));
     }
 
+    function prune($flock, $ndays)
+    {
+        $date = time() - ($ndays * 86400);
+        $sheeplist = $this->db->query_all('select * from sheep where flock_id=? and  time_done < ?', array($flock, $date));
+        echo '<pre>'; echo var_dump($sheeplist); echo '</pre>';
+    }
+
 }

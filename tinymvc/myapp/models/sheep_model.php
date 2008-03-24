@@ -36,4 +36,16 @@ class Sheep_Model extends TinyMVC_Model
                                         array($flock, $sheep));
         return $result['last'];
     }
+
+    function delete($flock, $sheep)
+    {
+        $this->db->query('delete from sheep where flock_id=? and sheep_id=?', array($flock, $sheep));
+        $this->db->query('delete from frame where flock_id=? and sheep_id=?', array($flock, $sheep));
+
+        $edges = $this->db->query_all('select * from sheep where flock_id=? and (first=? or last=?)',
+                                      array($flock, $sheep, $sheep));
+        foreach ($edges as $edge) {
+            $this->delete($flock, $edge['sheep_id']);
+        }
+    }
 }

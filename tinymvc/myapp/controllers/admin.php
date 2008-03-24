@@ -13,6 +13,7 @@ class admin_Controller extends TinyMVC_Controller
         $this->load->model('flock_model', 'flock');
         $this->load->model('spex_model', 'spex');
 
+        $this->view->assign('admin', true);
         $this->view->assign('menu', $this->view->fetch('menu_view'));
     }
 
@@ -21,6 +22,11 @@ class admin_Controller extends TinyMVC_Controller
      */
     function index()
     {
+        if (empty($_SESSION['logged_in'])) {
+            $this->view->display('admin_login_view');
+            return;
+        }
+
         $this->view->display('admin_view');
     }
 
@@ -29,6 +35,11 @@ class admin_Controller extends TinyMVC_Controller
      */
     function reset()
     {
+        if (empty($_SESSION['logged_in'])) {
+            $this->view->display('admin_login_view');
+            return;
+        }
+
         // Initialize new flock
         $this->flock->newFlock();
         
@@ -44,6 +55,11 @@ class admin_Controller extends TinyMVC_Controller
 
     function newsheep()
     {
+        if (empty($_SESSION['logged_in'])) {
+            $this->view->display('admin_login_view');
+            return;
+        }
+
         // Generate spex information for new sheep
         $spex = $this->spex->random_rotation($this->config->nframes);
 
@@ -56,6 +72,11 @@ class admin_Controller extends TinyMVC_Controller
 
     function newedge()
     {
+        if (empty($_SESSION['logged_in'])) {
+            $this->view->display('admin_login_view');
+            return;
+        }
+
         // Try to find a random edge
         $sheep = $this->flock->findRandomEdge();
         
@@ -74,6 +95,11 @@ class admin_Controller extends TinyMVC_Controller
 
     function delete()
     {
+        if (empty($_SESSION['logged_in'])) {
+            $this->view->display('admin_login_view');
+            return;
+        }
+
         $sheep = isset($_GET['sheep']) ? $_GET['sheep'] : null;
         $frame = isset($_GET['frame']) ? $_GET['frame'] : null;
 
@@ -87,6 +113,11 @@ class admin_Controller extends TinyMVC_Controller
 
     function upload()
     {
+        if (empty($_SESSION['logged_in'])) {
+            $this->view->display('admin_login_view');
+            return;
+        }
+
         if (is_uploaded_file($_FILES['genome']['tmp_name'])) {
             // Load the spex from the uploaded file
             $spex = file_get_contents($_FILES['genome']['tmp_name']);
@@ -100,5 +131,36 @@ class admin_Controller extends TinyMVC_Controller
 
         // TODO: Display something meaningful
         $this->view->display('admin_view');
+    }
+
+    function prune()
+    {
+        if (empty($_SESSION['logged_in'])) {
+            $this->view->display('admin_login_view');
+            return;
+        }
+
+        $this->flock->prune($this->config->generation, 10);
+    }
+
+    function login()
+    {
+        $username = $_POST['username'];
+        $password = md5($_POST['password']);
+
+        if ($username == $this->config->admin_username &&
+            $password == $this->config->admin_password) {
+            $_SESSION['logged_in'] = true;
+        }
+
+        header('Location: /admin');
+        exit;
+    }
+
+    function logout()
+    {
+        unset($_SESSION['logged_in']);
+        header('Location: /flock');
+        exit;
     }
 }

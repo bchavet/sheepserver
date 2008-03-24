@@ -14,6 +14,7 @@
 <ul id="submenu">
 <li><a href="/admin/newsheep">New Sheep</a></li>
 <li><a href="/admin/newedge">New Edge</a></li>
+<li><a href="/admin/prune">Prune</a></li>
 </ul>
 </div>
 

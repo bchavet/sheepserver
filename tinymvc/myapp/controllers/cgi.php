@@ -20,15 +20,17 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function listsheep()
     {
+        // Dynamically generate list
         $this->load->model('server_model', 'server');
         $list = $this->server->getList($this->config->generation);
         echo gzencode($list, 9);
-        return;
 
+        /*
         // Output contents of list file
         $file = ES_BASEDIR . DS . 'gen' . DS . $this->config->generation . DS . 'txt' . DS . 'list.txt.gz';
         $contents = file_get_contents($file);
         echo $contents;
+        */
     }
 
     /**
