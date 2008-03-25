@@ -65,7 +65,7 @@ class Server_Model extends TinyMVC_Model
             if ($result === false) {
                 $this->db->query('insert into credit (flock_id, nick, frames) values (?, ?, ?)', array($flock, $nick, 1));
             } else {
-                $this->db->query('update credit set frames=? where nick=? and flock_id', array(($result['frames'] + 1), $nick, $flock));
+                $this->db->query('update credit set frames=? where nick=? and flock_id=?', array(($result['frames'] + 1), $nick, $flock));
             }
 
             // See if there are any more frames to be render
