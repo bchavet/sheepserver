@@ -12,8 +12,8 @@
 
 <table>
 <?php
-foreach ($credit as $client => $frames) {
-     echo '<tr><td>' . $client . '</td><td>' . $frames . '</td></tr>';
+foreach ($credit as $client) {
+     echo '<tr><td>' . $client['nick'] . '</td><td>' . $client['frames'] . '</td></tr>';
 }
 ?>
 </table>

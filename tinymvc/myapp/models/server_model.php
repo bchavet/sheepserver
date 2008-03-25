@@ -57,6 +57,17 @@ class Server_Model extends TinyMVC_Model
             $result = $this->db->query('update frame set state=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
                                        array('done', time(), $flock, $sheep, $frame));
 
+            // Update credit count
+            $result = $this->db->query_init('select nick from frame where flock_id=? and sheep_id=? and frame_id=?',
+                                            array($flock, $sheep, $frame));
+            $nick = $result['nick'];
+            $result = $this->db->query_init('select * from credit where nick=? and flock_id=?', array($nick, $flock));
+            if ($result === false) {
+                $this->db->query('insert into credit (flock_id, nick, frames) values (?, ?, ?)', array($flock, $nick, 1));
+            } else {
+                $this->db->query('update credit set frames=? where nick=? and flock_id', array(($result['frames'] + 1), $nick, $flock));
+            }
+
             // See if there are any more frames to be render
             $result = $this->db->query_init('select count(frame_id) from frame where flock_id=? and sheep_id=? and state != ?',
                                             array($flock, $sheep, 'done'));
