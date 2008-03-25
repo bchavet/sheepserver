@@ -10,6 +10,7 @@
 
 <?= $menu ?>
 
+<div>
 <?php
 if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $sheepstatus['flock_id'] . DS . $sheepstatus['sheep_id'] . DS . '0.jpg')) {
     echo '<img src="/gen/' . $sheepstatus['flock_id'] . '/' . $sheepstatus['sheep_id'] . '/0.jpg" alt="" />';
@@ -19,6 +20,7 @@ if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $sheepstatus['flock_id'] . DS . $
     echo '<img src="/images/anon-icon.jpg" alt="ready" />';
 }
 ?>
+</div>
 
 <table>
 <tr>
