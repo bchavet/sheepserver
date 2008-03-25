@@ -71,7 +71,7 @@ foreach ($postqueue as $sheep) {
 }
 ?>
 
-<p>Assigned Frames</p>
+<p>Assigned Frames (<?= count($assigned) ?>)</p>
 <table>
 <tr><th>Sheep</th><th>Frame</th><th>IP Address</th><th>UID</th><th>Nick</th><th>Time</th></tr>
 <?php
