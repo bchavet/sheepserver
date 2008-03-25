@@ -81,11 +81,13 @@ class Sheep_Controller extends TinyMVC_Controller
         $this->view->display('sheep_genome_view');
     }
  
-    /*
     function credit()
     {
+        $credit = $this->sheep->getCredit($this->flock_id, $this->sheep_id);
+
+        $this->view->assign('credit', $credit);
+        $this->view->display('sheep_credit_view');
     }
-    */
 
     /*
     function stats()

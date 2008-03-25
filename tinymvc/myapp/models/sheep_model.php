@@ -66,4 +66,18 @@ class Sheep_Model extends TinyMVC_Model
             $this->deleteSheep($flock, $edge['sheep_id']);
         }
     }
+
+    function getCredit($flock, $sheep)
+    {
+        $nicks = $this->db->query_all('select distinct nick from frame where flock_id=? and sheep_id=? and nick is not null',
+                                      array($flock, $sheep));
+        $count = array();
+        foreach ($nicks as $nick) {
+            $result = $this->db->query_init('select count(*) from frame where flock_id=? and sheep_id=? and nick=?',
+                                            array($flock, $sheep, $nick['nick']));
+            $count[$nick['nick']] = $result['count(*)'];
+        }
+        arsort($count, SORT_NUMERIC);
+        return $count;
+    }
 }
