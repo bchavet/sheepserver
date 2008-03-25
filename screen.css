@@ -14,6 +14,14 @@ body {
     text-align: center;
 }
 
+table {
+    display: inline;
+}
+
+td {
+    padding: 5px;
+}
+
 table.statistics {
     border: 1px solid black;
 }
