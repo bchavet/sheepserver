@@ -80,4 +80,9 @@ class Sheep_Model extends TinyMVC_Model
         arsort($count, SORT_NUMERIC);
         return $count;
     }
+
+    function getSheep($flock, $sheep)
+    {
+        return $this->db->query_init('select * from sheep where flock_id=? and sheep_id=?', array($flock, $sheep));
+    }
 }

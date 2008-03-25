@@ -23,7 +23,6 @@
   <li><a href="/sheep/lineage?sheep=<?= $sheep ?>">Lineage</a></li>
   <li><a href="/sheep/genome?sheep=<?= $sheep ?>">Genome</a></li>
   <li><a href="/sheep/credit?sheep=<?= $sheep ?>">Credit</a></li>
-  <li><a href="/sheep/stats?sheep=<?= $sheep ?>">Stats</a></li>
   <?php if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep . DS . 'sheep.mpg')): ?>
   <li><a href="/gen/<?= $flock ?>/<?= $sheep ?>/sheep.mpg">Download</a></li>
   <?php endif; ?>

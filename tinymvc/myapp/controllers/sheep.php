@@ -29,14 +29,15 @@ class Sheep_Controller extends TinyMVC_Controller
 
     function index()
     {
-        $this->frames();
+        $this->status();
     }
 
-    /*
     function status()
     {
+        $status = $this->sheep->getSheep($this->flock_id, $this->sheep_id);
+        $this->view->assign('sheepstatus', $status);
+        $this->view->display('sheep_status_view');
     }
-    */
 
     function frames()
     {
@@ -88,11 +89,5 @@ class Sheep_Controller extends TinyMVC_Controller
         $this->view->assign('credit', $credit);
         $this->view->display('sheep_credit_view');
     }
-
-    /*
-    function stats()
-    {
-    }
-    */
 
 }
