@@ -14,8 +14,8 @@
 <table>
 <?php
 foreach ($queue as $sheep) {
-    echo '<a href="/sheep/frames?sheep=' . $sheep['sheep_id'] . '">';
     echo '<tr><td>';
+    echo '<a href="/sheep/frames?sheep=' . $sheep['sheep_id'] . '">';
     if ($sheep['first'] == $sheep['last']) {
 
         if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $sheep['flock_id'] . DS . $sheep['sheep_id'] . DS . '0.thumbnail.jpg')) {

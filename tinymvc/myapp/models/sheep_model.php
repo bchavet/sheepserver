@@ -85,4 +85,32 @@ class Sheep_Model extends TinyMVC_Model
     {
         return $this->db->query_init('select * from sheep where flock_id=? and sheep_id=?', array($flock, $sheep));
     }
+
+    function getSheepBefore($flock, $sheep)
+    {
+        $ends = $this->db->query_init('select first, last from sheep where flock_id=? and sheep_id=? and state!=?',
+                                      array($flock, $sheep, 'expunge'));
+
+        if ($ends['first'] == $ends['last']) {
+            return $this->db->query_all('select * from sheep where flock_id=? and last=? and first!=last and state!=?',
+                                        array($flock, $ends['first'], 'expunge'));
+        } else {
+            return $this->db->query_all('select * from sheep where flock_id=? and last=? and first=last and state!=?',
+                                        array($flock, $ends['first'], 'expunge'));
+        }
+    }
+
+    function getSheepAfter($flock, $sheep)
+    {
+        $ends = $this->db->query_init('select first, last from sheep where flock_id=? and sheep_id=? and state!=?',
+                                      array($flock, $sheep, 'expunge'));
+
+        if ($ends['first'] == $ends['last']) {
+            return $this->db->query_all('select * from sheep where flock_id=? and first=? and first!=last and state!=?',
+                                        array($flock, $ends['last'], 'expunge'));
+        } else {
+            return $this->db->query_all('select * from sheep where flock_id=? and first=? and first=last and state!=?',
+                                        array($flock, $ends['last'], 'expunge'));
+        }
+    }
 }
