@@ -10,11 +10,12 @@
 
 <?= $menu ?>
 
-<p>Queue (<?= count($queue) ?>)</p>
+<h2>Queue (<?= count($queue) ?>)</h2>
+<table>
 <?php
 foreach ($queue as $sheep) {
     echo '<a href="/sheep/frames?sheep=' . $sheep['sheep_id'] . '">';
-    echo '<div>';
+    echo '<tr><td>';
     if ($sheep['first'] == $sheep['last']) {
 
         if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $sheep['flock_id'] . DS . $sheep['sheep_id'] . DS . '0.thumbnail.jpg')) {
@@ -37,14 +38,16 @@ foreach ($queue as $sheep) {
             echo '<img src="/images/anon-icon.jpg" class="thumbnail edgelast" />';
         }
     }
-    echo '</a>';
+    echo '</a></td><td>';
     echo (int)($sheep['complete'] / $nframes * 100) . '%';
-    echo '</div>';
+    echo '</td></tr>';
 
 }
 ?>
+</table>
 
-<p>Post-queue (<?= count($postqueue); ?>)</p>
+<?php if (count($postqueue)): ?>
+<h2>Post-queue (<?= count($postqueue); ?>)</h2>
 <?php
 foreach ($postqueue as $sheep) {
     echo '<a href="/sheep/frames?sheep=' . $sheep['sheep_id'] . '">';
@@ -73,8 +76,10 @@ foreach ($postqueue as $sheep) {
     echo '</a>';
 }
 ?>
+<?php endif; ?>
 
-<p>Assigned Frames (<?= count($assigned) ?>)</p>
+<?php if (count($assigned)): ?>
+<h2>Assigned Frames (<?= count($assigned) ?>)</h2>
 <table>
 <tr><th>Sheep</th><th>Frame</th><th>IP Address</th><th>UID</th><th>Nick</th><th>Time</th></tr>
 <?php
@@ -119,6 +124,7 @@ foreach ($assigned as $frame) {
 }
 ?>
 </table>
+<?php endif; ?>
 
 </body>
 
