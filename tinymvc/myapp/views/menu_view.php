@@ -30,3 +30,13 @@
 <div class="clr"></div>
 </div>
 <?php endif; ?>
+
+<?php if (isset($frame)): ?>
+<div class="navigation">
+<ul>
+  <li class="first"><a href="/frame/status?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Status</a></li>
+  <li><a href="/frame/genome?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Genome</a></li>
+</ul>
+<div class="clr"></div>
+</div>
+<?php endif; ?>

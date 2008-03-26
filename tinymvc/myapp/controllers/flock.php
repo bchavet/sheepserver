@@ -37,9 +37,16 @@ class Flock_Controller extends TinyMVC_Controller
 
     function queue()
     {
+        $this->load->model('sheep_model', 'sheep');
+        $queue = $this->flock->getQueue($this->flock_id);
+        foreach ($queue as $key => $val) {
+            $queue[$key]['complete'] = $this->sheep->countCompletedFrames($this->flock_id, $val['sheep_id']);
+        }
+        
+        $this->view->assign('queue', $queue);
         $this->view->assign('assigned', $this->flock->getAssigned($this->flock_id));
-        $this->view->assign('queue', $this->flock->getQueue($this->flock_id));
         $this->view->assign('postqueue', $this->flock->getPostQueue($this->flock_id));
+        $this->view->assign('nframes', $this->config->nframes);
         $this->view->display('flock_queue_view');
     }
 
