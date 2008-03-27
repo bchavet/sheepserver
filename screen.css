@@ -111,7 +111,7 @@ img.edgelast {
     margin: 3px auto;
 }
 
-#mainmenu li, #submenu li {
+.navigation ul li {
     padding: 5px;
     padding-right: 15px;
     list-style-type: none;
@@ -119,11 +119,11 @@ img.edgelast {
     background-color: #e0e0e0;
 }
 
-#mainmenu li.first, #submenu li.first {
+.navigation ul li.first {
     padding-left: 15px;
 }
 
-#menuitem li.current, #submentu li.current {
+.navigation ul li.current {
     background-color: #999999;
 }
 

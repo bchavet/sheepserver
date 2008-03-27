@@ -1,5 +1,5 @@
 <div class="navigation">
-<ul id="mainmenu">
+<ul>
   <li class="first"><a href="/flock/loops">Loops</a></li>
   <li><a href="/flock/edges">Edges</a></li>
   <li><a href="/flock/queue">Queue</a></li>
@@ -16,11 +16,10 @@
 
 <?php if (isset($sheep)): ?>
 <div class="navigation">
-<ul id="submenu">
+<ul>
   <li class="first"><a href="/sheep/status?sheep=<?= $sheep ?>">Status</a></li>
   <li><a href="/sheep/frames?sheep=<?= $sheep ?>">Frames</a></li>
   <li><a href="/sheep/motion?sheep=<?= $sheep ?>">Motion</a></li>
-  <li><a href="/sheep/lineage?sheep=<?= $sheep ?>">Lineage</a></li>
   <li><a href="/sheep/genome?sheep=<?= $sheep ?>">Genome</a></li>
   <li><a href="/sheep/credit?sheep=<?= $sheep ?>">Credit</a></li>
   <?php if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep . DS . 'sheep.mpg')): ?>
