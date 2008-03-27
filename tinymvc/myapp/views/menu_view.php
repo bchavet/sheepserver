@@ -1,6 +1,7 @@
 <div class="navigation">
 <ul>
-  <li class="first"><a href="/flock/loops">Loops</a></li>
+  <li class="first">Flock <?= $flock ?></li>
+  <li><a href="/flock/loops">Loops</a></li>
   <li><a href="/flock/edges">Edges</a></li>
   <li><a href="/flock/queue">Queue</a></li>
   <li><a href="/flock/credit">Credit</a></li>
@@ -17,7 +18,8 @@
 <?php if (isset($sheep)): ?>
 <div class="navigation">
 <ul>
-  <li class="first"><a href="/sheep/status?sheep=<?= $sheep ?>">Status</a></li>
+  <li class="first">Sheep <?= $sheep ?></li>
+  <li><a href="/sheep/status?sheep=<?= $sheep ?>">Status</a></li>
   <li><a href="/sheep/frames?sheep=<?= $sheep ?>">Frames</a></li>
   <li><a href="/sheep/motion?sheep=<?= $sheep ?>">Motion</a></li>
   <li><a href="/sheep/genome?sheep=<?= $sheep ?>">Genome</a></li>
@@ -33,7 +35,8 @@
 <?php if (isset($frame)): ?>
 <div class="navigation">
 <ul>
-  <li class="first"><a href="/frame/status?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Status</a></li>
+  <li class="first">Frame <?= $frame ?></li>
+  <li><a href="/frame/status?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Status</a></li>
   <li><a href="/frame/genome?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Genome</a></li>
 </ul>
 <div class="clr"></div>

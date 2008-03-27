@@ -125,6 +125,9 @@ img.edgelast {
 
 .navigation ul li.first {
     padding-left: 15px;
+    padding-right: 10px;
+    margin-right: 5px;
+    border-right: 1px solid #999999;
 }
 
 .navigation ul li.current {
