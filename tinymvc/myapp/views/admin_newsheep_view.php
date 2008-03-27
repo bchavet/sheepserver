@@ -20,14 +20,6 @@
 
 <h2>New Sheep</h2>
 
-<?php if (isset($spex)): ?>
-
-<pre>
-<?= htmlspecialchars($spex) ?>
-</pre>
-
-<?php else: ?>
-
 <div class="admin">
 <a href="/admin/newsheep?type=random">Random</a>
 </div>
@@ -40,6 +32,10 @@
 </form>
 </div>
 
+<?php if (isset($spex)): ?>
+<pre>
+<?= htmlspecialchars($spex) ?>
+</pre>
 <?php endif; ?>
 
 </body>
