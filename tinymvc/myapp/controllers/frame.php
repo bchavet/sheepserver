@@ -40,4 +40,10 @@ class Frame_Controller extends TinyMVC_Controller
         $this->view->display('frame_status_view');
     }
 
+    function genome()
+    {
+        $genome = $this->frame->getGenome($this->flock_id, $this->sheep_id, $this->frame_id);
+        $this->view->assign('genome', $genome);
+        $this->view->display('frame_genome_view');
+    }
 }
