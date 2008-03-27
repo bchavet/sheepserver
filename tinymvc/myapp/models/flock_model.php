@@ -227,7 +227,7 @@ class Flock_Model extends TinyMVC_Model
 
     function getAssigned($flock)
     {
-        return $this->db->query_all('select * from sheep, frame where frame.flock_id=? and frame.state=? and sheep.sheep_id=frame.sheep_id order by frame.sheep_id, frame.frame_id asc',
+        return $this->db->query_all('select * from sheep, frame where frame.flock_id=? and frame.state=? and sheep.sheep_id=frame.sheep_id order by start_time asc',
                                     array($flock, 'assigned'));
     }
 
