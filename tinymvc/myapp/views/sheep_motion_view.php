@@ -49,7 +49,7 @@ foreach ($before as $sheep) {
 ?>
 <?php if ($current['first'] == $current['last'] && !empty($_SESSION['logged_in'])): ?>
 <div>
-<a href="/admin/newedge?last=<?= $current['sheep_id'] ?>">New Edge Here</a>
+<a href="/admin/newedge?type=random&amp;last=<?= $current['sheep_id'] ?>">New Edge Here</a>
 </div>
 <?php endif; ?>
 </td>
@@ -118,7 +118,7 @@ foreach ($after as $sheep) {
 ?>
 <?php if ($current['first'] == $current['last'] && !empty($_SESSION['logged_in'])): ?>
 <div>
-<a href="/admin/newedge?first=<?= $current['sheep_id'] ?>">New Edge Here</a>
+<a href="/admin/newedge?type=random&amp;first=<?= $current['sheep_id'] ?>">New Edge Here</a>
 </div>
 <?php endif; ?>
 </td>

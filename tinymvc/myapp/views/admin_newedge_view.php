@@ -18,6 +18,22 @@
 </ul>
 </div>
 
+<h2>New Edge</h2>
+
+<?php if (isset($spex)): ?>
+
+<pre>
+<?= htmlspecialchars($spex) ?>
+</pre>
+
+<?php else: ?>
+
+<div class="admin">
+<a href="/admin/newedge?type=random">Random</a>
+</div>
+
+<?php endif; ?>
+
 </body>
 
 </html>

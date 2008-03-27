@@ -45,10 +45,10 @@ class admin_Controller extends TinyMVC_Controller
         
         // Generate spex information for first sheep
         $spex = $this->spex->random_rotation($this->config->nframes);
-
+        
         // Create new sheep with the spex information
         $this->flock->newSheep($spex, $this->config->nframes);
-
+            
         // TODO: Display something meaningful
         $this->view->display('admin_view');
     }
@@ -60,14 +60,34 @@ class admin_Controller extends TinyMVC_Controller
             return;
         }
 
-        // Generate spex information for new sheep
-        $spex = $this->spex->random_rotation($this->config->nframes);
+        $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : null;
+
+        switch ($type) {
+
+        case 'random':
+            // Generate spex information for new sheep
+            $spex = $this->spex->random_rotation($this->config->nframes);
+            break;
+
+        case 'upload':
+            if (is_uploaded_file($_FILES['genome']['tmp_name'])) {
+                // Load the spex from the uploaded file
+                $spex = file_get_contents($_FILES['genome']['tmp_name']);
+
+                // Make sure the size matches what is expected
+                $spex = preg_replace('/size="(\d+) (\d+)"/', 'size="' . $this->config->width . ' ' . $this->config->height . '"', $spex);
+            }
+            break;
+
+        }
 
         // Create new sheep with the spex information
-        $this->flock->newSheep($spex, $this->config->nframes);
-
-        // TODO: Display something meaningful
-        $this->view->display('admin_view');
+        if (isset($spex)) {
+            $this->flock->newSheep($spex, $this->config->nframes);
+            $this->view->assign('spex', $spex);
+        }
+        
+        $this->view->display('admin_newsheep_view');
     }
 
     function newedge()
@@ -77,21 +97,32 @@ class admin_Controller extends TinyMVC_Controller
             return;
         }
 
-        // Try to find a random edge
-        $first = isset($_GET['first']) ? (int)$_GET['first'] : null;
-        $last = isset($_GET['last']) ? (int)$_GET['last'] : null;
-        $sheep = $this->flock->findRandomEdge($first, $last);
-        
-        if (is_array($sheep)) {
-            // Generate spex information for the edge
-            $spex = $this->spex->edge($this->config->generation, $sheep[0], $sheep[1], $this->config->nframes);
+        $type = isset($_REQUEST['type']) ? $_REQUEST['type'] : null;
 
-            // Create new sheep with the spex information
+        switch ($type) {
+
+        case 'random':
+            // Try to find a random edge
+            $first = isset($_GET['first']) ? (int)$_GET['first'] : null;
+            $last = isset($_GET['last']) ? (int)$_GET['last'] : null;
+            $sheep = $this->flock->findRandomEdge($first, $last);
+        
+            if (is_array($sheep)) {
+                // Generate spex information for the edge
+                $spex = $this->spex->edge($this->config->generation, $sheep[0], $sheep[1], $this->config->nframes);
+            }
+            break;
+
+        }
+
+        // Create new sheep with the spex information
+        if (isset($spex)) {
             $this->flock->newSheep($spex, $this->config->nframes, $sheep[0], $sheep[1]);
+            $this->view->assign('spex', $spex);
         }
 
         // TODO: Display something meaningful
-        $this->view->display('admin_view');
+        $this->view->display('admin_newedge_view');
     }
 
     function delete()
@@ -119,28 +150,6 @@ class admin_Controller extends TinyMVC_Controller
 
     }
 
-    function upload()
-    {
-        if (empty($_SESSION['logged_in'])) {
-            $this->view->display('admin_login_view');
-            return;
-        }
-
-        if (is_uploaded_file($_FILES['genome']['tmp_name'])) {
-            // Load the spex from the uploaded file
-            $spex = file_get_contents($_FILES['genome']['tmp_name']);
-
-            // Make sure the size matches what is expected
-            $spex = preg_replace('/size="(\d+) (\d+)"/', 'size="' . $this->config->width . ' ' . $this->config->height . '"', $spex);
-
-            // Create a new sheep with the spex information
-            $this->flock->newSheep($spex, $this->config->nframes);
-        }
-
-        // TODO: Display something meaningful
-        $this->view->display('admin_view');
-    }
-
     function prune()
     {
         if (empty($_SESSION['logged_in'])) {
@@ -148,7 +157,17 @@ class admin_Controller extends TinyMVC_Controller
             return;
         }
 
-        $this->flock->prune($this->config->generation, 10);
+        $this->load->model('sheep_model', 'sheep');
+        $prunelist = $this->flock->getPruneList($this->config->generation, 10);
+        
+        foreach ($prunelist as $prune) {
+            if ($this->sheep->sheepExists($this->config->generation, $prune['sheep_id'])) {
+                $this->sheep->deleteSheep($this->config->generation, $prune['sheep_id']);
+            }
+        }
+
+        // TODO: Display something meaningful
+        $this->view->display('admin_view');
     }
 
     function login()

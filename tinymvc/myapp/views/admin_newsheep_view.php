@@ -18,6 +18,30 @@
 </ul>
 </div>
 
+<h2>New Sheep</h2>
+
+<?php if (isset($spex)): ?>
+
+<pre>
+<?= htmlspecialchars($spex) ?>
+</pre>
+
+<?php else: ?>
+
+<div class="admin">
+<a href="/admin/newsheep?type=random">Random</a>
+</div>
+
+<div class="admin">
+<form name="upload" action="/admin/newsheep" method="post" enctype="multipart/form-data">
+<input type="hidden" name="type" value="upload" />
+<input type="file" name="genome" />
+<input type="submit" value="Upload" />
+</form>
+</div>
+
+<?php endif; ?>
+
 </body>
 
 </html>

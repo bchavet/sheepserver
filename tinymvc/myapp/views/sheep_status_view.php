@@ -43,7 +43,7 @@ if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $sheepstatus['flock_id'] . DS . $
 
 <?php if (!empty($_SESSION['logged_in'])): ?>
 <div>
-<a href="/admin/delete?sheep=<?= $sheepstatus ?>">Delete</a>
+<a href="/admin/delete?sheep=<?= $sheepstatus['sheep_id'] ?>">Delete</a>
 </div>
 <?php endif; ?>
 

@@ -113,4 +113,11 @@ class Sheep_Model extends TinyMVC_Model
                                         array($flock, $ends['last'], 'expunge'));
         }
     }
+
+    function sheepExists($flock, $sheep)
+    {
+        $exists = $this->db->query_init('select * from sheep where flock_id=? and sheep_id=? and state!=?',
+                                        array($flock, $sheep, 'expunge'));
+        return is_array($exists);
+    }
 }
