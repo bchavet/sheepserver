@@ -80,6 +80,10 @@ class admin_Controller extends TinyMVC_Controller
             }
             break;
 
+        case 'symmetry':
+            $spex = $this->spex->symmetry_singularity($this->config->nframes);
+            break;
+
         }
 
         // Create new sheep with the spex information

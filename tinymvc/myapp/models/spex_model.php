@@ -6,7 +6,7 @@ class Spex_Model extends TinyMVC_Model
     /**
      * Generate a sheep spex file with a random rotation
      */
-    function random_rotation($nframes)
+    function random_rotation($nframes, $parent0 = null, $parent1 = null)
     {
         // Choose the animation param file
         $param_file = 'anim_params.template';
@@ -23,6 +23,30 @@ class Spex_Model extends TinyMVC_Model
             return false;
         }
         return $spex;
+    }
+
+    function symmetry_singularity($nframes)
+    {
+        $param_file = 'anim_params.template';
+        $anim_params = ES_BASEDIR . DS . 'templates' . DS . 'vib.' . $param_file;
+        
+        $sym = 15 + mt_rand(0, 45);
+        if (50 < mt_rand(0, 100)) {
+            $sym = 0 - $sym;
+        }
+
+        $extras = "singularity=\"spiral $sym\"";
+        $cmd = "env enclosed=0 symmetry=$sym template=$anim_params nframes=$nframes 'extras=$extras' /usr/bin/flam3-genome";
+
+        $spex = shell_exec($cmd);
+        if (empty($spex)) {
+            return false;
+        }
+        return $spex;
+    }
+
+    function reincarnated_rotation($nframes, $parent0)
+    {
     }
 
     function edge($flock, $sheep0, $sheep1, $nframes)

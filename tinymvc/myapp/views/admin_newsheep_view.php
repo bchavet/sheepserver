@@ -25,6 +25,10 @@
 </div>
 
 <div class="admin">
+<a href="/admin/newsheep?type=symmetry">Symmetry/Singularity</a>
+</div>
+
+<div class="admin">
 <form name="upload" action="/admin/newsheep" method="post" enctype="multipart/form-data">
 <input type="hidden" name="type" value="upload" />
 <input type="file" name="genome" />
