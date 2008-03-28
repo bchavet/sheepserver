@@ -58,10 +58,18 @@ class Flock_Controller extends TinyMVC_Controller
         $this->view->display('flock_credit_view');
     }
 
-    /*
     function stats()
     {
-    }
-    */
+        $this->load->model('stats_model', 'stats');
 
+        $this->view->assign(array('frames_assigned_60' => $this->stats->framesAssigned(60),
+                                  'frames_returned_60' => $this->stats->framesReturned(60),
+                                  'sheep_completed_60' => $this->stats->sheepCompleted(60),
+                                  'frames_assigned_1440' => $this->stats->framesAssigned(1440),
+                                  'frames_returned_1440' => $this->stats->framesReturned(1440),
+                                  'sheep_completed_1440' => $this->stats->sheepCompleted(1440)));
+
+        $this->view->display('flock_stats_view');
+    }
+ 
 }
