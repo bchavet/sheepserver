@@ -43,3 +43,10 @@
 <div class="clr"></div>
 </div>
 <?php endif; ?>
+
+<?php if (isset($sheep) && !empty($author_credit)): ?>
+<div>
+Original Sheep: <a href="<?= $author_credit ?>"><?= $author_credit ?></a>
+</div>
+<?php endif; ?>
+

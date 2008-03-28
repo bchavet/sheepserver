@@ -10,6 +10,12 @@
 
 <?= $menu ?>
 
+<?php if (!empty($credit)): ?>
+<div>
+Original Sheep: <a href="<?= $credit ?>"><?= $credit ?></a>
+</div>
+<?php endif; ?>
+
 <pre>
 <?= htmlspecialchars($genome) ?>
 </pre>

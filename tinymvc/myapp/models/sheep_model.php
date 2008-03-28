@@ -131,4 +131,11 @@ class Sheep_Model extends TinyMVC_Model
                                         array($flock, $sheep, 'expunge'));
         return is_array($exists);
     }
+
+    function getAuthorCredit($flock, $sheep)
+    {
+        $results = $this->db->query_init('select credit from sheep where flock_id=? and sheep_id=?',
+                                        array($flock, $sheep));
+        return $results['credit'];
+    }
 }

@@ -95,7 +95,7 @@ class Flock_Model extends TinyMVC_Model
     /**
      * Creates a new sheep based on the given spex information
      */
-    function newSheep($spex, $nframes, $first = null, $last = null)
+    function newSheep($spex, $nframes, $first = null, $last = null, $extras = null)
     {
         // Get the next available sheep ID
         $sheep = $this->_getNextSheepId();
@@ -115,6 +115,13 @@ class Flock_Model extends TinyMVC_Model
 
         // Add sheep to the database, marked as incomplete
         $this->db->query('insert into sheep (flock_id, sheep_id, state, first, last, rating) values (?, ?, ?, ?, ?, ?)', array($this->generation, $sheep, 'incomplete', $first, $last, 0));
+
+        // Handle "extras"
+        if ($extras !== null) {
+            if (isset($extras['creditlink'])) {
+                $this->db->query('update sheep set credit=? where flock_id=? and sheep_id=?', array($extras['creditlink'], $this->generation, $sheep));
+            }
+        }
 
         // Create copy of spex file for use by flam3-genome
         $tmp_spex_file = $spex_file . '.tmp';

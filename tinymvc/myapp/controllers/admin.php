@@ -77,6 +77,8 @@ class admin_Controller extends TinyMVC_Controller
 
                 // Make sure the size matches what is expected
                 $spex = preg_replace('/size="(\d+) (\d+)"/', 'size="' . $this->config->width . ' ' . $this->config->height . '"', $spex);
+                
+                $extras = array('creditlink' => addslashes($_REQUEST['creditlink']));
             }
             break;
 
@@ -103,7 +105,7 @@ class admin_Controller extends TinyMVC_Controller
 
         // Create new sheep with the spex information
         if (isset($spex)) {
-            $this->flock->newSheep($spex, $this->config->nframes);
+            $this->flock->newSheep($spex, $this->config->nframes, null, null, isset($extras) ? $extras : null);
             $this->view->assign('spex', $spex);
         }
 

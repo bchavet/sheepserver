@@ -17,8 +17,11 @@ class Sheep_Controller extends TinyMVC_Controller
             exit;
         }
 
+        $author_credit = $this->sheep->getAuthorCredit($this->flock_id, $this->sheep_id);
+
         $this->view->assign('flock', $this->flock_id);
         $this->view->assign('sheep', $this->sheep_id);
+        $this->view->assign(array('author_credit' => $author_credit));
         $this->view->assign('menu', $this->view->fetch('menu_view'));
     }
 

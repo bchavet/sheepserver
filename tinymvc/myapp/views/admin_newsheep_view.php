@@ -37,14 +37,6 @@ foreach ($sheeplist as $sheep) {
 </div>
 
 <div class="admin">
-<form name="upload" action="/admin/newsheep" method="post" enctype="multipart/form-data">
-<input type="hidden" name="type" value="upload" />
-<input type="file" name="genome" />
-<input type="submit" value="Upload" />
-</form>
-</div>
-
-<div class="admin">
 <form name="mutate" action="/admin/newsheep" method="post">
 <input type="hidden" name="type" value="mutate" />
 <select name="parent0"><?= $list ?></select>
@@ -60,6 +52,17 @@ foreach ($sheeplist as $sheep) {
 <input type="submit" value="Mate" />
 </form>
 </div>
+
+<div class="admin">
+<form name="upload" action="/admin/newsheep" method="post" enctype="multipart/form-data">
+<input type="hidden" name="type" value="upload" />
+File: <input type="file" name="genome" />
+<br />
+Credit Link: <input type="text" name="creditlink" />
+<input type="submit" value="Upload" />
+</form>
+</div>
+
 
 <?php if (isset($spex)): ?>
 <pre>

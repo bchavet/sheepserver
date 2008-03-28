@@ -152,3 +152,7 @@ div.admin {
     margin-left: auto;
     margin-right: auto;
 }
+
+input[type=text] {
+    border: 1px solid #666666;
+}
