@@ -127,8 +127,15 @@ class Sheep_Model extends TinyMVC_Model
 
     function sheepExists($flock, $sheep)
     {
-        $exists = $this->db->query_init('select * from sheep where flock_id=? and sheep_id=? and state!=?',
+        $exists = $this->db->query_init('select sheep_id from sheep where flock_id=? and sheep_id=? and state!=?',
                                         array($flock, $sheep, 'expunge'));
+        return is_array($exists);
+    }
+
+    function edgeExists($flock_id, $first, $last)
+    {
+        $exists = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=? and state!=?',
+                                        array($flock_id, $first, $last, 'expunge'));
         return is_array($exists);
     }
 
@@ -137,5 +144,30 @@ class Sheep_Model extends TinyMVC_Model
         $results = $this->db->query_init('select credit from sheep where flock_id=? and sheep_id=?',
                                         array($flock, $sheep));
         return $results['credit'];
+    }
+
+    function getMissingEdges($flock_id, $sheep_id)
+    {
+        // Get all other loops
+        $loops = $this->db->query_all('select * from sheep where flock_id=? and sheep_id!=? and first=last and state!=?',
+                                      array($flock_id, $sheep_id, 'expunge'));
+
+        // Find missing edges
+        $edges = array();
+        foreach ($loops as $sheep) {
+            // Check outgoing edges
+            if (!$this->edgeExists($flock_id, $sheep_id, $sheep['sheep_id'])) {
+                $edges[] = array('first' => $sheep_id,
+                                 'last' => $sheep['sheep_id']);
+            }
+
+            // Check incoming edges
+            if (!$this->edgeExists($flock_id, $sheep['sheep_id'], $sheep_id)) {
+                $edges[] = array('first' => $sheep['sheep_id'],
+                                 'last' => $sheep_id);
+            }
+        }
+
+        return $edges;
     }
 }

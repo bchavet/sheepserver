@@ -144,6 +144,22 @@ class admin_Controller extends TinyMVC_Controller
             if ($sheep[0] !== null && $sheep[1] !== null) {
                 $spex = $this->spex->edge($this->config->generation, $sheep[0], $sheep[1], $this->config->nframes);
             }
+            break;
+
+        case 'connect':
+            $sheep_id = isset($_REQUEST['sheep']) ? (int)$_REQUEST['sheep'] : null;
+            if ($sheep_id !== null) {
+                $this->load->model('sheep_model', 'sheep');
+                $missing_edges = $this->sheep->getMissingEdges($this->config->generation, $sheep_id);
+                
+                foreach ($missing_edges as $edge) {
+                    $spex = $this->spex->edge($this->config->generation, $edge['first'], $edge['last'], $this->config->nframes);
+                    $this->flock->newSheep($spex, $this->config->nframes, $edge['first'], $edge['last']);
+                }
+                unset($spex);
+                $this->view->assign('spex', 'Done.');
+            }
+            break;
 
         }
 
@@ -222,4 +238,5 @@ class admin_Controller extends TinyMVC_Controller
         header('Location: /flock');
         exit;
     }
+
 }

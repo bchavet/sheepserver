@@ -97,6 +97,15 @@ class Flock_Model extends TinyMVC_Model
      */
     function newSheep($spex, $nframes, $first = null, $last = null, $extras = null)
     {
+        // If this is an edge, make sure it doesn't already exist
+        if ($first !== null) {
+            $exists = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=? and state!=?',
+                                            array($this->generation, $first, $last, 'expunge'));
+            if (is_array($exists)) {
+                return;
+            }
+        }
+        
         // Get the next available sheep ID
         $sheep = $this->_getNextSheepId();
         if ($first === null || $last === null) {

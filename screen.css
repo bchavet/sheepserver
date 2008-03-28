@@ -153,6 +153,11 @@ div.admin {
     margin-right: auto;
 }
 
+div.warning {
+    border: 1px dashed red;
+    background-color: #ffcccc;
+}
+
 input[type=text] {
     border: 1px solid #666666;
 }

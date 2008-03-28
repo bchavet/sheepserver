@@ -20,6 +20,7 @@ foreach ($sheeplist as $sheep) {
 
 <div class="navigation">
 <ul id="submenu">
+<li class="first">Admin</li>
 <li><a href="/admin/newsheep">New Sheep</a></li>
 <li><a href="/admin/newedge">New Edge</a></li>
 <li><a href="/admin/prune">Prune</a></li>
@@ -38,6 +39,14 @@ foreach ($sheeplist as $sheep) {
 <select name="first"><?= $list ?></select>
 <select name="last"><?= $list ?></select>
 <input type="submit" value="Edge" />
+</form>
+</div>
+
+<div class="admin warning">
+<form name="complete" action="/admin/newedge" method="post">
+<input type="hidden" name="type" value="connect" />
+<select name="sheep"><?= $list ?></select>
+<input type="submit" value="Connect" />
 </form>
 </div>
 
