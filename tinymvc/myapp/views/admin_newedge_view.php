@@ -1,3 +1,11 @@
+<?php
+$list = '';
+foreach ($sheeplist as $sheep) {
+    if ($sheep['first'] == $sheep['last']) {
+        $list .= '<option value="' . $sheep['sheep_id'] . '">' . $sheep['sheep_id'] . '</option>';
+    }
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/strict.dtd">
 <html>
 <head>
@@ -22,6 +30,15 @@
 
 <div class="admin">
 <a href="/admin/newedge?type=random">Random</a>
+</div>
+
+<div class="admin">
+<form name="edge" action="/admin/newedge" method="post">
+<input type="hidden" name="type" value="edge" />
+<select name="first"><?= $list ?></select>
+<select name="last"><?= $list ?></select>
+<input type="submit" value="Edge" />
+</form>
 </div>
 
 <?php if (isset($spex)): ?>

@@ -84,6 +84,21 @@ class admin_Controller extends TinyMVC_Controller
             $spex = $this->spex->symmetry_singularity($this->config->nframes);
             break;
 
+        case 'mutate':
+            $parent0 = isset($_REQUEST['parent0']) ? (int)$_REQUEST['parent0'] : null;
+            if ($parent0 !== null) {
+                $spex = $this->spex->mutate_rotation($this->config->generation, $parent0, $this->config->nframes);
+            }
+            break;
+
+        case 'mate':
+            $parent0 = isset($_REQUEST['parent0']) ? (int)$_REQUEST['parent0'] : null;
+            $parent1 = isset($_REQUEST['parent1']) ? (int)$_REQUEST['parent1'] : null;
+            if ($parent0 !== null && $parent1 !== null) {
+                $spex = $this->spex->mate_rotation($this->config->generation, $parent0, $parent1, $this->config->nframes);
+            }
+            break;
+            
         }
 
         // Create new sheep with the spex information
@@ -91,7 +106,8 @@ class admin_Controller extends TinyMVC_Controller
             $this->flock->newSheep($spex, $this->config->nframes);
             $this->view->assign('spex', $spex);
         }
-        
+
+        $this->view->assign('sheeplist', $sheeplist = $this->flock->getSheep());
         $this->view->display('admin_newsheep_view');
     }
 
@@ -118,6 +134,15 @@ class admin_Controller extends TinyMVC_Controller
             }
             break;
 
+        case 'edge':
+            $sheep[0] = isset($_REQUEST['first']) ? (int)$_REQUEST['first'] : null;
+            $sheep[1] = isset($_REQUEST['last']) ? (int)$_REQUEST['last'] : null;
+
+            // Get spex file 
+            if ($sheep[0] !== null && $sheep[1] !== null) {
+                $spex = $this->spex->edge($this->config->generation, $sheep[0], $sheep[1], $this->config->nframes);
+            }
+
         }
 
         // Create new sheep with the spex information
@@ -126,7 +151,7 @@ class admin_Controller extends TinyMVC_Controller
             $this->view->assign('spex', $spex);
         }
 
-        // TODO: Display something meaningful
+        $this->view->assign('sheeplist', $sheeplist = $this->flock->getSheep());
         $this->view->display('admin_newedge_view');
     }
 

@@ -1,3 +1,11 @@
+<?php
+$list = '';
+foreach ($sheeplist as $sheep) {
+    if ($sheep['first'] == $sheep['last']) {
+        $list .= '<option value="' . $sheep['sheep_id'] . '">' . $sheep['sheep_id'] . '</option>';
+    }
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/strict.dtd">
 <html>
 <head>
@@ -33,6 +41,23 @@
 <input type="hidden" name="type" value="upload" />
 <input type="file" name="genome" />
 <input type="submit" value="Upload" />
+</form>
+</div>
+
+<div class="admin">
+<form name="mutate" action="/admin/newsheep" method="post">
+<input type="hidden" name="type" value="mutate" />
+<select name="parent0"><?= $list ?></select>
+<input type="submit" value="Mutate" />
+</form>
+</div>
+
+<div class="admin">
+<form name="mate" action="/admin/newsheep" method="post">
+<input type="hidden" name="type" value="mate" />
+<select name="parent0"><?= $list ?></select>
+<select name="parent1"><?= $list ?></select>
+<input type="submit" value="Mate" />
 </form>
 </div>
 
