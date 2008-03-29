@@ -148,14 +148,22 @@ class admin_Controller extends TinyMVC_Controller
 
         case 'connect':
             $sheep_id = isset($_REQUEST['sheep']) ? (int)$_REQUEST['sheep'] : null;
+            $numedges = isset($_REQUEST['numedges']) ? (int)$_REQUEST['numedges'] : 3;
             if ($sheep_id !== null) {
                 $this->load->model('sheep_model', 'sheep');
-                $missing_edges = $this->sheep->getMissingEdges($this->config->generation, $sheep_id);
+                $missing_edges_in = $this->sheep->getMissingEdges($this->config->generation, $sheep_id, 'in');
+                $missing_edges_out = $this->sheep->getMissingEdges($this->config->generation, $sheep_id, 'out');
                 
-                foreach ($missing_edges as $edge) {
-                    $spex = $this->spex->edge($this->config->generation, $edge['first'], $edge['last'], $this->config->nframes);
-                    $this->flock->newSheep($spex, $this->config->nframes, $edge['first'], $edge['last']);
+                for ($i = 0; $i < $numedges; $i++) {
+                    $in = rand(0, count($missing_edges_in) - 1);
+                    $spex = $this->spex->edge($this->config->generation, $missing_edges_in[$i]['first'], $missing_edges_in[$i]['last'], $this->config->nframes);
+                    $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_in[$i]['first'], $missing_edges_in[$i]['last']);
+
+                    $out = rand(0, count($missing_edges_out) - 1);
+                    $spex = $this->spex->edge($this->config->generation, $missing_edges_out[$i]['first'], $missing_edges_out[$i]['last'], $this->config->nframes);
+                    $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_out[$i]['first'], $missing_edges_out[$i]['last']);
                 }
+
                 unset($spex);
                 $this->view->assign('spex', 'Done.');
             }

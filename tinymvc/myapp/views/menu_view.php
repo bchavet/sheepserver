@@ -32,6 +32,7 @@
 <?php if (!empty($_SESSION['logged_in'])): ?>
 <ul class="admin">
   <li class="first"><a href="/admin/delete?sheep=<?= $sheep ?>">Delete</a></li>
+  <li><a href="/admin/newedge?sheep=<?= $sheep ?>&amp;type=connect">Connect</a></li>
 </ul>
 <?php endif; ?>
 <div class="clr"></div>

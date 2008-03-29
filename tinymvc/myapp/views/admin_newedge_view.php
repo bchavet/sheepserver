@@ -42,7 +42,7 @@ foreach ($sheeplist as $sheep) {
 </form>
 </div>
 
-<div class="admin warning">
+<div class="admin">
 <form name="complete" action="/admin/newedge" method="post">
 <input type="hidden" name="type" value="connect" />
 <select name="sheep"><?= $list ?></select>
