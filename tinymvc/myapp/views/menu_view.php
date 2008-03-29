@@ -33,6 +33,7 @@
 <ul class="admin">
   <li class="first"><a href="/admin/delete?sheep=<?= $sheep ?>">Delete</a></li>
   <li><a href="/admin/newedge?sheep=<?= $sheep ?>&amp;type=connect">Connect</a></li>
+  <li><a href="/admin/newsheep?type=mutate&amp;parent0=<?= $sheep ?>">Mutate</a></li>
 </ul>
 <?php endif; ?>
 <div class="clr"></div>
