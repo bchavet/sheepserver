@@ -45,12 +45,6 @@ foreach ($frames as $frame) {
  }
 ?>
 
-<?php if (!empty($_SESSION['logged_in'])): ?>
-<div>
-<a href="/admin/delete?sheep=<?= $sheep ?>">Delete</a>
-</div>
-<?php endif; ?>
-
 </body>
 
 </html>

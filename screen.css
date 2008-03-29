@@ -135,6 +135,12 @@ img.edgelast {
     background-color: #999999;
 }
 
+.navigation ul.admin li.first {
+    border-left: 1px solid #999999;
+    border-right: none;
+    font-weight: normal;
+}
+
 a {
     white-space: nowrap;
 }

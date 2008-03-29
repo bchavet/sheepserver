@@ -29,6 +29,11 @@
   <li><a href="/gen/<?= $flock ?>/<?= $sheep ?>/sheep.mpg">Download</a></li>
   <?php endif; ?>
 </ul>
+<?php if (!empty($_SESSION['logged_in'])): ?>
+<ul class="admin">
+  <li class="first"><a href="/admin/delete?sheep=<?= $sheep ?>">Delete</a></li>
+</ul>
+<?php endif; ?>
 <div class="clr"></div>
 </div>
 <?php endif; ?>
@@ -40,6 +45,11 @@
   <li><a href="/frame/status?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Status</a></li>
   <li><a href="/frame/genome?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Genome</a></li>
 </ul>
+<?php if (!empty($_SESSION['logged_in'])): ?>
+<ul class="admin">
+  <li class="first"><a href="/admin/delete?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Delete</a></li>
+</ul>
+<?php endif; ?>
 <div class="clr"></div>
 </div>
 <?php endif; ?>

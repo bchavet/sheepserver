@@ -66,10 +66,6 @@ if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame[
 
 </table>
 
-<?php if (!empty($_SESSION['logged_in'])): ?>
-<a href="/admin/delete?sheep=<?= $frame['sheep_id'] ?>&amp;frame=<?= $frame['frame_id'] ?>">Delete</a>
-<?php endif; ?>
-
 </body>
 
 </html>
