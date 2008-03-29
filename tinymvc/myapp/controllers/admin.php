@@ -156,12 +156,12 @@ class admin_Controller extends TinyMVC_Controller
                 
                 for ($i = 0; $i < $numedges; $i++) {
                     $in = rand(0, count($missing_edges_in) - 1);
-                    $spex = $this->spex->edge($this->config->generation, $missing_edges_in[$i]['first'], $missing_edges_in[$i]['last'], $this->config->nframes);
-                    $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_in[$i]['first'], $missing_edges_in[$i]['last']);
+                    $spex = $this->spex->edge($this->config->generation, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last'], $this->config->nframes);
+                    $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last']);
 
                     $out = rand(0, count($missing_edges_out) - 1);
-                    $spex = $this->spex->edge($this->config->generation, $missing_edges_out[$i]['first'], $missing_edges_out[$i]['last'], $this->config->nframes);
-                    $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_out[$i]['first'], $missing_edges_out[$i]['last']);
+                    $spex = $this->spex->edge($this->config->generation, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last'], $this->config->nframes);
+                    $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last']);
                 }
 
                 unset($spex);
