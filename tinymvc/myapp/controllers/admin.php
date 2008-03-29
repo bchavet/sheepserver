@@ -214,16 +214,23 @@ class admin_Controller extends TinyMVC_Controller
         }
 
         $this->load->model('sheep_model', 'sheep');
-        $prunelist = $this->flock->getPruneList($this->config->generation, 10);
-        
-        foreach ($prunelist as $prune) {
-            if ($this->sheep->sheepExists($this->config->generation, $prune['sheep_id'])) {
-                $this->sheep->deleteSheep($this->config->generation, $prune['sheep_id']);
+        $numdays = isset($_REQUEST['numdays']) ? (int)$_REQUEST['numdays'] : 10;
+        $this->view->assign('numdays', $numdays);
+        $prunelist = $this->flock->getPruneList($this->config->generation, $numdays);
+        $this->view->assign('prunelist', $prunelist);
+
+        $confirm = isset($_REQUEST['confirm']) ? true : false;
+        $this->view->assign('confirm', $confirm);
+
+        if ($confirm) {
+            foreach ($prunelist as $prune) {
+                if ($this->sheep->sheepExists($this->config->generation, $prune['sheep_id'])) {
+                    $this->sheep->deleteSheep($this->config->generation, $prune['sheep_id']);
+                }
             }
         }
 
-        // TODO: Display something meaningful
-        $this->view->display('admin_view');
+        $this->view->display('admin_prune_view');
     }
 
     function login()
