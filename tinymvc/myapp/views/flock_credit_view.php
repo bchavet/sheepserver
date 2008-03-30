@@ -13,8 +13,8 @@
 <table>
 <tr><th>Nick</th><th>Frames</th></tr>
 <?php
-foreach ($credit as $client) {
-     echo '<tr><td>' . $client['nick'] . '</td><td>' . $client['frames'] . '</td></tr>';
+foreach ($credit as $nick => $count) {
+     echo '<tr><td>' . $nick . '</td><td>' . $count . '</td></tr>';
 }
 ?>
 </table>
