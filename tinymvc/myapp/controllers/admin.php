@@ -89,6 +89,7 @@ class admin_Controller extends TinyMVC_Controller
         case 'mutate':
             $parent0 = isset($_REQUEST['parent0']) ? (int)$_REQUEST['parent0'] : null;
             if ($parent0 !== null) {
+                $extras = array('parent0' => $parent0);
                 $spex = $this->spex->mutate_rotation($this->config->generation, $parent0, $this->config->nframes);
             }
             break;
@@ -97,6 +98,7 @@ class admin_Controller extends TinyMVC_Controller
             $parent0 = isset($_REQUEST['parent0']) ? (int)$_REQUEST['parent0'] : null;
             $parent1 = isset($_REQUEST['parent1']) ? (int)$_REQUEST['parent1'] : null;
             if ($parent0 !== null && $parent1 !== null) {
+                $extras = array('parent0' => $parent0, 'parent1' => $parent1);
                 $spex = $this->spex->mate_rotation($this->config->generation, $parent0, $parent1, $this->config->nframes);
             }
             break;

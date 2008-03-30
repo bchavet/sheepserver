@@ -73,16 +73,19 @@ class Sheep_Controller extends TinyMVC_Controller
     }
     */
 
-    /*
     function lineage()
     {
+        $parents = $this->sheep->getParents($this->flock_id, $this->sheep_id);
+        $children = $this->sheep->getChildren($this->flock_id, $this->sheep_id);
+
+        $this->view->assign('parents', $parents);
+        $this->view->assign('children', $children);
+        $this->view->display('sheep_lineage_view');
     }
-    */
 
     function genome()
     {
         $genome = $this->sheep->getGenome($this->flock_id, $this->sheep_id);
-
         $this->view->assign('genome', $genome);
         $this->view->display('sheep_genome_view');
     }

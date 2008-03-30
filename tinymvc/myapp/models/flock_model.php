@@ -123,12 +123,23 @@ class Flock_Model extends TinyMVC_Model
         fclose($fs);
 
         // Add sheep to the database, marked as incomplete
-        $this->db->query('insert into sheep (flock_id, sheep_id, state, first, last, rating) values (?, ?, ?, ?, ?, ?)', array($this->generation, $sheep, 'incomplete', $first, $last, 0));
+        $this->db->query('insert into sheep (flock_id, sheep_id, state, first, last, rating, spex) values (?, ?, ?, ?, ?, ?, ?)', array($this->generation, $sheep, 'incomplete', $first, $last, 0, $spex));
 
         // Handle "extras"
         if ($extras !== null) {
+
+            // Add credit link in order to comply with CC license
             if (isset($extras['creditlink'])) {
                 $this->db->query('update sheep set credit=? where flock_id=? and sheep_id=?', array($extras['creditlink'], $this->generation, $sheep));
+            }
+
+            // Keep track of parents if they exist
+            if (isset($extras['parent0'])) {
+                if (isset($extras['parent1'])) {
+                    $this->db->query('update sheep set parent0=?, parent1=? where flock_id=? and sheep_id=?', array($extras['parent0'], $extras['parent1'], $this->generation, $sheep));
+                } else {
+                    $this->db->query('update sheep set parent0=? where flock_id=? and sheep_id=?', array($extras['parent0'], $this->generation, $sheep));
+                }
             }
         }
 

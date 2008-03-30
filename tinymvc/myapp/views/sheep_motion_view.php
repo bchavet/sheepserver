@@ -59,7 +59,7 @@ foreach ($before as $sheep) {
 if ($current['first'] == $current['last']) {
 
     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $current['flock_id'] . DS . $current['sheep_id'] . DS . '0.thumbnail.jpg')) {
-        echo '<img src="/gen/' . $current['flock_id'] . '/' . $current['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
+        echo '<img src="/gen/' . $current['flock_id'] . '/' . $current['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail self" />';
     } else {
         echo '<img src="/images/anon-icon.jpg" class="thumbnail" />';
     }
@@ -67,13 +67,13 @@ if ($current['first'] == $current['last']) {
 } else {
     
     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $current['flock_id'] . DS . $current['first'] . DS . '0.thumbnail.jpg')) {
-        echo '<img src="/gen/' . $current['flock_id'] . '/' . $current['first'] . '/0.thumbnail.jpg" alt="first" class="thumbnail edgefirst" />';
+        echo '<img src="/gen/' . $current['flock_id'] . '/' . $current['first'] . '/0.thumbnail.jpg" alt="first" class="thumbnail edgefirst self" />';
     } else {
         echo '<img src="/images/anon-icon.jpg" class="thumbnail edgefirst" />';
     }
     
     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $current['flock_id'] . DS . $current['last'] . DS . '0.thumbnail.jpg')) {
-        echo '<img src="/gen/' . $current['flock_id'] . '/' . $current['last'] . '/0.thumbnail.jpg" alt="last" class="thumbnail edgelast" />';
+        echo '<img src="/gen/' . $current['flock_id'] . '/' . $current['last'] . '/0.thumbnail.jpg" alt="last" class="thumbnail edgelast self" />';
     } else {
         echo '<img src="/images/anon-icon.jpg" class="thumbnail edgelast" />';
     }

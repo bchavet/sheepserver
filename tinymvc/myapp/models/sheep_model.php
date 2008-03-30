@@ -175,4 +175,34 @@ class Sheep_Model extends TinyMVC_Model
         return $edges;
     }
 
+    function getParents($flock, $sheep)
+    {
+        return $this->db->query_init('select parent0, parent1 from sheep where flock_id=? and sheep_id=?',
+                                     array($flock, $sheep));
+    }
+
+    function getSiblings($flock, $sheep)
+    {
+        $parents = $this->getParents($flock, $sheep);
+        if ($parents['parent0'] !== null && $parents['parent1'] !== null) {
+            $result = $this->db->query_all('select * from sheep where flock_id=? and (parent0=? or parent0=? or parent1=? or parent1=?)',
+                                           array($flock, $parents['parent0'], $parents['parent1'], $parents['parent0'], $parents['parent1']));
+        } else if ($parents['parent0'] !== null && $parents['parent1'] === null) {
+            $result = $this->db->query_all('select * from sheep where flock_id=? and (parent0=? or parent1=?)',
+                                           array($flock, $parents['parent0'], $parents['parent0']));
+        } else if ($parents['parent1'] !== null && $parents['parent0'] === null) {
+            $result = $this->db->query_all('select * from sheep where flock_id=? and (parent0=? or parent1=?)',
+                                           array($flock, $parents['parent1'], $parents['parent1']));
+        } else {
+            $result = null;
+        }
+
+        return $result;
+    }
+
+    function getChildren($flock, $sheep)
+    {
+        return  $this->db->query_all('select * from sheep where flock_id=? and (parent0=? or parent1=?)',
+                                     array($flock, $sheep, $sheep));
+    }
 }
