@@ -9,7 +9,7 @@ class Sheep_Controller extends TinyMVC_Controller
         $this->load->model('config_model', 'config');
         $this->load->model('sheep_model', 'sheep');
 
-        $this->flock_id = $this->config->generation;
+        $this->flock_id = $this->config->flock_id;
         $this->sheep_id = isset($_GET['sheep']) ? (int)$_GET['sheep'] : null;
 
         if ($this->sheep_id === null) {

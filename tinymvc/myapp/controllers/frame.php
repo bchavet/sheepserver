@@ -9,7 +9,7 @@ class Frame_Controller extends TinyMVC_Controller
         $this->load->model('config_model', 'config');
         $this->load->model('frame_model', 'frame');
 
-        $this->flock_id = $this->config->generation;
+        $this->flock_id = $this->config->flock_id;
         $this->sheep_id = isset($_GET['sheep']) ? (int)$_GET['sheep'] : null;
         $this->frame_id = isset($_GET['frame']) ? (int)$_GET['frame'] : null;
 

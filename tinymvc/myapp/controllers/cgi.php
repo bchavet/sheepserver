@@ -22,12 +22,12 @@ class cgi_Controller extends TinyMVC_Controller
     {
         // Dynamically generate list
         $this->load->model('server_model', 'server');
-        $list = $this->server->getList($this->config->generation);
+        $list = $this->server->getList($this->config->flock_id);
         echo gzencode($list, 9);
 
         /*
         // Output contents of list file
-        $file = ES_BASEDIR . DS . 'gen' . DS . $this->config->generation . DS . 'txt' . DS . 'list.txt.gz';
+        $file = ES_BASEDIR . DS . 'gen' . DS . $this->config->flock_id . DS . 'txt' . DS . 'list.txt.gz';
         $contents = file_get_contents($file);
         echo $contents;
         */
@@ -43,7 +43,7 @@ class cgi_Controller extends TinyMVC_Controller
         $this->load->model('frame_model', 'frame');
 
         // Attempt to get a job from the server
-        $job = $this->server->get_job($this->config->generation);
+        $job = $this->server->get_job($this->config->flock_id);
         if ($job === false) {
             return false;
         }
@@ -66,7 +66,7 @@ class cgi_Controller extends TinyMVC_Controller
         $data = file_get_contents('php://input');
  
         // Submit the job
-        $result = $this->server->complete($this->config->generation, (int)$_GET['id'], (int)$_GET['f'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), $data);
+        $result = $this->server->complete($this->config->flock_id, (int)$_GET['id'], (int)$_GET['f'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), $data);
     }
 
     /**
@@ -75,7 +75,7 @@ class cgi_Controller extends TinyMVC_Controller
     function encode()
     {
         $this->load->model('server_model', 'server');
-        $sheep = $this->server->encodeSheep($this->config->generation);
+        $sheep = $this->server->encodeSheep($this->config->flock_id);
     }
 
     /**
