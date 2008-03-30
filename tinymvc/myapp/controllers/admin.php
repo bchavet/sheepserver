@@ -41,17 +41,21 @@ class admin_Controller extends TinyMVC_Controller
             return;
         }
 
-        // Initialize new flock
-        $this->flock->newFlock();
+        $confirm = isset($_REQUEST['confirm']) ? true : false;
+        $this->view->assign('confirm', $confirm);
+
+        if ($confirm) {
+            // Initialize new flock
+            $this->flock->newFlock();
         
-        // Generate spex information for first sheep
-        $spex = $this->spex->random_rotation($this->config->nframes);
+            // Generate spex information for first sheep
+            $spex = $this->spex->random_rotation($this->config->nframes);
         
-        // Create new sheep with the spex information
-        $this->flock->newSheep($spex, $this->config->nframes);
-            
-        // TODO: Display something meaningful
-        $this->view->display('admin_view');
+            // Create new sheep with the spex information
+            $this->flock->newSheep($spex, $this->config->nframes);
+        }
+
+        $this->view->display('admin_reset_view');
     }
 
     function newsheep()

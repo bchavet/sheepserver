@@ -2,17 +2,17 @@
 
 class Server_Model extends TinyMVC_Model
 {
-    function get_job($generation)
+    function get_job($flock_id)
     {
         // First, see if there are any frame 0's that are not assigned.
         // If so, we want them to get assigned first so the UI looks nice.
-        $result = $this->db->query_init('select frame.* from frame, sheep where frame.flock_id=? and frame.state=? and frame.frame_id=? and sheep.first=sheep.last and frame.sheep_id=sheep.sheep_id order by frame.sheep_id asc', array($generation, 'ready', 0));
+        $result = $this->db->query_init('select frame.* from frame, sheep where frame.flock_id=? and frame.state=? and frame.frame_id=? and sheep.first=sheep.last and frame.sheep_id=sheep.sheep_id order by frame.sheep_id asc', array($flock_id, 'ready', 0));
         if ($result !== false) {
             return $result;
         }
 
         // Fall back to returning the oldest frame
-        $result = $this->db->query_init('select * from frame where flock_id=? and state=? order by sheep_id, frame_id asc', array($generation, 'ready'));
+        $result = $this->db->query_init('select * from frame where flock_id=? and state=? order by sheep_id, frame_id asc', array($flock_id, 'ready'));
         return $result;
     }
 

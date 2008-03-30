@@ -9,7 +9,7 @@ class Flock_Controller extends TinyMVC_Controller
         $this->load->model('config_model', 'config');
         $this->load->model('flock_model', 'flock');
 
-        $this->flock_id = $this->config->generation;
+        $this->flock_id = $this->config->flock_id;
 
         $this->view->assign('flock', $this->flock_id);
         $this->view->assign('menu', $this->view->fetch('menu_view'));

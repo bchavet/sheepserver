@@ -10,13 +10,13 @@ class Flock_Model extends TinyMVC_Model
     {
         parent::__construct();
 
-        // Figure out what generation this flock is
-        $result = $this->db->query_init('select value from config where name=?', array('generation'), PDO::FETCH_ASSOC);
+        // Figure out the current flock ID
+        $result = $this->db->query_init('select value from config where name=?', array('flock_id'), PDO::FETCH_ASSOC);
         if ($result === false) {
-            $this->db->query('insert into config values(?, ?)', array('generation', '0'));
-            $this->generation = 0;
+            $this->db->query('insert into config values(?, ?)', array('flock_id', '0'));
+            $this->flock_id = 0;
         } else {
-            $this->generation = $result['value'];
+            $this->flock_id = $result['value'];
         }
     }
 
@@ -27,8 +27,8 @@ class Flock_Model extends TinyMVC_Model
      */
     function newFlock()
     {
-        $generation = $this->generation + 1;
-        $path = ES_BASEDIR . DS . 'gen' . DS . $generation;
+        $flock_id = $this->flock_id + 1;
+        $path = ES_BASEDIR . DS . 'gen' . DS . $flock_id;
 
         // If flock dir already exists, exit
         if (file_exists($path)) {
@@ -53,43 +53,35 @@ class Flock_Model extends TinyMVC_Model
 
         // Generate text files
         $gz = gzopen($path . DS . 'txt' . DS . 'fail.txt.gz', 'w9');
-        gzwrite($gz, '<get gen="' . $generation . '"/>' . "\n");
+        gzwrite($gz, '<get gen="' . $flock_id . '"/>' . "\n");
         gzclose($gz);
 
         $gz = gzopen($path . DS . 'txt' . DS . 'upgrade.txt.gz', 'w9');
-        gzwrite($gz, '<get gen="' . $generation . '"><message>please upgrade to the latest client from www.electricsheep.org</message></get>' . "\n");
+        gzwrite($gz, '<get gen="' . $flock_id . '"><message>please upgrade to the latest client from www.electricsheep.org</message></get>' . "\n");
         gzclose($gz);
 
         $gz = gzopen($path . DS . 'txt' . DS . 'blocked.txt.gz', 'w9');
-        gzwrite($gz, '<get gen="' . $generation . '"><message>access denied</message></get>' . "\n");
+        gzwrite($gz, '<get gen="' . $flock_id . '"><message>access denied</message></get>' . "\n");
         gzclose($gz);
 
         $gz = gzopen($path . DS . 'txt' . DS . 'list.txt.gz', 'w9');
-        gzwrite($gz, '<list gen="' . $generation . '"/>' . "\n");
+        gzwrite($gz, '<list gen="' . $flock_id . '"/>' . "\n");
         gzclose($gz);
 
-        // Everything went well, update generation information
-        $this->generation = $generation;
-        $result = $this->db->query('update config set value=? where name=?', array($generation, 'generation'));
+        // Everything went well, update flock ID information
+        $this->flock_id = $flock_id;
+        $result = $this->db->query('update config set value=? where name=?', array($flock_id, 'flock_id'));
         return $result;
     }
 
-    /**
-     * Returns the requested sheep, or all sheep in the flock if no individual
-     * sheep is specified.
-     */
-    function getSheep($sheep = null)
+    function getSheep()
     {
-        if ($sheep === null) {
-            return $this->db->query_all('select * from sheep where flock_id=? and first=last and state!=? order by sheep_id asc', array($this->generation, 'expunge'));
-        } else {
-            return $this->db->query_init('select * from sheep where flock_id=? and sheep_id=?', array($this->generation, $sheep));
-        }
+        return $this->db->query_all('select * from sheep where flock_id=? and first=last and state!=? order by sheep_id asc', array($this->flock_id, 'expunge'));
     }
 
     function getEdges()
     {
-        return $this->db->query_all('select * from sheep where flock_id=? and first!=last and state!=? order by sheep_id asc', array($this->generation, 'expunge'));
+        return $this->db->query_all('select * from sheep where flock_id=? and first!=last and state!=? order by sheep_id asc', array($this->flock_id, 'expunge'));
     }
 
     /**
@@ -100,7 +92,7 @@ class Flock_Model extends TinyMVC_Model
         // If this is an edge, make sure it doesn't already exist
         if ($first !== null) {
             $exists = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=? and state!=?',
-                                            array($this->generation, $first, $last, 'expunge'));
+                                            array($this->flock_id, $first, $last, 'expunge'));
             if (is_array($exists)) {
                 return;
             }
@@ -113,7 +105,7 @@ class Flock_Model extends TinyMVC_Model
         }
         
         // Create the base directory for the new sheep
-        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $this->generation . DS . $sheep;
+        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $this->flock_id . DS . $sheep;
         mkdir($sheepdir);
 
         // Write spex file
@@ -123,22 +115,22 @@ class Flock_Model extends TinyMVC_Model
         fclose($fs);
 
         // Add sheep to the database, marked as incomplete
-        $this->db->query('insert into sheep (flock_id, sheep_id, state, first, last, rating, spex) values (?, ?, ?, ?, ?, ?, ?)', array($this->generation, $sheep, 'incomplete', $first, $last, 0, $spex));
+        $this->db->query('insert into sheep (flock_id, sheep_id, state, first, last, rating, nframes, spex) values (?, ?, ?, ?, ?, ?, ?, ?)', array($this->flock_id, $sheep, 'incomplete', $first, $last, 0, $nframes, $spex));
 
         // Handle "extras"
         if ($extras !== null) {
 
             // Add credit link in order to comply with CC license
             if (isset($extras['creditlink'])) {
-                $this->db->query('update sheep set credit=? where flock_id=? and sheep_id=?', array($extras['creditlink'], $this->generation, $sheep));
+                $this->db->query('update sheep set credit=? where flock_id=? and sheep_id=?', array($extras['creditlink'], $this->flock_id, $sheep));
             }
 
             // Keep track of parents if they exist
             if (isset($extras['parent0'])) {
                 if (isset($extras['parent1'])) {
-                    $this->db->query('update sheep set parent0=?, parent1=? where flock_id=? and sheep_id=?', array($extras['parent0'], $extras['parent1'], $this->generation, $sheep));
+                    $this->db->query('update sheep set parent0=?, parent1=? where flock_id=? and sheep_id=?', array($extras['parent0'], $extras['parent1'], $this->flock_id, $sheep));
                 } else {
-                    $this->db->query('update sheep set parent0=? where flock_id=? and sheep_id=?', array($extras['parent0'], $this->generation, $sheep));
+                    $this->db->query('update sheep set parent0=? where flock_id=? and sheep_id=?', array($extras['parent0'], $this->flock_id, $sheep));
                 }
             }
         }
@@ -151,8 +143,9 @@ class Flock_Model extends TinyMVC_Model
 
         // Generate spex file for each frame
         for ($i = 0; $i < $nframes; $i++) {
+            if (false) {
             $gz = gzopen($sheepdir . DS . $i . '.spex.gz', 'w9');
-            gzwrite($gz, '<get gen="' . $this->generation . '" id="' . $sheep . '" type="0" prog="flame" args="bits=32 jpeg=100" frame="' . $i . '">' . "\n");
+            gzwrite($gz, '<get gen="' . $this->flock_id . '" id="' . $sheep . '" type="0" prog="flame" args="bits=32 jpeg=100" frame="' . $i . '">' . "\n");
             if ($first == $last) {
                 $spex = shell_exec("env rotate=$tmp_spex_file enclosed=0 frame=$i nframes=$nframes /usr/bin/flam3-genome");
             } else {
@@ -161,9 +154,10 @@ class Flock_Model extends TinyMVC_Model
             gzwrite($gz, $spex);
             gzwrite($gz, '</get>' . "\n");
             gzclose($gz);
+            }
 
             // Add frame to the database
-            $this->db->query('insert into frame (flock_id, sheep_id, frame_id, state) values (?, ?, ?, ?)', array($this->generation, $sheep, $i, 'ready'));
+            $this->db->query('insert into frame (flock_id, sheep_id, frame_id, state) values (?, ?, ?, ?)', array($this->flock_id, $sheep, $i, 'ready'));
         }
 
         // Delete temp file
@@ -176,19 +170,19 @@ class Flock_Model extends TinyMVC_Model
      */
     function _getNextSheepId()
     {
-        $result = $this->db->query_init('select sheep_id from sheep where flock_id=? order by sheep_id desc', array($this->generation));
+        $result = $this->db->query_init('select sheep_id from sheep where flock_id=? order by sheep_id desc', array($this->flock_id));
         return $result['sheep_id'] + 1;
     }
 
     function findRandomEdge($first = null, $last = null)
     {
-        $loops = $this->db->query_all('select sheep_id from sheep where flock_id=? and first=last and state!=?', array($this->generation, 'expunge'));
+        $loops = $this->db->query_all('select sheep_id from sheep where flock_id=? and first=last and state!=?', array($this->flock_id, 'expunge'));
         $found = false;
         for ($i = 0; $i < 20 && !$found; $i++) {
             $sheep[0] = $first === null ? (int)$loops[rand(0, count($loops) - 1)]['sheep_id'] : $first;
             $sheep[1] = $last === null ? (int)$loops[rand(0, count($loops) - 1)]['sheep_id'] : $last;
             if ($sheep[0] != $sheep[1]) {
-                $result = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=?', array($this->generation, $sheep[0], $sheep[1]));
+                $result = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=?', array($this->flock_id, $sheep[0], $sheep[1]));
                 if ($result === false) {
                     $found = true;
                 }
@@ -204,7 +198,7 @@ class Flock_Model extends TinyMVC_Model
 
     function deleteFrame($sheep, $frame)
     {
-        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $this->generation . DS . $sheep;
+        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $this->flock_id . DS . $sheep;
         
         // Delete jpeg
         if (file_exists($sheepdir . DS . $frame . '.jpg')) {
@@ -218,9 +212,9 @@ class Flock_Model extends TinyMVC_Model
 
         // Reset database entry
         $this->db->query('update frame set state=?, ip=?, uid=?, nick=?, start_time=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
-                         array('ready', null, null, null, null, null, $this->generation, $sheep, $frame));
+                         array('ready', null, null, null, null, null, $this->flock_id, $sheep, $frame));
         $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?',
-                         array('incomplete', $this->generation, $sheep));
+                         array('incomplete', $this->flock_id, $sheep));
     }
 
     function getCompleteSheep($flock)
@@ -254,7 +248,7 @@ class Flock_Model extends TinyMVC_Model
 
     function getAssigned($flock)
     {
-        return $this->db->query_all('select * from sheep, frame where frame.flock_id=? and frame.state=? and sheep.sheep_id=frame.sheep_id order by start_time asc',
+        return $this->db->query_all('select * from frame where flock_id=? and state=? order by start_time asc',
                                     array($flock, 'assigned'));
     }
 

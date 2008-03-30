@@ -40,6 +40,7 @@ class cgi_Controller extends TinyMVC_Controller
     function get()
     {
         $this->load->model('server_model', 'server');
+        $this->load->model('frame_model', 'frame');
 
         // Attempt to get a job from the server
         $job = $this->server->get_job($this->config->generation);
@@ -48,9 +49,7 @@ class cgi_Controller extends TinyMVC_Controller
         }
 
         // Return the job to the client to start processing
-        $file = ES_BASEDIR . DS . 'gen' . DS . $job['flock_id'] . DS . $job['sheep_id'] . DS . $job['frame_id'] . '.spex.gz';
-        $contents = file_get_contents($file);
-        echo $contents;
+        echo $this->frame->getGenomeGZ($job['flock_id'], $job['sheep_id'], $job['frame_id']);
 
         // Assign the job to the requesting client
         $this->server->assign($job['flock_id'], $job['sheep_id'], $job['frame_id'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), addslashes($_GET['n']));

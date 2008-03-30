@@ -86,6 +86,7 @@ foreach ($postqueue as $sheep) {
 foreach ($assigned as $frame) {
     echo '<tr>';
 
+    if (false) {
     echo '<td class="icon"><a href="/sheep?sheep=' . $frame['sheep_id'] . '">';
 
     if ($frame['first'] == $frame['last']) {
@@ -113,7 +114,9 @@ foreach ($assigned as $frame) {
     }
 
     echo '</a></td>';
+    }
 
+    echo '<td><a href="/sheep?sheep=' . $frame['sheep_id'] . '">' . $frame['sheep_id'] . '</a></td>';
     echo '<td><a href="/frame?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">' . $frame['frame_id'] . '</a></td>';
     echo '<td>' . $frame['ip'] . '</td>';
     echo '<td>' . $frame['uid'] . '</td>';

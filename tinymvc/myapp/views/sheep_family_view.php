@@ -12,9 +12,10 @@
 
 <?php if ($parents['parent0'] !== null || $parents['parent1'] !== null): ?>
 <div class="parents">
+Parents<br />
 <?php 
 if ($parents['parent0'] !== null) {
-    echo '<a href="/sheep/lineage?sheep=' . $parents['parent0'] . '">';
+    echo '<a href="/sheep/family?sheep=' . $parents['parent0'] . '">';
     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $parents['parent0'] . DS . '0.thumbnail.jpg')) {
         echo '<img src="/gen/' . $flock . '/' . $parents['parent0'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
     } else {
@@ -24,7 +25,7 @@ if ($parents['parent0'] !== null) {
 }
 
 if ($parents['parent1'] !== null) {
-    echo '<a href="/sheep/lineage?sheep=' . $parents['parent1'] . '">';
+    echo '<a href="/sheep/family?sheep=' . $parents['parent1'] . '">';
     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $parents['parent1'] . DS . '0.thumbnail.jpg')) {
         echo '<img src="/gen/' . $flock . '/' . $parents['parent1'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
     } else {
@@ -37,6 +38,7 @@ if ($parents['parent1'] !== null) {
 <?php endif; ?>
 
 <div>
+Myself<br />
 <?php
 if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep . DS . '0.thumbnail.jpg')) {
     echo '<img src="/gen/' . $flock . '/' . $sheep . '/0.thumbnail.jpg" alt="" class="thumbnail self" />';
@@ -48,9 +50,10 @@ if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep . DS . '0.th
 
 <?php if (count($children) > 0): ?>
 <div class="children">
+Children<br />
 <?php
 foreach ($children as $child) {
-    echo '<a href="/sheep/lineage?sheep=' . $child['sheep_id'] . '">';
+    echo '<a href="/sheep/family?sheep=' . $child['sheep_id'] . '">';
     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $child['sheep_id'] . DS . '0.thumbnail.jpg')) {
         echo '<img src="/gen/' . $flock . '/' . $child['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail" />';
     } else {
