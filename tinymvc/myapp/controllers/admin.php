@@ -111,8 +111,9 @@ class admin_Controller extends TinyMVC_Controller
 
         // Create new sheep with the spex information
         if (isset($spex)) {
-            $this->flock->newSheep($spex, $this->config->nframes, null, null, isset($extras) ? $extras : null);
-            $this->view->assign('spex', $spex);
+            $sheep_id = $this->flock->newSheep($spex, $this->config->nframes, null, null, isset($extras) ? $extras : null);
+            header('Location: /sheep/genome?sheep=' . $sheep_id);
+            exit;
         }
 
         $this->view->assign('sheeplist', $sheeplist = $this->flock->getSheep());
@@ -169,18 +170,19 @@ class admin_Controller extends TinyMVC_Controller
                     $spex = $this->spex->edge($this->config->generation, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last'], $this->config->nframes);
                     $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last']);
                 }
-
-                unset($spex);
-                $this->view->assign('spex', 'Done.');
             }
+
+            header('Location: /sheep/motion?sheep=' . $sheep_id);
+            exit;
             break;
 
         }
 
         // Create new sheep with the spex information
         if (isset($spex)) {
-            $this->flock->newSheep($spex, $this->config->nframes, $sheep[0], $sheep[1]);
-            $this->view->assign('spex', $spex);
+            $sheep_id = $this->flock->newSheep($spex, $this->config->nframes, $sheep[0], $sheep[1]);
+            header('Location: /sheep/genome?sheep=' . $sheep_id);
+            exit;
         }
 
         $this->view->assign('sheeplist', $sheeplist = $this->flock->getSheep());

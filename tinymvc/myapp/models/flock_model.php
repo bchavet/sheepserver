@@ -163,6 +163,8 @@ class Flock_Model extends TinyMVC_Model
         // Delete temp file
         unlink($tmp_spex_file);
         
+        // Return sheep ID
+        return $sheep;
     }
 
     /**

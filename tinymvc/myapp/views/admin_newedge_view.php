@@ -51,12 +51,6 @@ foreach ($sheeplist as $sheep) {
 </form>
 </div>
 
-<?php if (isset($spex)): ?>
-<pre>
-<?= htmlspecialchars($spex) ?>
-</pre>
-<?php endif; ?>
-
 </body>
 
 </html>
