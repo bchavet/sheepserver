@@ -10,10 +10,10 @@
 
 <?= $menu ?>
 
-Complete Edges (<?= count($edges) ?>)<br />
+<h2>Complete Edges (<?= count($edges) ?>)</h2>
 <?php
 foreach ($edges as $edge) {
-     echo '<a href="/sheep?sheep=' . $edge['sheep_id'] . '">';
+     echo '<a href="/sheep?sheep=' . $edge['sheep_id'] . '" class="edge">';
         if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $edge['flock_id'] . DS . $edge['first'] . DS . '0.thumbnail.jpg')) {
             echo '<img src="/gen/' . $edge['flock_id'] . '/' . $edge['first'] . '/0.thumbnail.jpg" alt="first" class="thumbnail edgefirst" />';
         } else {

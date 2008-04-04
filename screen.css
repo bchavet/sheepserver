@@ -11,17 +11,110 @@ body {
     font-size: 100%;
     line-height: 1.7em;
     margin: 0 auto;
+    width: 900px;
     text-align: center;
 }
 
-table {
+.clr {
+    clear: both;
+}
+
+.navigation {
+    border: 1px solid black;
+    background-color: #e0e0e0;
+    margin: 3px auto;
+    display: table;
+}
+
+.navigation ul {
     display: inline;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.navigation ul li {
+    list-style: none;
+    padding: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    display: inline;
+}
+
+.navigation ul li.first {
+    border-right: 1px solid #999999;
+    font-weight: bold;
+}
+
+.navigation ul.admin li.first {
+    border-right: none;
+    border-left: 1px solid #999999;
+    font-weight: normal;
+}
+
+img.thumbnail {
+    margin: 2px;
+    vertical-align: middle;
+}
+
+.self {
+    border: 2px solid yellow;
+}
+
+img.edgefirst {
+    margin-right: 0;
+    border-right: none;
+    white-space: nowrap;
+}
+
+img.edgelast {
+    margin-left: 0;
+    border-left: none;
+    white-space: nowrap;
+}
+
+img.frame {
+    width: 800px;
+    border: 1px solid black;
+}
+
+h2 {
+    margin-top: 30px;
+    border-bottom: 1px solid #666666;
+    text-align: left;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+pre {
+    text-align: left;
+    line-height: 1em;
+    border: 1px dashed; #666666;
+    background-color: white;
+    padding: 10px;
+    font-size: 90%;
+    overflow: scroll;
+    width: 800px;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 td {
     padding: 5px;
 }
 
+/*
 table.statistics {
     border: 1px solid black;
 }
@@ -56,19 +149,6 @@ table.setupform input[type="text"] {
     width: 100%;
 }
 
-pre {
-    text-align: left;
-    line-height: 1em;
-    border: 1px dashed; #666666;
-    background-color: white;
-    padding: 10px;
-    font-size: 90%;
-    overflow: scroll;
-    width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .success {
     color: green;
     font-weight: bold;
@@ -96,65 +176,6 @@ div.setup_test {
     border-bottom: 1px solid #666666;
 }
 
-img.thumbnail {
-    margin: 2px;
-    vertical-align: middle;
-}
-
-.self {
-    border: 2px solid yellow;
-}
-
-img.edgefirst {
-    margin-right: 0;
-    border-right: none;
-}
-
-img.edgelast {
-    margin-left: 0;
-    border-left: none;
-}
-
-.navigation {
-    display: table;
-    margin: 3px auto;
-    background-color: #e0e0e0;
-    border: 1px solid black;
-}
-
-.navigation ul li {
-    padding: 5px;
-    padding-right: 15px;
-    list-style-type: none;
-    float: left;
-}
-
-.navigation ul li.first {
-    padding-left: 15px;
-    padding-right: 10px;
-    margin-right: 5px;
-    border-right: 1px solid #999999;
-    font-weight: bold;
-}
-
-.navigation ul li.current {
-    background-color: #999999;
-}
-
-.navigation ul.admin li.first {
-    border-left: 1px solid #999999;
-    border-right: none;
-    font-weight: normal;
-}
-
-a {
-    white-space: nowrap;
-}
-
-.clr {
-    clear: both;
-}
-
 div.admin {
     background-color: #ffffcc;
     border: 1px solid black;
@@ -177,3 +198,5 @@ input[type=text] {
 input[type=password] {
     border: 1px solid #666666;
 }
+
+*/

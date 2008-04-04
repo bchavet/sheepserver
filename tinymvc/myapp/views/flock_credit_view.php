@@ -10,7 +10,8 @@
 
 <?= $menu ?>
 
-<table>
+<h2>Credit</h2>
+<table cellspacing="0" cellpadding="0">
 <tr><th>Nick</th><th>Frames</th></tr>
 <?php
 foreach ($credit as $nick => $count) {

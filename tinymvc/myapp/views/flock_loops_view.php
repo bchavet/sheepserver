@@ -10,7 +10,7 @@
 
 <?= $menu ?>
 
-Complete Loops (<?= count($sheep) ?>)<br />
+<h2>Complete Loops (<?= count($sheep) ?>)</h2>
 <?php
 foreach ($sheep as $s) {
      echo '<a href="/sheep?sheep=' . $s['sheep_id'] . '">';

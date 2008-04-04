@@ -11,7 +11,7 @@
 <?= $menu ?>
 
 <form name="login" action="/admin/login" method="post">
-<table style="display: inline">
+<table cellspacing="0" cellpadding="0">
 <tr>
   <td>Username:</td>
   <td><input type="text" name="username" /></td>

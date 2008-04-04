@@ -13,7 +13,7 @@
 <div>
 <?php
 if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $sheepstatus['flock_id'] . DS . $sheepstatus['sheep_id'] . DS . '0.jpg')) {
-    echo '<img src="/gen/' . $sheepstatus['flock_id'] . '/' . $sheepstatus['sheep_id'] . '/0.jpg" alt="" />';
+    echo '<img src="/gen/' . $sheepstatus['flock_id'] . '/' . $sheepstatus['sheep_id'] . '/0.jpg" alt="" class="frame" />';
 } else if ($sheepstatus['state'] == 'incomplete') {
     echo '<img src="/images/busy-icon.jpg" alt="assigned" />';
 } else {

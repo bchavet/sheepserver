@@ -10,8 +10,8 @@
 
 <?= $menu ?>
 
+<h2>Last 60 Minutes</h2>
 <table>
-<caption>Last 60 Minutes</caption>
 <tr>
   <th>Frames Assigned</th>
   <td><?= $frames_assigned_60 ?></td>
@@ -31,8 +31,8 @@
 
 <br />
 
+<h2>Last 24 Hours</h2>
 <table>
-<caption>Last 24 Hours</caption>
 <tr>
   <th>Frames Assigned</th>
   <td><?= $frames_assigned_1440 ?></td>

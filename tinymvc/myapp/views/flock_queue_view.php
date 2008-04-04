@@ -81,8 +81,8 @@ foreach ($postqueue as $sheep) {
 
 <?php if (count($assigned)): ?>
 <h2>Assigned Frames (<?= count($assigned) ?>)</h2>
-<table>
-<tr><th>Sheep</th><th>Frame</th><th>IP Address</th><th>UID</th><th>Nick</th><th>Time</th></tr>
+<table cellspacing="0" cellpadding="0">
+<tr><th>Sheep</th><th>Frame</th><th>Nick</th><th>Time</th></tr>
 <?php
 foreach ($assigned as $frame) {
     echo '<tr>';
@@ -119,8 +119,6 @@ foreach ($assigned as $frame) {
 
     echo '<td><a href="/sheep?sheep=' . $frame['sheep_id'] . '">' . $frame['sheep_id'] . '</a></td>';
     echo '<td><a href="/frame?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">' . $frame['frame_id'] . '</a></td>';
-    echo '<td>' . $frame['ip'] . '</td>';
-    echo '<td>' . $frame['uid'] . '</td>';
     echo '<td>' . $frame['nick'] . '</td>';
     echo '<td>' . date('F j, Y, g:i:s a', $frame['start_time']) . '</td>';
 

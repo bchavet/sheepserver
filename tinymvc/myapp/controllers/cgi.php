@@ -89,7 +89,7 @@ class cgi_Controller extends TinyMVC_Controller
             $this->server->unassign($assignment['flock_id'], $assignment['sheep_id'], $assignment['frame_id']);
         }
 
-        header('Location: /status');
+        header('Location: /flock');
         exit;
     }
 }

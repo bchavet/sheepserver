@@ -155,7 +155,7 @@ class admin_Controller extends TinyMVC_Controller
 
         case 'connect':
             $sheep_id = isset($_REQUEST['sheep']) ? (int)$_REQUEST['sheep'] : null;
-            $numedges = isset($_REQUEST['numedges']) ? (int)$_REQUEST['numedges'] : 2;
+            $numedges = isset($_REQUEST['numedges']) ? (int)$_REQUEST['numedges'] : 3;
             if ($sheep_id !== null) {
                 $this->load->model('sheep_model', 'sheep');
                 $missing_edges_in = $this->sheep->getMissingEdges($this->config->flock_id, $sheep_id, 'in');
