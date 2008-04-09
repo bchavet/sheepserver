@@ -40,14 +40,6 @@ if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame[
   <td><?= $frame['nick'] ?></td>
 </tr>
 <tr>
-  <th>IP Address</th>
-  <td><?= $frame['ip'] ?></td>
-</tr>
-<tr>
-  <th>UID</th>
-  <td><?= $frame['uid'] ?></td>
-</tr>
-<tr>
   <th>Assigned</th>
   <td><?= date('F j, Y, g:i:s a', $frame['start_time']) ?></td>
 </tr>
