@@ -10,21 +10,15 @@
 
 <?= $menu ?>
 
-<div class="navigation">
-<ul id="submenu">
-<li class="first">Admin</li>
-<li><a href="/admin/newsheep">New Sheep</a></li>
-<li><a href="/admin/newedge">New Edge</a></li>
-<li><a href="/admin/prune">Prune</a></li>
-</ul>
-</div>
-
 <h2>Reset</h2>
 
 <?php if (!$confirm): ?>
 
 <p>Are you sure you want to reset the server and start a new flock?</p>
-<div><a href="/admin/reset?confirm=yes">Yes</a></div>
+<div>
+<a href="/admin/reset?confirm=yes">Yes</a>
+<a href="/admin">No</a>
+</div>
 
 <?php else: ?>
 

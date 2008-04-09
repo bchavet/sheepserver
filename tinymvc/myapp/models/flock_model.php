@@ -264,7 +264,7 @@ class Flock_Model extends TinyMVC_Model
     function getPruneList($flock, $ndays)
     {
         $date = time() - ($ndays * 86400);
-        return $this->db->query_all('select * from sheep where flock_id=? and time_done<? and state!=?', array($flock, $date, 'expunge'));
+        return $this->db->query_all('select * from sheep where flock_id=? and time_done<? and state!=? and first=last', array($flock, $date, 'expunge'));
     }
 
 }

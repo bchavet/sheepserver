@@ -28,6 +28,7 @@ class admin_Controller extends TinyMVC_Controller
             return;
         }
 
+        $this->view->assign('sheeplist', $sheeplist = $this->flock->getSheep());
         $this->view->display('admin_view');
     }
 
@@ -116,8 +117,7 @@ class admin_Controller extends TinyMVC_Controller
             exit;
         }
 
-        $this->view->assign('sheeplist', $sheeplist = $this->flock->getSheep());
-        $this->view->display('admin_newsheep_view');
+        $this->index();
     }
 
     function newedge()
@@ -185,8 +185,7 @@ class admin_Controller extends TinyMVC_Controller
             exit;
         }
 
-        $this->view->assign('sheeplist', $sheeplist = $this->flock->getSheep());
-        $this->view->display('admin_newedge_view');
+        $this->index();
     }
 
     function delete()

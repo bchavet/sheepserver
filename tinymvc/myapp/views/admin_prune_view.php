@@ -10,16 +10,6 @@
 
 <?= $menu ?>
 
-<div class="navigation">
-<ul id="submenu">
-<li class="first">Admin</li>
-<li><a href="/admin/newsheep">New Sheep</a></li>
-<li><a href="/admin/newedge">New Edge</a></li>
-<li><a href="/admin/prune">Prune</a></li>
-<li><a href="/admin/reset">Reset</a></li>
-</ul>
-</div>
-
 <h2>Prune</h2>
 <?php if (!$confirm): ?>
 <p>The following sheep and edges connecting them will be pruned</p>
@@ -55,7 +45,10 @@ foreach ($prunelist as $prune) {
 ?>
 </table>
 
-<div><a href="/admin/prune?numdays=<?= $numdays ?>&amp;confirm=yes">OK</a></div>
+<div>
+<a href="/admin/prune?numdays=<?= $numdays ?>&amp;confirm=yes">OK</a>
+<a href="/admin">Cancel</a>
+</div>
 
 <?php else: ?>
 
