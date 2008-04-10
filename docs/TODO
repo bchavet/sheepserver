@@ -1,0 +1,8 @@
+* automatically keep the queue full
+  * Randomly mate and mutate current members sometimes
+* admin config page
+* make installation work when not on the root
+* fix setup procedure
+* menu highlights
+* inline code documentation
+* archive deleted sheep

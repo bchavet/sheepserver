@@ -113,7 +113,8 @@ class admin_Controller extends TinyMVC_Controller
         // Create new sheep with the spex information
         if (isset($spex)) {
             $sheep_id = $this->flock->newSheep($spex, $this->config->nframes, null, null, isset($extras) ? $extras : null);
-            header('Location: /sheep/genome?sheep=' . $sheep_id);
+            $this->_connect($sheep_id);
+            header('Location: /sheep/motion?sheep=' . $sheep_id);
             exit;
         }
 
@@ -157,19 +158,7 @@ class admin_Controller extends TinyMVC_Controller
             $sheep_id = isset($_REQUEST['sheep']) ? (int)$_REQUEST['sheep'] : null;
             $numedges = isset($_REQUEST['numedges']) ? (int)$_REQUEST['numedges'] : 3;
             if ($sheep_id !== null) {
-                $this->load->model('sheep_model', 'sheep');
-                $missing_edges_in = $this->sheep->getMissingEdges($this->config->flock_id, $sheep_id, 'in');
-                $missing_edges_out = $this->sheep->getMissingEdges($this->config->flock_id, $sheep_id, 'out');
-                
-                for ($i = 0; $i < $numedges; $i++) {
-                    $in = rand(0, count($missing_edges_in) - 1);
-                    $spex = $this->spex->edge($this->config->flock_id, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last'], $this->config->nframes);
-                    $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last']);
-
-                    $out = rand(0, count($missing_edges_out) - 1);
-                    $spex = $this->spex->edge($this->config->flock_id, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last'], $this->config->nframes);
-                    $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last']);
-                }
+                $this->_connect($sheep_id, $numedges);
             }
 
             header('Location: /sheep/motion?sheep=' . $sheep_id);
@@ -181,11 +170,28 @@ class admin_Controller extends TinyMVC_Controller
         // Create new sheep with the spex information
         if (isset($spex)) {
             $sheep_id = $this->flock->newSheep($spex, $this->config->nframes, $sheep[0], $sheep[1]);
-            header('Location: /sheep/genome?sheep=' . $sheep_id);
+            header('Location: /sheep/motion?sheep=' . $sheep_id);
             exit;
         }
 
         $this->index();
+    }
+
+    function _connect($sheep_id, $numedges = 3)
+    {
+        $this->load->model('sheep_model', 'sheep');
+        $missing_edges_in = $this->sheep->getMissingEdges($this->config->flock_id, $sheep_id, 'in');
+        $missing_edges_out = $this->sheep->getMissingEdges($this->config->flock_id, $sheep_id, 'out');
+                
+        for ($i = 0; $i < $numedges; $i++) {
+            $in = rand(0, count($missing_edges_in) - 1);
+            $spex = $this->spex->edge($this->config->flock_id, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last'], $this->config->nframes);
+            $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last']);
+
+            $out = rand(0, count($missing_edges_out) - 1);
+            $spex = $this->spex->edge($this->config->flock_id, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last'], $this->config->nframes);
+            $this->flock->newSheep($spex, $this->config->nframes, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last']);
+        }
     }
 
     function delete()

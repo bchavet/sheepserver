@@ -205,4 +205,5 @@ class Sheep_Model extends TinyMVC_Model
         return  $this->db->query_all('select * from sheep where flock_id=? and (parent0=? or parent1=?)',
                                      array($flock, $sheep, $sheep));
     }
+
 }
