@@ -245,7 +245,7 @@ class Flock_Model extends TinyMVC_Model
 
     function getCredit($flock)
     {
-        $nicks = $this->db->query_all('select distinct nick from frame where nick is not null and flock_id=?', array($flock));
+        $nicks = $this->db->query_all('select distinct nick from frame where nick is not null and flock_id=? and state=?', array($flock, 'done'));
         $count = array();
         foreach ($nicks as $nick) {
             $result = $this->db->query_init('select count(nick) from frame where nick=?', array($nick['nick']));
