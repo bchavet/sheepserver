@@ -22,7 +22,6 @@
   <li class="first">Sheep <?= $sheep ?></li>
   <li><a href="/sheep/status?sheep=<?= $sheep ?>">Status</a></li>
   <li><a href="/sheep/frames?sheep=<?= $sheep ?>">Frames</a></li>
-  <li><a href="/sheep/motion?sheep=<?= $sheep ?>">Motion</a></li>
   <li><a href="/sheep/family?sheep=<?= $sheep ?>">Family</a></li>
   <li><a href="/sheep/genome?sheep=<?= $sheep ?>">Genome</a></li>
   <li><a href="/sheep/credit?sheep=<?= $sheep ?>">Credit</a></li>

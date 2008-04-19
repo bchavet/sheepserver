@@ -114,7 +114,7 @@ class admin_Controller extends TinyMVC_Controller
         if (isset($spex)) {
             $sheep_id = $this->flock->newSheep($spex, $this->config->nframes, null, null, isset($extras) ? $extras : null);
             $this->_connect($sheep_id);
-            header('Location: /sheep/motion?sheep=' . $sheep_id);
+            header('Location: /sheep/status?sheep=' . $sheep_id);
             exit;
         }
 
@@ -161,7 +161,7 @@ class admin_Controller extends TinyMVC_Controller
                 $this->_connect($sheep_id, $numedges);
             }
 
-            header('Location: /sheep/motion?sheep=' . $sheep_id);
+            header('Location: /sheep/status?sheep=' . $sheep_id);
             exit;
             break;
 
@@ -170,7 +170,7 @@ class admin_Controller extends TinyMVC_Controller
         // Create new sheep with the spex information
         if (isset($spex)) {
             $sheep_id = $this->flock->newSheep($spex, $this->config->nframes, $sheep[0], $sheep[1]);
-            header('Location: /sheep/motion?sheep=' . $sheep_id);
+            header('Location: /sheep/status?sheep=' . $sheep_id);
             exit;
         }
 

@@ -37,8 +37,9 @@ class Sheep_Controller extends TinyMVC_Controller
 
     function status()
     {
-        $status = $this->sheep->getSheep($this->flock_id, $this->sheep_id);
-        $this->view->assign('sheepstatus', $status);
+        $this->view->assign('current', $this->sheep->getSheep($this->flock_id, $this->sheep_id));
+        $this->view->assign('before', $this->sheep->getSheepBefore($this->flock_id, $this->sheep_id));
+        $this->view->assign('after', $this->sheep->getSheepAfter($this->flock_id, $this->sheep_id));
         $this->view->display('sheep_status_view');
     }
 
@@ -57,14 +58,6 @@ class Sheep_Controller extends TinyMVC_Controller
         $this->view->assign('first', $first);
         $this->view->assign('last', $last);
         $this->view->display('sheep_frames_view');
-    }
-
-    function motion()
-    {
-        $this->view->assign('current', $this->sheep->getSheep($this->flock_id, $this->sheep_id));
-        $this->view->assign('before', $this->sheep->getSheepBefore($this->flock_id, $this->sheep_id));
-        $this->view->assign('after', $this->sheep->getSheepAfter($this->flock_id, $this->sheep_id));
-        $this->view->display('sheep_motion_view');
     }
 
     /*
