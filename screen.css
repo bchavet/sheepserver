@@ -24,6 +24,7 @@ body {
     background-color: #e0e0e0;
     margin: 3px auto;
     display: table;
+    font-size: 0.9em;
 }
 
 .navigation ul {
