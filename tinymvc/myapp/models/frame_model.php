@@ -68,4 +68,30 @@ class Frame_Model extends TinyMVC_Model
         // Cleanup temp file
         unlink($tmp_spex_file);
     }
+
+    function deleteFrame($flock_id, $sheep_id, $frame_id)
+    {
+        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock_id . DS . $sheep_id;
+        
+        // Delete jpeg
+        if (file_exists($sheepdir . DS . $frame_id . '.jpg')) {
+            unlink($sheepdir . DS . $frame_id . '.jpg');
+        }
+
+        // Delete thumbnail
+        if (file_exists($sheepdir . DS . $frame_id . '.thumbnail.jpg')) {
+            unlink($sheepdir . DS . $frame_id . '.thumbnail.jpg');
+        }
+
+        // Delete the mpeg
+        if (file_exists($sheepdir . DS . 'sheep.mpg')) {
+            unlink ($sheepdir . DS . 'sheep.mpg');
+        }
+
+        // Reset database entry, returning the sheep back to the queue
+        $this->db->query('update frame set state=?, ip=?, uid=?, nick=?, start_time=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
+                         array('ready', null, null, null, null, null, $flock_id, $sheep_id, $frame_id));
+        $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?',
+                         array('incomplete', $flock_id, $sheep_id));
+    }
 }

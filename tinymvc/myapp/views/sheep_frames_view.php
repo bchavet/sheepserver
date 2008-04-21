@@ -31,19 +31,41 @@ if ($first != $last) {
 <?php if ($remaining > 0) { echo $remaining . ' frames remaining.'; } ?>
 </p>
 
+<table>
+
+<tr>
+  <th>Frame</th>
+  <th>State</th>
+  <th>Nick</th>
+  <th>Start Time</th>
+  <th>End Time</th>
+  <th>Duration</th>
+</tr>
+
 <?php
 foreach ($frames as $frame) {
-     echo '<a href="/frame?sheep=' . $frame['sheep_id'] . '&amp;frame=' . $frame['frame_id'] . '">';
-     if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame['sheep_id'] . DS . $frame['frame_id'] . '.thumbnail.jpg')) {
-         echo '<img src="/gen/' . $frame['flock_id'] . '/' . $frame['sheep_id'] . '/' . $frame['frame_id'] . '.thumbnail.jpg" alt="" class="thumbnail" />';
-     } else if ($frame['state'] == 'assigned') {
-         echo '<img src="/images/busy-icon.jpg" alt="assigned" class="thumbnail" />';
-     } else {
-         echo '<img src="/images/anon-icon.jpg" alt="ready" class="thumbnail" />';
-     }
-     echo '</a>';
- }
+    echo '<tr><td>';
+    if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $frame['flock_id'] . DS . $frame['sheep_id'] . DS . $frame['frame_id'] . '.thumbnail.jpg')) {
+        echo '<img src="/gen/' . $frame['flock_id'] . '/' . $frame['sheep_id'] . '/' . $frame['frame_id'] . '.thumbnail.jpg" alt="" class="thumbnail" />';
+    } else if ($frame['state'] == 'assigned') {
+        echo '<img src="/images/busy-icon.jpg" alt="assigned" class="thumbnail" />';
+    } else {
+        echo '<img src="/images/anon-icon.jpg" alt="ready" class="thumbnail" />';
+    }
+    echo '<td>' . $frame['state'] . '</td>';
+    if ($frame['state'] != 'ready') {
+        echo '<td>' . $frame['nick'] . '</td>';
+        echo '<td>' . date('F j, Y, g:i:s a', $frame['start_time']) . '</td>';
+    }
+    if ($frame['state'] == 'done') {
+        echo '<td>' . date('F j, Y, g:i:s a', $frame['end_time']) . '</td>';
+        echo '<td>' . ($frame['end_time'] - $frame['start_time']) . 's</td>';
+    }
+    echo '</td></tr>';
+  }
 ?>
+
+</table>
 
 </body>
 

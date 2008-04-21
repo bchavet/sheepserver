@@ -40,22 +40,6 @@
 </div>
 <?php endif; ?>
 
-<?php if (isset($frame)): ?>
-<div class="navigation">
-<ul>
-  <li class="first">Frame <?= $frame ?></li>
-  <li><a href="/frame/status?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Status</a></li>
-  <li><a href="/frame/genome?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Genome</a></li>
-</ul>
-<?php if (!empty($_SESSION['logged_in'])): ?>
-<ul class="admin">
-  <li class="first"><a href="/admin/delete?sheep=<?= $sheep ?>&amp;frame=<?= $frame ?>">Delete</a></li>
-</ul>
-<?php endif; ?>
-<div class="clr"></div>
-</div>
-<?php endif; ?>
-
 <?php if (isset($sheep) && !empty($author_credit)): ?>
 <div>
 Original Sheep: <a href="<?= $author_credit ?>"><?= $author_credit ?></a>

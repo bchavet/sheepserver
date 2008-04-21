@@ -2,17 +2,34 @@
 
 class cgi_Controller extends TinyMVC_Controller
 {
-    var $method_map = array('list' => 'listsheep');
+    var $method_map = array('list' => 'listsheep',
+                            'vote.cgi' => 'vote');
 
+    /**
+     * Constructor
+     */
     function __construct()
     {
         parent::__construct();
         $this->load->model('config_model', 'config');
+        $this->load->model('server_model', 'server');
     }
 
+    /**
+     * Handle undefined method calls
+     */
+    function __call($name, $args)
+    {
+        $this->index();
+    }
+
+    /**
+     * Default controller method
+     */
     function index()
     {
-        $this->view->display('test_view');
+        header('Location: /flock/status');
+        exit;
     }
 
     /**
@@ -20,17 +37,8 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function listsheep()
     {
-        // Dynamically generate list
-        $this->load->model('server_model', 'server');
         $list = $this->server->getList($this->config->flock_id);
         echo gzencode($list, 9);
-
-        /*
-        // Output contents of list file
-        $file = ES_BASEDIR . DS . 'gen' . DS . $this->config->flock_id . DS . 'txt' . DS . 'list.txt.gz';
-        $contents = file_get_contents($file);
-        echo $contents;
-        */
     }
 
     /**
@@ -39,7 +47,6 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function get()
     {
-        $this->load->model('server_model', 'server');
         $this->load->model('frame_model', 'frame');
 
         // Attempt to get a job from the server
@@ -52,7 +59,7 @@ class cgi_Controller extends TinyMVC_Controller
         echo $this->frame->getGenomeGZ($job['flock_id'], $job['sheep_id'], $job['frame_id']);
 
         // Assign the job to the requesting client
-        $this->server->assign($job['flock_id'], $job['sheep_id'], $job['frame_id'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), addslashes($_GET['n']));
+        $this->server->assign($job['flock_id'], $job['sheep_id'], $job['frame_id'], $_SERVER['REMOTE_ADDR'], addslashes($_REQUEST['u']), addslashes($_REQUEST['n']));
     }
 
     /**
@@ -60,8 +67,6 @@ class cgi_Controller extends TinyMVC_Controller
      */
     function put()
     {
-        $this->load->model('server_model', 'server');
-
         // Get raw POST data
         $data = file_get_contents('php://input');
  
@@ -70,26 +75,23 @@ class cgi_Controller extends TinyMVC_Controller
     }
 
     /**
-     * Encode any sheep that have all of their frames rendered
+     * Scheduled maintenance, must be called periodically in order to render
+     * sheep that are ready, as well as clean up stale assignments.
      */
-    function encode()
+    function maintenance()
     {
-        $this->load->model('server_model', 'server');
+        // Encode any sheep that have all of their frames rendered
         $sheep = $this->server->encodeSheep($this->config->flock_id);
-    }
 
-    /**
-     * Clean up stale assignments
-     */
-    function cleanup()
-    {
-        $this->load->model('server_model', 'server');
+        // Clean up stale assignments
         $assignments = $this->server->getStaleAssignments();
         foreach ($assignments as $assignment) {
             $this->server->unassign($assignment['flock_id'], $assignment['sheep_id'], $assignment['frame_id']);
         }
+    }
 
-        header('Location: /flock');
-        exit;
+    function vote()
+    {
+        echo 'vote';
     }
 }

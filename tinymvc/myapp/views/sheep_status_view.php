@@ -38,8 +38,8 @@ foreach ($before as $sheep) {
 
 <td>
 <?php
-if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $current['flock_id'] . DS . $current['sheep_id'] . DS . '0.jpg')) {
-    echo '<img src="/gen/' . $current['flock_id'] . '/' . $current['sheep_id'] . '/0.jpg" alt="" class="frame" />';
+if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $current['flock_id'] . DS . $current['sheep_id'] . DS . '0.image.jpg')) {
+    echo '<img src="/gen/' . $current['flock_id'] . '/' . $current['sheep_id'] . '/0.image.jpg" alt="" class="frame" />';
 } else if ($current['state'] == 'incomplete') {
     echo '<img src="/images/busy-icon.jpg" alt="assigned" />';
 } else {
@@ -72,25 +72,6 @@ foreach ($after as $sheep) {
 </td>
 
 </tr>
-</table>
-
-<table>
-<tr>
-  <th>Sheep</th>
-  <td><?= $current['sheep_id'] ?></td>
-</tr>
-<tr>
-  <th>Status</th>
-  <td><?= $current['state'] ?></td>
-</tr>
-
-<?php if ($current['state'] == 'done'): ?>
-<tr>
-  <th>Completed</th>
-  <td><?= date('F j, Y, g:i:s a', $current['time_done']) ?></td>
-</tr>
-<?php endif; ?>
-
 </table>
 
 </body>

@@ -11,16 +11,16 @@ class Sheep_Model extends TinyMVC_Model
 
     function countCompletedFrames($flock, $sheep)
     {
-        $result = $this->db->query_init('select count(*) from frame where flock_id=? and sheep_id=? and state=?',
+        $result = $this->db->query_init('select count(sheep_id) from frame where flock_id=? and sheep_id=? and state=?',
                                         array($flock, $sheep, 'done'));
-        return $result['count(*)'];
+        return $result['count(sheep_id)'];
     }
 
     function getGenome($flock, $sheep)
     {
-        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep;
-        $genome = file_get_contents($sheepdir . DS . 'spex');
-        return $genome;
+        $result = $this->db->query_init('select spex from sheep where flock_id=? and sheep_id=?',
+                                        array($flock, $sheep));
+        return $result['spex'];
     }
 
     function getFirst($flock, $sheep)
@@ -37,7 +37,7 @@ class Sheep_Model extends TinyMVC_Model
         return $result['last'];
     }
 
-    function deleteSheep($flock, $sheep)
+    function deleteSheep($flock, $sheep, $archive = true)
     {
         $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep;
 
@@ -50,32 +50,41 @@ class Sheep_Model extends TinyMVC_Model
             if (file_exists($sheepdir . DS . $frame['frame_id'] . '.jpg')) {
                 @unlink($sheepdir . DS . $frame['frame_id'] . '.jpg');
             }
-            if (file_exists($sheepdir . DS . $frame['frame_id'] . '.thumbnail.jpg')) {
-                @unlink($sheepdir . DS . $frame['frame_id'] . '.thumbnail.jpg');
+            if (!$archive || ($archive && $frame['frame_id'] != 0)) {
+                if (file_exists($sheepdir . DS . $frame['frame_id'] . '.thumbnail.jpg')) {
+                    @unlink($sheepdir . DS . $frame['frame_id'] . '.thumbnail.jpg');
+                }
             }
         }
         $this->db->query('delete from frame where flock_id=? and sheep_id=?', array($flock, $sheep));
 
         // Delete sheep
-        if (file_exists($sheepdir . DS . 'spex')) {
-            @unlink($sheepdir . DS . 'spex');
-        }
         if (file_exists($sheepdir . DS . 'sheep.mpg')) {
             @unlink($sheepdir . DS . 'sheep.mpg');
         }
         if (file_exists($sheepdir . DS . 'encode_output')) {
             @unlink($sheepdir . DS . 'encode_output');
         }
-        @rmdir($sheepdir);
-        $this->db->query('delete from sheep where flock_id=? and sheep_id=? and state=?', array($flock, $sheep, 'incomplete'));
-        $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?', array('expunge', $flock, $sheep));
+        if (!$archive) {
+            @rmdir($sheepdir);
+            $this->db->query('delete from sheep where flock_id=? and sheep_id=? and state=?', array($flock, $sheep, 'incomplete'));
+            $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?', array('expunge', $flock, $sheep));
+        } else {
+            $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?', array('archive', $flock, $sheep));
+        }
 
         // Delete any edges that connect to the deleted sheep
-        $edges = $this->db->query_all('select * from sheep where flock_id=? and state!=? and (first=? or last=?)',
-                                      array($flock, 'expunge', $sheep, $sheep));
+        $edges = $this->db->query_all('select sheep_id from sheep where flock_id=? and first!=last and (first=? or last=?)',
+                                      array($flock, $sheep, $sheep));
         foreach ($edges as $edge) {
-            $this->deleteSheep($flock, $edge['sheep_id']);
+            $this->deleteSheep($flock, $edge['sheep_id'], false);
+            $this->db->query('delete from sheep where flock_id=? and sheep_id=?', array($flock, $edge['sheep_id']));
         }
+    }
+
+    function archiveSheep($flock, $sheep)
+    {
+        $this->deleteSheep($flock, $sheep, true);
     }
 
     function getCredit($flock, $sheep)
@@ -84,9 +93,9 @@ class Sheep_Model extends TinyMVC_Model
                                       array($flock, $sheep));
         $count = array();
         foreach ($nicks as $nick) {
-            $result = $this->db->query_init('select count(*) from frame where flock_id=? and sheep_id=? and nick=?',
+            $result = $this->db->query_init('select count(frame_id) from frame where flock_id=? and sheep_id=? and nick=?',
                                             array($flock, $sheep, $nick['nick']));
-            $count[$nick['nick']] = $result['count(*)'];
+            $count[$nick['nick']] = $result['count(frame_id)'];
         }
         arsort($count, SORT_NUMERIC);
         return $count;

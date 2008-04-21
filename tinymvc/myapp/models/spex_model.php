@@ -45,27 +45,29 @@ class Spex_Model extends TinyMVC_Model
         return $spex;
     }
 
-    function edge($flock, $sheep0, $sheep1, $nframes)
+    function edge($flock_id, $sheep0, $sheep1, $nframes)
     {
         // Make sure the edge does not already exist
-        $result = $this->db->query_init('select sheep_id from sheep where first=? and last=? and state!=?',
-                                        array($sheep0, $sheep1, 'expunge'));
+        $result = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=?',
+                                        array($flock_id, $sheep0, $sheep1));
         if (!empty($result)) {
             return;
         }
 
         // Get the spex information for sheep0
-        $spex0 = file_get_contents(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep0 . DS . 'spex');
+        $spex0 = $this->db->query_init('select spex from sheep where flock_id=? and sheep_id=?',
+                                       array($flock_id, $sheep0));
 
         // Get the spex information for sheep1
-        $spex1 = file_get_contents(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep1 . DS . 'spex');
-        $spex1 = str_replace('time="0"', 'time="' . $nframes . '"', $spex1);
+        $spex1 = $this->db->query_init('select spex from sheep where flock_id=? and sheep_id=?',
+                                       array($flock_id, $sheep1));
+        $spex1['spex'] = str_replace('time="0"', 'time="' . $nframes . '"', $spex1['spex']);
 
-        // Return the merged spex file
-        return $spex0 . $spex1;
+        // Return the merged spex information
+        return $spex0['spex'] . $spex1['spex'];
     }
 
-    function mutate_rotation($flock, $parent0, $nframes)
+    function mutate_rotation($flock_id, $parent0, $nframes)
     {
         // Choose the animation param file
         $param_file = 'anim_params.template';
@@ -76,10 +78,10 @@ class Spex_Model extends TinyMVC_Model
         }
 
         // Set up parent0 input file
-        $parent0_spex = file_get_contents(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $parent0 . DS . 'spex');
+        $parent0_spex = $this->db->query_init('select spex from sheep where flock_id=? and sheep_id=?', array($flock_id, $parent0));
         $parent0_tmp = tempnam('/tmp', 'es');
         $fs = fopen($parent0_tmp, 'w');
-        fwrite($fs, '<p0>' . $parent0_spex . "</p0>\n");
+        fwrite($fs, '<p0>' . $parent0_spex['spex'] . "</p0>\n");
         fclose($fs);
 
         // Generate spex file
@@ -91,7 +93,7 @@ class Spex_Model extends TinyMVC_Model
         return $spex;
     }
     
-    function mate_rotation($flock, $parent0, $parent1, $nframes)
+    function mate_rotation($flock_id, $parent0, $parent1, $nframes)
     {
         // Choose the animation param file
         $param_file = 'anim_params.template';
@@ -102,17 +104,17 @@ class Spex_Model extends TinyMVC_Model
         }
 
         // Set up parent0 input file
-        $parent0_spex = file_get_contents(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $parent0 . DS . 'spex');
+        $parent0_spex = $this->db->query_init('select spex from sheep where flock_id=? and sheep_id=?', array($flock_id, $parent0));
         $parent0_tmp = tempnam('/tmp', 'es');
         $fs = fopen($parent0_tmp, 'w');
-        fwrite($fs, '<p0>' . $parent0_spex . "</p0>\n");
+        fwrite($fs, '<p0>' . $parent0_spex['spex'] . "</p0>\n");
         fclose($fs);
 
         // Set up parent1 input file
-        $parent1_spex = file_get_contents(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $parent1 . DS . 'spex');
+        $parent1_spex = $this->db->query_init('select spex from sheep where flock_id=? and sheep_id=?', array($flock_id, $parent1));
         $parent1_tmp = tempnam('/tmp', 'es');
         $fs = fopen($parent1_tmp, 'w');
-        fwrite($fs, '<p1>' . $parent1_spex . "</p1>\n");
+        fwrite($fs, '<p1>' . $parent1_spex['spex'] . "</p1>\n");
         fclose($fs);
 
         // Generate spex file

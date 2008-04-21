@@ -3,6 +3,10 @@
 class Stats_Model extends TinyMVC_Model
 {
 
+    /**
+     * Returns the number of frames that have been assigned to clients in the
+     * last $minutes minutes.
+     */
     function framesAssigned($minutes = 60)
     {
         $time = time() - ($minutes * 60);
@@ -10,6 +14,10 @@ class Stats_Model extends TinyMVC_Model
         return $result['count(frame_id)'];
     }
 
+    /**
+     * Returns the number of rendered frames that have been submitted by
+     * clients in the last $minutes minutes.
+     */
     function framesReturned($minutes = 60)
     {
         $time = time() - ($minutes * 60);
@@ -17,6 +25,10 @@ class Stats_Model extends TinyMVC_Model
         return $result['count(frame_id)'];
     }
 
+    /**
+     * Returns the number of sheep that have been completed in the last
+     * $minutes minutes.
+     */
     function sheepCompleted($minutes = 60)
     {
         $time = time() - ($minutes * 60);

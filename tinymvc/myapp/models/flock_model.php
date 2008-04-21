@@ -74,117 +74,154 @@ class Flock_Model extends TinyMVC_Model
         return $result;
     }
 
-    function getSheep()
-    {
-        return $this->db->query_all('select * from sheep where flock_id=? and first=last and state!=? order by sheep_id asc', array($this->flock_id, 'expunge'));
-    }
-
-    function getEdges()
-    {
-        return $this->db->query_all('select * from sheep where flock_id=? and first!=last and state!=? order by sheep_id asc', array($this->flock_id, 'expunge'));
-    }
-
     /**
      * Creates a new sheep based on the given spex information
      */
-    function newSheep($spex, $nframes, $first = null, $last = null, $extras = null)
+    function newSheep($flock_id, $spex, $nframes, $first = null, $last = null, $extras = null)
     {
         // If this is an edge, make sure it doesn't already exist
-        if ($first !== null) {
+        if ($first != $last) {
             $exists = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=? and state!=?',
-                                            array($this->flock_id, $first, $last, 'expunge'));
+                                            array($flock_id, $first, $last, 'expunge'));
             if (is_array($exists)) {
                 return;
             }
         }
         
         // Get the next available sheep ID
-        $sheep = $this->_getNextSheepId();
+        $result = $this->db->query_init('select sheep_id from sheep where flock_id=? order by sheep_id desc', array($flock_id));
+        $sheep_id = $result['sheep_id'] + 1;
         if ($first === null || $last === null) {
-            $first = $last = $sheep;
+            $first = $last = $sheep_id;
         }
         
         // Create the base directory for the new sheep
-        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $this->flock_id . DS . $sheep;
+        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock_id . DS . $sheep_id;
         mkdir($sheepdir);
 
-        // Write spex file
-        $spex_file = $sheepdir . DS . 'spex';
-        $fs = fopen($spex_file, 'w');
-        fwrite($fs, $spex);
-        fclose($fs);
-
         // Add sheep to the database, marked as incomplete
-        $this->db->query('insert into sheep (flock_id, sheep_id, state, first, last, rating, nframes, spex) values (?, ?, ?, ?, ?, ?, ?, ?)', array($this->flock_id, $sheep, 'incomplete', $first, $last, 0, $nframes, $spex));
+        $this->db->query('insert into sheep (flock_id, sheep_id, first, last, nframes, spex, state, start_time) values (?, ?, ?, ?, ?, ?, ?, ?)',
+                         array($flock_id, $sheep_id, $first, $last, $nframes, $spex, 'incomplete', time()));
 
         // Handle "extras"
         if ($extras !== null) {
 
             // Add credit link in order to comply with CC license
             if (isset($extras['creditlink'])) {
-                $this->db->query('update sheep set credit=? where flock_id=? and sheep_id=?', array($extras['creditlink'], $this->flock_id, $sheep));
+                $this->db->query('update sheep set credit=? where flock_id=? and sheep_id=?', array($extras['creditlink'], $flock_id, $sheep_id));
             }
 
             // Keep track of parents if they exist
             if (isset($extras['parent0'])) {
                 if (isset($extras['parent1'])) {
-                    $this->db->query('update sheep set parent0=?, parent1=? where flock_id=? and sheep_id=?', array($extras['parent0'], $extras['parent1'], $this->flock_id, $sheep));
+                    $this->db->query('update sheep set parent0=?, parent1=? where flock_id=? and sheep_id=?', array($extras['parent0'], $extras['parent1'], $flock_id, $sheep_id));
                 } else {
-                    $this->db->query('update sheep set parent0=? where flock_id=? and sheep_id=?', array($extras['parent0'], $this->flock_id, $sheep));
+                    $this->db->query('update sheep set parent0=? where flock_id=? and sheep_id=?', array($extras['parent0'], $flock_id, $sheep_id));
                 }
             }
         }
 
-        // Create copy of spex file for use by flam3-genome
-        $tmp_spex_file = $spex_file . '.tmp';
-        system('echo "<spex>" > ' . $tmp_spex_file);
-        system('cat ' . $spex_file . ' >> ' . $tmp_spex_file);
-        system('echo "</spex>" >> ' . $tmp_spex_file);
-
-        // Generate spex file for each frame
+        // Create frames in database
         for ($i = 0; $i < $nframes; $i++) {
-            if (false) {
-            $gz = gzopen($sheepdir . DS . $i . '.spex.gz', 'w9');
-            gzwrite($gz, '<get gen="' . $this->flock_id . '" id="' . $sheep . '" type="0" prog="flame" args="bits=32 jpeg=100" frame="' . $i . '">' . "\n");
-            if ($first == $last) {
-                $spex = shell_exec("env rotate=$tmp_spex_file enclosed=0 frame=$i nframes=$nframes /usr/bin/flam3-genome");
-            } else {
-                $spex = shell_exec("env inter=$tmp_spex_file enclosed=0 frame=$i nframes=$nframes /usr/bin/flam3-genome");
-            }
-            gzwrite($gz, $spex);
-            gzwrite($gz, '</get>' . "\n");
-            gzclose($gz);
-            }
-
-            // Add frame to the database
-            $this->db->query('insert into frame (flock_id, sheep_id, frame_id, state) values (?, ?, ?, ?)', array($this->flock_id, $sheep, $i, 'ready'));
+            $this->db->query('insert into frame (flock_id, sheep_id, frame_id, state) values (?, ?, ?, ?)', array($flock_id, $sheep_id, $i, 'ready'));
         }
 
-        // Delete temp file
-        unlink($tmp_spex_file);
-        
         // Return sheep ID
-        return $sheep;
+        return $sheep_id;
+    }
+
+    function getAllSheep($flock_id)
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and first=last order by sheep_id asc',
+                                    array($flock_id));
+    }
+
+    function getAllEdges($flock_id)
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and first!=last order by sheep_id asc',
+                                    array($flock_id));
     }
 
     /**
-     * Get the next available sheep ID for this flock
+     * Return the list of completed sheep in the given flock.
      */
-    function _getNextSheepId()
+    function getCompleteSheep($flock_id)
     {
-        $result = $this->db->query_init('select sheep_id from sheep where flock_id=? order by sheep_id desc', array($this->flock_id));
-        return $result['sheep_id'] + 1;
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? and first=last order by sheep_id asc',
+                                    array($flock_id, 'done'));
     }
 
-    function findRandomEdge($first = null, $last = null)
+    /**
+     * Return the list of completed edges in the given flock.
+     */
+    function getCompleteEdges($flock_id)
     {
-        $loops = $this->db->query_all('select sheep_id from sheep where flock_id=? and first=last and state!=?', array($this->flock_id, 'expunge'));
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? and first!=last order by sheep_id asc',
+                                    array($flock_id, 'done'));
+    }
+
+    /**
+     * Return the list of sheep and edges in the rendering queue for the given flock.
+     */
+    function getQueue($flock_id)
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc',
+                                    array($flock_id, 'incomplete'));
+    }
+
+    /**
+     * Return the list of sheep that are done being rendered, and are ready for
+     * post-processing
+     */
+    function getPostQueue($flock_id)
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc',
+                                    array($flock_id, 'ready'));
+    }
+
+    /**
+     * Return the list of users that rendered frames, and how many, for the
+     * given flock.
+     */
+    function getCredit($flock_id)
+    {
+        $nicks = $this->db->query_all('select distinct nick from frame where nick is not null and flock_id=? and state=?',
+                                      array($flock_id, 'done'));
+        $count = array();
+        foreach ($nicks as $nick) {
+            $result = $this->db->query_init('select count(nick) from frame where flock_id=? and nick=?',
+                                            array($flock_id, $nick['nick']));
+            $count[$nick['nick']] = $result['count(nick)'];
+        }
+        arsort($count, SORT_NUMERIC);
+        return $count;
+    }
+
+    /**
+     * Return the list of frames that are currently assigned to clients to be
+     * rendered.
+     */
+    function getAssigned($flock_id)
+    {
+        return $this->db->query_all('select * from frame where flock_id=? and state=? order by start_time asc',
+                                    array($flock_id, 'assigned'));
+    }
+
+    /**
+     * Attempts to find a non-existing edge between two random sheep in the
+     * given flock.
+     */
+    function findRandomEdge($flock_id, $first = null, $last = null)
+    {
+        $loops = $this->db->query_all('select sheep_id from sheep where flock_id=? and first=last and state!=?',
+                                      array($flock_id, 'archive'));
         $found = false;
         for ($i = 0; $i < 20 && !$found; $i++) {
             $sheep[0] = $first === null ? (int)$loops[rand(0, count($loops) - 1)]['sheep_id'] : $first;
             $sheep[1] = $last === null ? (int)$loops[rand(0, count($loops) - 1)]['sheep_id'] : $last;
             if ($sheep[0] != $sheep[1]) {
-                $result = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=?', array($this->flock_id, $sheep[0], $sheep[1]));
+                $result = $this->db->query_init('select sheep_id from sheep where flock_id=? and first=? and last=?',
+                                                array($flock_id, $sheep[0], $sheep[1]));
                 if ($result === false) {
                     $found = true;
                 }
@@ -196,75 +233,6 @@ class Flock_Model extends TinyMVC_Model
         }
 
         return false;
-    }
-
-    function deleteFrame($sheep, $frame)
-    {
-        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $this->flock_id . DS . $sheep;
-        
-        // Delete jpeg
-        if (file_exists($sheepdir . DS . $frame . '.jpg')) {
-            unlink($sheepdir . DS . $frame . '.jpg');
-        }
-
-        // Delete thumbnail
-        if (file_exists($sheepdir . DS . $frame . '.thumbnail.jpg')) {
-            unlink($sheepdir . DS . $frame . '.thumbnail.jpg');
-        }
-
-        // Reset database entry
-        $this->db->query('update frame set state=?, ip=?, uid=?, nick=?, start_time=?, end_time=? where flock_id=? and sheep_id=? and frame_id=?',
-                         array('ready', null, null, null, null, null, $this->flock_id, $sheep, $frame));
-        $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?',
-                         array('incomplete', $this->flock_id, $sheep));
-    }
-
-    function getCompleteSheep($flock)
-    {
-        return $this->db->query_all('select * from sheep where flock_id=? and state=? and first=last order by sheep_id asc',
-                                    array($flock, 'done'));
-    }
-
-    function getCompleteEdges($flock)
-    {
-        return $this->db->query_all('select * from sheep where flock_id=? and state=? and first!=last order by sheep_id asc',
-                                    array($flock, 'done'));
-    }
-
-    function getQueue($flock)
-    {
-        return $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc',
-                                    array($flock, 'incomplete'));
-    }
-
-    function getPostQueue($flock)
-    {
-        return $this->db->query_all('select * from sheep where flock_id=? and state=? order by sheep_id asc',
-                                    array($flock, 'ready'));
-    }
-
-    function getCredit($flock)
-    {
-        $nicks = $this->db->query_all('select distinct nick from frame where nick is not null and flock_id=? and state=?', array($flock, 'done'));
-        $count = array();
-        foreach ($nicks as $nick) {
-            $result = $this->db->query_init('select count(nick) from frame where nick=?', array($nick['nick']));
-            $count[$nick['nick']] = $result['count(nick)'];
-        }
-        arsort($count, SORT_NUMERIC);
-        return $count;
-    }
-
-    function getAssigned($flock)
-    {
-        return $this->db->query_all('select * from frame where flock_id=? and state=? order by start_time asc',
-                                    array($flock, 'assigned'));
-    }
-
-    function getPruneList($flock, $ndays)
-    {
-        $date = time() - ($ndays * 86400);
-        return $this->db->query_all('select * from sheep where flock_id=? and time_done<? and state!=? and first=last', array($flock, $date, 'expunge'));
     }
 
 }
