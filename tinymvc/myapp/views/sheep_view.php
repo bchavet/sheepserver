@@ -10,6 +10,27 @@
 
 <?= $menu ?>
 
+<?php
+if (isset($action)) {
+    switch ($action) {
+    case 'archive':
+        echo '<div class="message confirm">';
+        echo 'Are you sure you want to archive this sheep? ';
+        echo '<a href="/admin/archive?sheep=' . $sheep['sheep_id'] . '">Yes</a> ';
+        echo '<a href="/sheep?sheep=' . $sheep['sheep_id'] . '">No</a>';
+        echo '</div>';
+        break;
+    case 'delete':
+        echo '<div class="message confirm">';
+        echo 'Are you sure you want to delete this sheep? ';
+        echo '<a href="/admin/delete?sheep=' . $sheep['sheep_id'] . '">Yes</a> ';
+        echo '<a href="/sheep?sheep=' . $sheep['sheep_id'] . '">No</a>';
+        echo '</div>';
+        break;
+    }
+}
+?>
+
 <table>
 <tr>
 

@@ -81,8 +81,8 @@ class Sheep_Model extends TinyMVC_Model
         }
 
         // Delete any edges that connect to the deleted sheep
-        $edges = $this->db->query_all('select sheep_id from sheep where flock_id=? and first!=last and (first=? or last=?)',
-                                      array($flock_id, $sheep_id, $sheep_id));
+        $edges = $this->db->query_all('select sheep_id from sheep where flock_id=? and first!=last and (first=? or last=?) and state!=?',
+                                      array($flock_id, $sheep_id, $sheep_id, 'expunge'));
         foreach ($edges as $edge) {
             $this->deleteSheep($flock_id, $edge['sheep_id'], false);
         }

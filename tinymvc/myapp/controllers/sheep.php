@@ -32,6 +32,12 @@ class Sheep_Controller extends TinyMVC_Controller
 
     function index()
     {
+        if (isset($_REQUEST['action']) && !empty($_SESSION['logged_in'])) {
+            if (in_array($_REQUEST['action'], array('archive', 'delete'))) {
+                $this->view->assign('action', $_REQUEST['action']);
+            }
+        }
+
         $this->view->assign('current', $this->sheep->getSheep($this->flock_id, $this->sheep_id));
         $this->view->assign('before', $this->sheep->getSheepBefore($this->flock_id, $this->sheep_id));
         $this->view->assign('after', $this->sheep->getSheepAfter($this->flock_id, $this->sheep_id));

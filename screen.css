@@ -52,6 +52,16 @@ body {
     font-weight: normal;
 }
 
+div.message {
+    width: 100%;
+    margin: 3px auto;
+}
+
+div.confirm {
+    background-color: yellow;
+    border: 1px solid black;
+}
+
 img.thumbnail {
     margin: 2px;
     vertical-align: middle;
