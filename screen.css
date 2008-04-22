@@ -70,6 +70,7 @@ body {
 div.message {
     width: 100%;
     margin: 3px auto;
+    line-height: 1.7em;
 }
 
 div.confirm {
