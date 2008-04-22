@@ -17,7 +17,7 @@
 <?php
 foreach ($before as $sheep) {
      echo '<div>';
-     echo '<a href="/sheep/status?sheep=' . $sheep['first'] . '">';
+     echo '<a href="/sheep?sheep=' . $sheep['first'] . '">';
 
      if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $sheep['flock_id'] . DS . $sheep['first'] . DS . '0.thumbnail.jpg')) {
          echo '<img src="/gen/' . $sheep['flock_id'] . '/' . $sheep['first'] . '/0.thumbnail.jpg" alt="first" class="thumbnail edgefirst" />';
@@ -29,7 +29,7 @@ foreach ($before as $sheep) {
      echo '</div>';
 }
 ?>
-<?php if ($current['first'] == $current['last'] && !empty($_SESSION['logged_in'])): ?>
+<?php if ($current['first'] == $current['last'] && !empty($_SESSION['logged_in']) && $current['state'] != 'archive'): ?>
 <div>
 <a href="/admin/newedge?type=random&amp;last=<?= $current['sheep_id'] ?>">New Edge Here</a>
 </div>
@@ -52,7 +52,7 @@ if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $current['flock_id'] . DS . $curr
 <?php
 foreach ($after as $sheep) {
      echo '<div>';
-     echo '<a href="/sheep/status?sheep=' . $sheep['last'] . '">';
+     echo '<a href="/sheep?sheep=' . $sheep['last'] . '">';
 
      if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $sheep['flock_id'] . DS . $sheep['last'] . DS . '0.thumbnail.jpg')) {
          echo '<img src="/gen/' . $sheep['flock_id'] . '/' . $sheep['last'] . '/0.thumbnail.jpg" alt="last" class="thumbnail edgelast" />';
@@ -64,7 +64,7 @@ foreach ($after as $sheep) {
      echo '</div>';
 }
 ?>
-<?php if ($current['first'] == $current['last'] && !empty($_SESSION['logged_in'])): ?>
+<?php if ($current['first'] == $current['last'] && !empty($_SESSION['logged_in']) && $current['state'] != 'archive'): ?>
 <div>
 <a href="/admin/newedge?type=random&amp;first=<?= $current['sheep_id'] ?>">New Edge Here</a>
 </div>

@@ -37,12 +37,16 @@ class Sheep_Model extends TinyMVC_Model
         return $result['last'];
     }
 
-    function deleteSheep($flock, $sheep, $archive = true)
+    function deleteSheep($flock_id, $sheep_id, $archive = true)
     {
-        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep;
+        $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock_id . DS . $sheep_id;
+        $sheep = $this->getSheep($flock_id, $sheep_id);
+        if ($sheep['first'] != $sheep['last']) {
+            $archive = false;
+        }
 
         // Delete frames
-        $frames = $this->db->query_all('select * from frame where flock_id=? and sheep_id=?', array($flock, $sheep));
+        $frames = $this->db->query_all('select * from frame where flock_id=? and sheep_id=?', array($flock_id, $sheep_id));
         foreach ($frames as $frame) {
             if (file_exists($sheepdir . DS . $frame['frame_id'] . '.spex.gz')) {
                 @unlink($sheepdir . DS . $frame['frame_id'] . '.spex.gz');
@@ -56,7 +60,7 @@ class Sheep_Model extends TinyMVC_Model
                 }
             }
         }
-        $this->db->query('delete from frame where flock_id=? and sheep_id=?', array($flock, $sheep));
+        $this->db->query('delete from frame where flock_id=? and sheep_id=?', array($flock_id, $sheep_id));
 
         // Delete sheep
         if (file_exists($sheepdir . DS . 'sheep.mpg')) {
@@ -66,19 +70,21 @@ class Sheep_Model extends TinyMVC_Model
             @unlink($sheepdir . DS . 'encode_output');
         }
         if (!$archive) {
+            if (file_exists($sheepdir . DS . '0.image.jpg')) {
+                @unlink($sheepdir . DS . '0.image.jpg');
+            }
             @rmdir($sheepdir);
-            $this->db->query('delete from sheep where flock_id=? and sheep_id=? and state=?', array($flock, $sheep, 'incomplete'));
-            $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?', array('expunge', $flock, $sheep));
+            $this->db->query('delete from sheep where flock_id=? and sheep_id=? and state=?', array($flock_id, $sheep_id, 'incomplete'));
+            $this->db->query('update sheep set state=?, modified_time=? where flock_id=? and sheep_id=?', array('expunge', time(), $flock_id, $sheep_id));
         } else {
-            $this->db->query('update sheep set state=? where flock_id=? and sheep_id=?', array('archive', $flock, $sheep));
+            $this->db->query('update sheep set state=?, modified_time=? where flock_id=? and sheep_id=?', array('archive', time(), $flock_id, $sheep_id));
         }
 
         // Delete any edges that connect to the deleted sheep
         $edges = $this->db->query_all('select sheep_id from sheep where flock_id=? and first!=last and (first=? or last=?)',
-                                      array($flock, $sheep, $sheep));
+                                      array($flock_id, $sheep_id, $sheep_id));
         foreach ($edges as $edge) {
-            $this->deleteSheep($flock, $edge['sheep_id'], false);
-            $this->db->query('delete from sheep where flock_id=? and sheep_id=?', array($flock, $edge['sheep_id']));
+            $this->deleteSheep($flock_id, $edge['sheep_id'], false);
         }
     }
 

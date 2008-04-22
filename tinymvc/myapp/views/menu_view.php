@@ -3,6 +3,7 @@
   <li class="first">Flock <?= $flock ?></li>
   <li><a href="/flock/loops">Loops</a></li>
   <li><a href="/flock/edges">Edges</a></li>
+  <li><a href="/flock/archive">Archive</a></li>
   <li><a href="/flock/queue">Queue</a></li>
   <li><a href="/flock/credit">Credit</a></li>
   <li><a href="/flock/stats">Statistics</a></li>
@@ -16,33 +17,36 @@
 <div class="clr"></div>
 </div>
 
-<?php if (isset($sheep)): ?>
+<?php if (isset($sheep) && is_array($sheep)): ?>
 <div class="navigation">
 <ul>
-  <li class="first">Sheep <?= $sheep ?></li>
-  <li><a href="/sheep/status?sheep=<?= $sheep ?>">Status</a></li>
-  <li><a href="/sheep/frames?sheep=<?= $sheep ?>">Frames</a></li>
-  <li><a href="/sheep/family?sheep=<?= $sheep ?>">Family</a></li>
-  <li><a href="/sheep/genome?sheep=<?= $sheep ?>">Genome</a></li>
-  <li><a href="/sheep/credit?sheep=<?= $sheep ?>">Credit</a></li>
-  <?php if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep . DS . 'sheep.mpg')): ?>
-  <li><a href="/gen/<?= $flock ?>/<?= $sheep ?>/sheep.mpg">Download</a></li>
+  <li class="first">Sheep <?= $sheep['sheep_id'] ?></li>
+  <li><a href="/sheep?sheep=<?= $sheep['sheep_id'] ?>">View</a></li>
+  <?php if ($sheep['state'] != 'archive'): ?>
+  <li><a href="/sheep/frames?sheep=<?= $sheep['sheep_id'] ?>">Frames</a></li>
+  <?php endif; ?>
+  <li><a href="/sheep/family?sheep=<?= $sheep['sheep_id'] ?>">Family</a></li>
+  <li><a href="/sheep/genome?sheep=<?= $sheep['sheep_id'] ?>">Genome</a></li>
+  <?php if ($sheep['state'] != 'archive'): ?>
+  <li><a href="/sheep/credit?sheep=<?= $sheep['sheep_id'] ?>">Credit</a></li>
+  <?php endif; ?>
+  <?php if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep['sheep_id'] . DS . 'sheep.mpg')): ?>
+  <li><a href="/gen/<?= $flock ?>/<?= $sheep['sheep_id'] ?>/sheep.mpg">Download</a></li>
   <?php endif; ?>
 </ul>
-<?php if (!empty($_SESSION['logged_in'])): ?>
+<?php if (!empty($_SESSION['logged_in']) && $sheep['state'] != 'archive'): ?>
 <ul class="admin">
-  <li class="first"><a href="/admin/delete?sheep=<?= $sheep ?>">Delete</a></li>
-  <li><a href="/admin/newedge?sheep=<?= $sheep ?>&amp;type=connect">Connect</a></li>
-  <li><a href="/admin/newsheep?type=mutate&amp;parent0=<?= $sheep ?>">Mutate</a></li>
+  <li class="first"><a href="/admin/archive?sheep=<?= $sheep['sheep_id'] ?>">Archive</a></li>
+  <li><a href="/admin/delete?sheep=<?= $sheep['sheep_id'] ?>">Delete</a></li>
 </ul>
 <?php endif; ?>
 <div class="clr"></div>
 </div>
-<?php endif; ?>
 
-<?php if (isset($sheep) && !empty($author_credit)): ?>
+<?php if (!empty($sheep['credit_link'])): ?>
 <div>
-Original Sheep: <a href="<?= $author_credit ?>"><?= $author_credit ?></a>
+Original Sheep: <a href="<?= $sheep['credit_link'] ?>"><?= $sheep['credit_link'] ?></a>
 </div>
 <?php endif; ?>
 
+<?php endif; ?>

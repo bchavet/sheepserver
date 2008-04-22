@@ -72,4 +72,10 @@ class Flock_Controller extends TinyMVC_Controller
         $this->view->display('flock_stats_view');
     }
  
+    function archive()
+    {
+        $this->view->assign('sheeplist', $this->flock->getArchivedSheep($this->flock_id));
+        $this->view->display('flock_archive_view');
+    }
+
 }

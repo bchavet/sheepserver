@@ -161,6 +161,15 @@ class Flock_Model extends TinyMVC_Model
     }
 
     /**
+     * Return the list of archived sheep in the given flock.
+     */
+    function getArchivedSheep($flock_id)
+    {
+        return $this->db->query_all('select * from sheep where flock_id=? and state=? and first=last order by sheep_id asc',
+                                    array($flock_id, 'archive'));
+    }
+
+    /**
      * Return the list of sheep and edges in the rendering queue for the given flock.
      */
     function getQueue($flock_id)

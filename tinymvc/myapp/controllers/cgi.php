@@ -88,6 +88,9 @@ class cgi_Controller extends TinyMVC_Controller
         foreach ($assignments as $assignment) {
             $this->server->unassign($assignment['flock_id'], $assignment['sheep_id'], $assignment['frame_id']);
         }
+
+        // Clean up expunged sheep
+        $this->server->cleanExpunged($this->config->flock_id, $this->config->ndays_expunge);
     }
 
     function vote()

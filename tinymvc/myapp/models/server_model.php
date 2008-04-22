@@ -110,11 +110,23 @@ class Server_Model extends TinyMVC_Model
         }
     }
 
+    function cleanExpunged($flock_id, $ndays = 7)
+    {
+        $time = time() - ($ndays * 86400);
+        $this->db->query('delete from sheep where flock_id=? and state=? and modified_time<?', array($flock_id, 'expunge', $time));
+    }
+
     function getList($flock)
     {
         // Start list XML
         $list = "<list gen=\"$flock\">\n";
         
+        // Get a list of sheep that need to be deleted
+        $sheeplist = $this->db->query_all('select * from sheep where flock_id=? and state=?', array($flock, 'expunge'));
+        foreach ($sheeplist as $sheep) {
+            $list .= '<sheep id="' . $sheep['sheep_id'] . '" state="expunge" first="' . $sheep['first'] . '" last="' . $sheep['last'] . '"/>' . "\n";
+        }
+
         // Get a list of sheep that are ready to be downloaded
         $sheeplist = $this->db->query_all('select * from sheep where flock_id=? and state=?', array($flock, 'done'));
         foreach ($sheeplist as $sheep) {

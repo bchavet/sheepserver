@@ -20,7 +20,7 @@ class Sheep_Controller extends TinyMVC_Controller
         $author_credit = $this->sheep->getAuthorCredit($this->flock_id, $this->sheep_id);
 
         $this->view->assign('flock', $this->flock_id);
-        $this->view->assign('sheep', $this->sheep_id);
+        $this->view->assign('sheep', $this->sheep->getSheep($this->flock_id, $this->sheep_id));
         $this->view->assign(array('author_credit' => $author_credit));
         $this->view->assign('menu', $this->view->fetch('menu_view'));
     }
@@ -32,15 +32,10 @@ class Sheep_Controller extends TinyMVC_Controller
 
     function index()
     {
-        $this->status();
-    }
-
-    function status()
-    {
         $this->view->assign('current', $this->sheep->getSheep($this->flock_id, $this->sheep_id));
         $this->view->assign('before', $this->sheep->getSheepBefore($this->flock_id, $this->sheep_id));
         $this->view->assign('after', $this->sheep->getSheepAfter($this->flock_id, $this->sheep_id));
-        $this->view->display('sheep_status_view');
+        $this->view->display('sheep_view');
     }
 
     function frames()

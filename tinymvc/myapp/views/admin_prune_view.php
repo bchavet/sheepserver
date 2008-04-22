@@ -17,7 +17,7 @@
 <table>
 <?php
 foreach ($prunelist as $prune) {
-     echo '<tr><td><a href="/sheep/status?sheep=' . $prune['sheep_id'] . '">';
+     echo '<tr><td><a href="/sheep?sheep=' . $prune['sheep_id'] . '">';
      if ($prune['first'] != $prune['last']) {
          
          if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $prune['flock_id'] . DS . $prune['first'] . DS . '0.thumbnail.jpg')) {
