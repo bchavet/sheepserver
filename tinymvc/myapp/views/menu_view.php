@@ -25,7 +25,9 @@
   <?php if ($sheep['state'] != 'archive'): ?>
   <li><a href="/sheep/frames?sheep=<?= $sheep['sheep_id'] ?>">Frames</a></li>
   <?php endif; ?>
+  <?php if ($sheep['first'] == $sheep['last']): ?>
   <li><a href="/sheep/family?sheep=<?= $sheep['sheep_id'] ?>">Family</a></li>
+  <?php endif; ?>
   <li><a href="/sheep/genome?sheep=<?= $sheep['sheep_id'] ?>">Genome</a></li>
   <?php if ($sheep['state'] != 'archive'): ?>
   <li><a href="/sheep/credit?sheep=<?= $sheep['sheep_id'] ?>">Credit</a></li>
