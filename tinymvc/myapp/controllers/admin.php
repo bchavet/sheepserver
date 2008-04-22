@@ -229,7 +229,25 @@ class admin_Controller extends TinyMVC_Controller
         if ($sheep_id !== null) {
             $this->load->model('sheep_model', 'sheep');
             $this->sheep->archiveSheep($this->config->flock_id, $sheep_id);
-            header('Location: /flock');
+            header('Location: /flock/archive');
+            exit;
+        }
+    }
+
+    function unarchive()
+    {
+        if (empty($_SESSION['logged_in'])) {
+            $this->view->display('admin_login_view');
+            return;
+        }
+
+        $sheep_id = isset($_REQUEST['sheep']) ? $_REQUEST['sheep'] : null;
+
+        if ($sheep_id !== null) {
+            $this->load->model('sheep_model', 'sheep');
+            $this->sheep->unarchiveSheep($this->config->flock_id, $sheep_id);
+            $this->_connect($sheep_id);
+            header('Location: /sheep?sheep=' . $sheep_id);
             exit;
         }
     }

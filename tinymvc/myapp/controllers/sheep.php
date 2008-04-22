@@ -33,7 +33,7 @@ class Sheep_Controller extends TinyMVC_Controller
     function index()
     {
         if (isset($_REQUEST['action']) && !empty($_SESSION['logged_in'])) {
-            if (in_array($_REQUEST['action'], array('archive', 'delete'))) {
+            if (in_array($_REQUEST['action'], array('archive', 'delete', 'unarchive'))) {
                 $this->view->assign('action', $_REQUEST['action']);
             }
         }

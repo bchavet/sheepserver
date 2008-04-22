@@ -36,8 +36,13 @@
 </ul>
 <?php if (!empty($_SESSION['logged_in']) && $sheep['state'] != 'archive'): ?>
 <ul class="admin">
-  <li class="first"><a href="/sheep?sheep=<?= $sheep['sheep_id'] ?>&action=archive">Archive</a></li>
+  <li class="first"><a href="/sheep?sheep=<?= $sheep['sheep_id'] ?>&amp;action=archive">Archive</a></li>
   <li><a href="/sheep?sheep=<?= $sheep['sheep_id'] ?>&amp;action=delete">Delete</a></li>
+</ul>
+<?php endif; ?>
+<?php if (!empty($_SESSION['logged_in']) && $sheep['state'] == 'archive'): ?>
+<ul class="admin">
+  <li class="first"><a href="/sheep?sheep=<?= $sheep['sheep_id'] ?>&amp;action=unarchive">Unarchive</a></li>
 </ul>
 <?php endif; ?>
 <div class="clr"></div>

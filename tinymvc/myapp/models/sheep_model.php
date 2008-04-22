@@ -93,6 +93,19 @@ class Sheep_Model extends TinyMVC_Model
         $this->deleteSheep($flock, $sheep, true);
     }
 
+    function unarchiveSheep($flock_id, $sheep_id)
+    {
+        // Restore state
+        $this->db->query('update sheep set state=?, modified_time=? where flock_id=? and sheep_id=?',
+                         array('incomplete', time(), $flock_id, $sheep_id));
+
+        // Restore frames in database
+        $sheep = $this->getSheep($flock_id, $sheep_id);
+        for ($i = 0; $i < $sheep['nframes']; $i++) {
+            $this->db->query('insert into frame (flock_id, sheep_id, frame_id, state) values (?, ?, ?, ?)', array($flock_id, $sheep_id, $i, 'ready'));
+        }
+    }
+
     function getCredit($flock, $sheep)
     {
         $nicks = $this->db->query_all('select distinct nick from frame where flock_id=? and sheep_id=? and nick is not null',
