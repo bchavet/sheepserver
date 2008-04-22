@@ -1,8 +1,12 @@
 <?php
 $list = '';
+$edgelist = '';
 foreach ($sheeplist as $sheep) {
     if ($sheep['first'] == $sheep['last']) {
         $list .= '<option value="' . $sheep['sheep_id'] . '">' . $sheep['sheep_id'] . '</option>';
+        if ($sheep['state'] != 'archive') {
+            $edgelist .= '<option value="' . $sheep['sheep_id'] . '">' . $sheep['sheep_id'] . '</option>';
+        }
     }
 }
 ?>
@@ -65,8 +69,8 @@ Credit Link: <input type="text" name="creditlink" />
 <div class="admin">
 <form name="edge" action="/admin/newedge" method="post">
 <input type="hidden" name="type" value="edge" />
-<select name="first"><?= $list ?></select>
-<select name="last"><?= $list ?></select>
+<select name="first"><?= $edgelist ?></select>
+<select name="last"><?= $edgelist ?></select>
 <input type="submit" value="Edge" />
 </form>
 </div>
@@ -74,7 +78,7 @@ Credit Link: <input type="text" name="creditlink" />
 <div class="admin">
 <form name="complete" action="/admin/newedge" method="post">
 <input type="hidden" name="type" value="connect" />
-<select name="sheep"><?= $list ?></select>
+<select name="sheep"><?= $edgelist ?></select>
 <input type="submit" value="Connect" />
 </form>
 </div>

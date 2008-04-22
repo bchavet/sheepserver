@@ -177,8 +177,8 @@ class Sheep_Model extends TinyMVC_Model
     function getMissingEdges($flock_id, $sheep_id, $direction = 'both')
     {
         // Get all other loops
-        $loops = $this->db->query_all('select * from sheep where flock_id=? and sheep_id!=? and first=last and state!=?',
-                                      array($flock_id, $sheep_id, 'expunge'));
+        $loops = $this->db->query_all('select * from sheep where flock_id=? and sheep_id!=? and first=last and state!=? and state!=?',
+                                      array($flock_id, $sheep_id, 'expunge', 'archive'));
 
         // Find missing edges
         $edges = array();

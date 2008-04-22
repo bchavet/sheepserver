@@ -134,7 +134,7 @@ class admin_Controller extends TinyMVC_Controller
             // Try to find a random edge
             $first = isset($_REQUEST['first']) ? (int)$_REQUEST['first'] : null;
             $last = isset($_REQUEST['last']) ? (int)$_REQUEST['last'] : null;
-            $sheep = $this->flock->findRandomEdge($first, $last);
+            $sheep = $this->flock->findRandomEdge($this->config->flock_id, $first, $last);
         
             if (is_array($sheep)) {
                 // Generate spex information for the edge
@@ -162,12 +162,17 @@ class admin_Controller extends TinyMVC_Controller
             header('Location: /sheep?sheep=' . $sheep_id);
             exit;
             break;
-
         }
 
         // Create new sheep with the spex information
         if (isset($spex)) {
             $sheep_id = $this->flock->newSheep($this->config->flock_id, $spex, $this->config->nframes, $sheep[0], $sheep[1]);
+
+            if (isset($_REQUEST['return']) && (int)$_REQUEST['return'] != 0) {
+                header('Location: /sheep?sheep=' . (int)$_REQUEST['return']);
+                exit;
+            }
+
             header('Location: /sheep?sheep=' . $sheep_id);
             exit;
         }
