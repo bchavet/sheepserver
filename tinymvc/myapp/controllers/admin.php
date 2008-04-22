@@ -216,7 +216,7 @@ class admin_Controller extends TinyMVC_Controller
         
         if ($sheep_id !== null) {
             $this->load->model('sheep_model', 'sheep');
-            $this->sheep->deleteSheep($this->config->flock_id, $sheep_id, true);
+            $this->sheep->deleteSheep($this->config->flock_id, $sheep_id, false);
             header('Location: /flock');
             exit;
         }
