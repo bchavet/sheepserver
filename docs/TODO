@@ -7,3 +7,5 @@
 * inline code documentation
 * handle ratings
 * remove time limit on maintenance script
+* add priority to queue
+* clean up hardcoded "sheep.badllama.com"
