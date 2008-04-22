@@ -9,3 +9,4 @@
 * remove time limit on maintenance script
 * add priority to queue
 * clean up hardcoded "sheep.badllama.com"
+* make sure sheeps' modified_time is always updated
