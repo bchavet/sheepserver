@@ -40,8 +40,8 @@ if ($parents['parent1'] !== null) {
 <div>
 Myself<br />
 <?php
-if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep . DS . '0.thumbnail.jpg')) {
-    echo '<img src="/gen/' . $flock . '/' . $sheep . '/0.thumbnail.jpg" alt="" class="thumbnail self" />';
+if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep['sheep_id'] . DS . '0.thumbnail.jpg')) {
+    echo '<img src="/gen/' . $flock . '/' . $sheep['sheep_id'] . '/0.thumbnail.jpg" alt="" class="thumbnail self" />';
 } else {
     echo '<img src="/images/anon-icon.jpg" alt="" class="thumbnail self" />';
 }
