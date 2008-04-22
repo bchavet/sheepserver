@@ -9,7 +9,6 @@ body {
     color: #666666;
     font-family: arial,sans;
     font-size: 100%;
-    line-height: 1.7em;
     margin: 0 auto;
     width: 900px;
     text-align: center;
@@ -25,31 +24,47 @@ body {
     margin: 3px auto;
     display: table;
     font-size: 0.9em;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .navigation ul {
     display: inline;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .navigation ul li {
     list-style: none;
-    padding: 2px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     display: inline;
 }
 
 .navigation ul li.first {
     border-right: 1px solid #999999;
     font-weight: bold;
+    padding-right: 8px;
+    padding-left: 8px;
 }
 
 .navigation ul.admin li.first {
     border-right: none;
     border-left: 1px solid #999999;
     font-weight: normal;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.navigation a {
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-decoration: none;
+    color: blue;
+}
+
+.navigation a:hover {
+    background-color: white;
+    color: red;
 }
 
 div.message {
