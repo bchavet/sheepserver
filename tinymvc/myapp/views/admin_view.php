@@ -53,12 +53,17 @@ foreach ($sheeplist as $sheep) {
 <form name="upload" action="/admin/newsheep" method="post" enctype="multipart/form-data">
 <input type="hidden" name="type" value="upload" />
 File: <input type="file" name="genome" />
-<br />
-Credit Link: <input type="text" name="creditlink" />
 <input type="submit" value="Upload" />
 </form>
 </div>
 
+<div class="admin">
+<form name="url" action="/admin/newsheep" method="post">
+<input type="hidden" name="type" value="url" />
+URL: <input type="text" name="url" />
+<input type="submit" value="Submit" />
+</form>
+</div>
 
 <h2>New Edge</h2>
 

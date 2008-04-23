@@ -108,7 +108,7 @@ class Flock_Model extends TinyMVC_Model
 
             // Add credit link in order to comply with CC license
             if (isset($extras['creditlink'])) {
-                $this->db->query('update sheep set credit=? where flock_id=? and sheep_id=?', array($extras['creditlink'], $flock_id, $sheep_id));
+                $this->db->query('update sheep set credit_link=? where flock_id=? and sheep_id=?', array($extras['creditlink'], $flock_id, $sheep_id));
             }
 
             // Keep track of parents if they exist

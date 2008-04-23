@@ -80,8 +80,35 @@ class admin_Controller extends TinyMVC_Controller
 
                 // Make sure the size matches what is expected
                 $spex = preg_replace('/size="(\d+) (\d+)"/', 'size="' . $this->config->width . ' ' . $this->config->height . '"', $spex);
+            }
+            break;
+
+        case 'url':
+            $url = parse_url($_REQUEST['url']);
+
+            // We were given the URL to the spex file
+            if (substr($url['path'], -5) == '/spex') {
+                $spex_url = $_REQUEST['url'];
+                $path = explode('/', $url['path']);
+                $sheep_id = $path[count($path) - 2];
+                $base_path = substr($url['path'], 0, strpos($url['path'], '/gen'));
+                $credit_url = $url['scheme'] . '://' . $url['host'] . $base_path . '/cgi/node.cgi?id=' . $sheep_id;
+            }
+
+            // We were given the sheep view URL
+            if (false  && (substr($url['path'], -9) == '/node.cgi' || substr($url['path'], -9) == '/dead.cgi')) {
+                $gz = gzopen(substr($_REQUEST['url'], 0, strpos($_REQUEST['url'], '/cgi/') + 4) . '/list', 'r');
+                $list = gzread($gz, 1000);
+                gzclose($gz);
                 
-                $extras = array('creditlink' => addslashes($_REQUEST['creditlink']));
+            }
+
+            if (isset($spex_url) && isset($credit_url)) {
+                $spex = file_get_contents($spex_url);
+                $extras = array('creditlink' => $credit_url);
+            } else {
+                header('Location: /admin');
+                exit;
             }
             break;
 
