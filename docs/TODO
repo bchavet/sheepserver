@@ -5,8 +5,8 @@
 * fix setup procedure
 * menu highlights
 * inline code documentation
-* handle ratings
 * remove time limit on maintenance script
 * add priority to queue
 * clean up hardcoded "sheep.badllama.com"
 * make sure sheeps' modified_time is always updated
+* Add GPL license to all files
