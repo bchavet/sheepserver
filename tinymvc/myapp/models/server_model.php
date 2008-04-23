@@ -137,4 +137,10 @@ class Server_Model extends TinyMVC_Model
         $list .= "</list>\n";
         return $list;
     }
+
+    function cleanVotes()
+    {
+        $time = time() - 86400;
+        $this->db->query('delete from votes where vote_time<?', array($time));
+    }
 }

@@ -91,6 +91,9 @@ class cgi_Controller extends TinyMVC_Controller
 
         // Clean up expunged sheep
         $this->server->cleanExpunged($this->config->flock_id, $this->config->ndays_expunge);
+
+        // Clean up vote counts
+        $this->server->cleanVotes();
     }
 
     function vote()
