@@ -19,7 +19,7 @@ class Sheep_Controller extends TinyMVC_Controller
         
         $this->view->assign('flock', $this->flock_id);
         $this->view->assign('sheep', $this->sheep->getSheep($this->flock_id, $this->sheep_id));
-        $this->view->assign('canvote', ($this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day));
+        $this->view->assign('canvote', (isset($_SESSION['logged_in']) || $this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day));
         $this->view->assign('menu', $this->view->fetch('menu_view'));
     }
 
@@ -41,12 +41,12 @@ class Sheep_Controller extends TinyMVC_Controller
             // Actions that do not require a login
             switch ($_REQUEST['action']) {
             case 'voteup':
-                if ($this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day) {
+                if (isset($_SESSION['logged_in']) || $this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day) {
                     $this->sheep->castVote($this->config->flock_id, $this->sheep_id, 1, $_SERVER['REMOTE_ADDR']);
                 }
                 break;
             case 'votedown':
-                if ($this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day) {
+                if (isset($_SESSION['logged_in']) || $this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day) {
                     $this->sheep->castVote($this->config->flock_id, $this->sheep_id, -1, $_SERVER['REMOTE_ADDR']);
                 }
                 break;
