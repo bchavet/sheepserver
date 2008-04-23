@@ -25,7 +25,6 @@
 <tr>
   <th>Sheep Completed</th>
   <td><?= $sheep_completed_60 ?></td>
-  <td><?php if ($sheep_completed_60 > 0) { echo round((60 / $sheep_completed_60), 2) . ' minutes per sheep'; } ?></td>
 </tr>
 </table>
 
@@ -46,7 +45,6 @@
 <tr>
   <th>Sheep Completed</th>
   <td><?= $sheep_completed_1440 ?></td>
-  <td><?php if ($sheep_completed_1440 > 0) { echo round((1440 / $sheep_completed_1440), 2) . ' minutes per sheep'; } ?></td>
 </tr>
 </table>
 

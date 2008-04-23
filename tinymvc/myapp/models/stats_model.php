@@ -32,7 +32,7 @@ class Stats_Model extends TinyMVC_Model
     function sheepCompleted($minutes = 60)
     {
         $time = time() - ($minutes * 60);
-        $result = $this->db->query_init('select count(sheep_id) from sheep where time_done>?', array($time));
+        $result = $this->db->query_init('select count(sheep_id) from sheep where end_time>?', array($time));
         return $result['count(sheep_id)'];
     }
 }
