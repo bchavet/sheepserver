@@ -54,7 +54,7 @@ if (isset($sheep) && is_array($sheep)) {
 
     // Vote Menu
    
-    if ($canvote) {
+    if ($canvote && $sheep['first'] == $sheep['last']) {
         echo '<ul class="vote">';
         echo '<li class="first"><a href="/sheep?sheep=' . $sheep['sheep_id'] . '&amp;action=voteup">Vote Up</a></li>';
         echo '<li><a href="/sheep?sheep=' . $sheep['sheep_id'] . '&amp;action=votedown">Vote Down</a></li>';
