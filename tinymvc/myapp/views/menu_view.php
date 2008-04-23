@@ -52,6 +52,17 @@ if (isset($sheep) && is_array($sheep)) {
 
     echo '</ul>';
 
+    // Vote Menu
+   
+    if ($canvote) {
+        echo '<ul class="vote">';
+        echo '<li class="first"><a href="/sheep?sheep=' . $sheep['sheep_id'] . '&amp;action=voteup">Vote Up</a></li>';
+        echo '<li><a href="/sheep?sheep=' . $sheep['sheep_id'] . '&amp;action=votedown">Vote Down</a></li>';
+        echo '</ul>';
+    }
+
+    // Admin Menu
+
     if (!empty($_SESSION['logged_in']) && $sheep['state'] != 'archive') {
         echo '<ul class="admin">';
         echo '<li class="first"><a href="/sheep?sheep=' .  $sheep['sheep_id'] . '&amp;action=archive">Archive</a></li>';

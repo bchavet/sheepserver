@@ -16,12 +16,10 @@ class Sheep_Controller extends TinyMVC_Controller
             header('Location: /flock');
             exit;
         }
-
-        $author_credit = $this->sheep->getAuthorCredit($this->flock_id, $this->sheep_id);
-
+        
         $this->view->assign('flock', $this->flock_id);
         $this->view->assign('sheep', $this->sheep->getSheep($this->flock_id, $this->sheep_id));
-        $this->view->assign(array('author_credit' => $author_credit));
+        $this->view->assign('canvote', ($this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day));
         $this->view->assign('menu', $this->view->fetch('menu_view'));
     }
 
@@ -32,12 +30,29 @@ class Sheep_Controller extends TinyMVC_Controller
 
     function index()
     {
-        if (isset($_REQUEST['action']) && !empty($_SESSION['logged_in'])) {
-            if (in_array($_REQUEST['action'], array('archive', 'delete', 'unarchive'))) {
-                $this->view->assign('action', $_REQUEST['action']);
+        if (isset($_REQUEST['action'])) {
+            // Actions that require a login
+            if (!empty($_SESSION['logged_in'])) {
+                if (in_array($_REQUEST['action'], array('archive', 'delete', 'unarchive'))) {
+                    $this->view->assign('action', $_REQUEST['action']);
+                }
+            }
+
+            // Actions that do not require a login
+            switch ($_REQUEST['action']) {
+            case 'voteup':
+                if ($this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day) {
+                    $this->sheep->castVote($this->config->flock_id, $this->sheep_id, 1, $_SERVER['REMOTE_ADDR']);
+                }
+                break;
+            case 'votedown':
+                if ($this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day) {
+                    $this->sheep->castVote($this->config->flock_id, $this->sheep_id, -1, $_SERVER['REMOTE_ADDR']);
+                }
+                break;
             }
         }
-
+        
         $this->view->assign('current', $this->sheep->getSheep($this->flock_id, $this->sheep_id));
         $this->view->assign('before', $this->sheep->getSheepBefore($this->flock_id, $this->sheep_id));
         $this->view->assign('after', $this->sheep->getSheepAfter($this->flock_id, $this->sheep_id));

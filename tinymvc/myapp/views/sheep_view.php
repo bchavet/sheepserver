@@ -76,6 +76,11 @@ if (file_exists(ES_BASEDIR . DS . 'gen' . DS . $current['flock_id'] . DS . $curr
     echo '<img src="/images/anon-icon.jpg" alt="ready" />';
 }
 ?>
+<?php if ($current['num_votes'] > 0): ?>
+<p>
+<strong>Rating:</strong> <?php echo $current['rating']; ?> (<?php echo $current['num_votes'] ?> votes)
+</p>
+<?php endif; ?>
 </td>
 
 <td>

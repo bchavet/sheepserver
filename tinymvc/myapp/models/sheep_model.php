@@ -234,4 +234,40 @@ class Sheep_Model extends TinyMVC_Model
                                      array($flock, $sheep, $sheep));
     }
 
+    function countVotes($ip_address)
+    {
+        $time = time() - 86400;
+        $result = $this->db->query_init('select count(ip_address) from votes where vote_time>?', array($time));
+        return $result['count(ip_address)'];
+    }
+
+    function castVote($flock_id, $sheep_id, $vote, $ip_address)
+    {
+        // Get current rating information
+        $current = $this->db->query_init('select rating, rating_max, rating_min, num_votes, first, last from sheep where flock_id=? and sheep_id=?',
+                                         array($flock_id, $sheep_id));
+ 
+        // Make sure we're voting on a sheep, not an edge
+        if ($current['first'] == $current['last']) {
+            // Calculate new rating values
+            $current['rating'] += $vote;
+            $current['num_votes'] += abs($vote);
+            if ($current['rating'] > $current['rating_max']) {
+                $current['rating_max'] = $current['rating'];
+            }
+            if ($current['rating'] < $current['rating_min']) {
+                $current['rating_min'] = $current['rating'];
+            }
+            
+            // Update rating information
+            $this->db->query('update sheep set rating=?, rating_max=?, rating_min=?, num_votes=? where flock_id=? and sheep_id=?',
+                             array($current['rating'], $current['rating_max'], $current['rating_min'], $current['num_votes'], $flock_id, $sheep_id));
+            
+            // Update IP Address vote count
+            for ($i = 0; $i < abs($vote); $i++) {
+                $this->db->query('insert into votes (ip_address, vote_time) values (?, ?)',
+                                 array($ip_address, microtime(true)));
+            }
+        }
+    }
 }

@@ -95,6 +95,15 @@ class cgi_Controller extends TinyMVC_Controller
 
     function vote()
     {
-        echo 'vote';
+        $this->load->model('sheep_model', 'sheep');
+        $sheep_id = $_REQUEST['id'];
+        $vote = $_REQUEST['vote'];
+        $ip_address = $_SERVER['REMOTE_ADDR'];
+
+        // Make sure we are within our daily vote quota for this IP address
+        $votes = $this->sheep->countVotes($ip_address);
+        if ($votes < $this->config->num_votes_per_day) {
+            $this->sheep->castVote($this->config->flock_id, $sheep_id, $vote, $ip_address);
+        }
     }
 }
