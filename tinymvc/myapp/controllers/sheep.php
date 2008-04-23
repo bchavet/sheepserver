@@ -42,12 +42,12 @@ class Sheep_Controller extends TinyMVC_Controller
             switch ($_REQUEST['action']) {
             case 'voteup':
                 if (isset($_SESSION['logged_in']) || $this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day) {
-                    $this->sheep->castVote($this->config->flock_id, $this->sheep_id, 1, $_SERVER['REMOTE_ADDR']);
+                    $this->sheep->castVote($this->config->flock_id, $this->sheep_id, 1, $_SERVER['REMOTE_ADDR'], !isset($_SESSION['logged_in']));
                 }
                 break;
             case 'votedown':
                 if (isset($_SESSION['logged_in']) || $this->sheep->countVotes($_SERVER['REMOTE_ADDR']) < $this->config->num_votes_per_day) {
-                    $this->sheep->castVote($this->config->flock_id, $this->sheep_id, -1, $_SERVER['REMOTE_ADDR']);
+                    $this->sheep->castVote($this->config->flock_id, $this->sheep_id, -1, $_SERVER['REMOTE_ADDR'], !isset($_SERVER['logged_in']));
                 }
                 break;
             }

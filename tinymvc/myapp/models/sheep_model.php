@@ -241,7 +241,7 @@ class Sheep_Model extends TinyMVC_Model
         return $result['count(ip_address)'];
     }
 
-    function castVote($flock_id, $sheep_id, $vote, $ip_address)
+    function castVote($flock_id, $sheep_id, $vote, $ip_address, $count = true)
     {
         // Get current rating information
         $current = $this->db->query_init('select rating, rating_max, rating_min, num_votes, first, last from sheep where flock_id=? and sheep_id=?',
@@ -264,9 +264,11 @@ class Sheep_Model extends TinyMVC_Model
                              array($current['rating'], $current['rating_max'], $current['rating_min'], $current['num_votes'], $flock_id, $sheep_id));
             
             // Update IP Address vote count
-            for ($i = 0; $i < abs($vote); $i++) {
-                $this->db->query('insert into votes (ip_address, vote_time) values (?, ?)',
-                                 array($ip_address, microtime(true)));
+            if ($count) {
+                for ($i = 0; $i < abs($vote); $i++) {
+                    $this->db->query('insert into votes (ip_address, vote_time) values (?, ?)',
+                                     array($ip_address, microtime(true)));
+                }
             }
         }
     }
