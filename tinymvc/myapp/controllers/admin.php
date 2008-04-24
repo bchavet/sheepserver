@@ -104,7 +104,7 @@ class admin_Controller extends TinyMVC_Controller
             }
 
             if (isset($spex_url) && isset($credit_url)) {
-                $spex = file_get_contents($spex_url);
+                $spex = preg_replace('/size="(\d+) (\d+)"/', 'size="' . $this->config->width . ' ' . $this->config->height . '"', file_get_contents($spex_url));
                 $extras = array('creditlink' => $credit_url);
             } else {
                 header('Location: /admin');
