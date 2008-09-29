@@ -93,7 +93,7 @@ class Sheep_Model extends TinyMVC_Model
         $this->deleteSheep($flock, $sheep, true);
     }
 
-    function unarchiveSheep($flock_id, $sheep_id)
+    function requeueSheep($flock_id, $sheep_id)
     {
         // Restore state
         $this->db->query('update sheep set state=?, modified_time=? where flock_id=? and sheep_id=?',

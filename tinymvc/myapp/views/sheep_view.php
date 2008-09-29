@@ -29,10 +29,10 @@ if (isset($action)) {
         echo '</div>';
         break;
 
-    case 'unarchive':
+    case 'requeue':
         echo '<div class="message confirm">';
         echo 'Are you sure you want to return this sheep to the queue? ';
-        echo '<a href="/admin/unarchive?sheep=' . $sheep['sheep_id'] . '">Yes</a> ';
+        echo '<a href="/admin/requeue?sheep=' . $sheep['sheep_id'] . '">Yes</a> ';
         echo '<a href="/sheep?sheep=' . $sheep['sheep_id'] . '">No</a>';
         echo '</div>';
         break;

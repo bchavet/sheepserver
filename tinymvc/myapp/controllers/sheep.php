@@ -33,7 +33,7 @@ class Sheep_Controller extends TinyMVC_Controller
         if (isset($_REQUEST['action'])) {
             // Actions that require a login
             if (!empty($_SESSION['logged_in'])) {
-                if (in_array($_REQUEST['action'], array('archive', 'delete', 'unarchive'))) {
+                if (in_array($_REQUEST['action'], array('archive', 'delete', 'requeue'))) {
                     $this->view->assign('action', $_REQUEST['action']);
                 }
             }

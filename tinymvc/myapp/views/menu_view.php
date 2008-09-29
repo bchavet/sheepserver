@@ -72,7 +72,7 @@ if (isset($sheep) && is_array($sheep)) {
 
     if (!empty($_SESSION['logged_in']) && $sheep['state'] == 'archive') {
         echo '<ul class="admin">';
-        echo '<li class="first"><a href="/sheep?sheep=' . $sheep['sheep_id'] . '&amp;action=unarchive">Unarchive</a></li>';
+        echo '<li class="first"><a href="/sheep?sheep=' . $sheep['sheep_id'] . '&amp;action=requeue">Requeue</a></li>';
         echo '</ul>';
     }
 

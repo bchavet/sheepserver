@@ -1,0 +1,1 @@
+0 * * * *       root    curl --silent --show-error 'http://sheep.badllama.com/cgi/maintenance'
