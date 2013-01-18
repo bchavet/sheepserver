@@ -27,7 +27,7 @@ if ($first != $last) {
 ?>
 
 <p>
-<?= $completed ?> frames complete (<?php echo (int)($completed / ($completed + $remaining) * 100) . '%'; ?>).
+<?= $completed ?> frames complete (<?php echo  $completed == 0 && $remaining == 0 ? 0 : (int)($completed / ($completed + $remaining) * 100); ?>%).
 <?php if ($remaining > 0) { echo $remaining . ' frames remaining.'; } ?>
 </p>
 

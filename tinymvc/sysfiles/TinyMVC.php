@@ -76,7 +76,7 @@ function tmvc_error_handler($errno, $errstr, $errfile, $errline)
 
     include(TMVC_MYAPPDIR . 'configs' . DS . 'application.php');
 
-    $errors =& new $config['error_handler_class'];
+    $errors = new $config['error_handler_class'];
     $errors->trigger_error($errno, $errstr, $errfile, $errline);
 
     /* don't execute PHP internal error handler */

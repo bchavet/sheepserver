@@ -75,7 +75,7 @@ class Flock_Model extends TinyMVC_Model
     }
 
     /**
-     * Creates a new sheep based on the given spex information
+     * Creates a new sheep based on the given spex information.
      */
     function newSheep($flock_id, $spex, $nframes, $first = null, $last = null, $extras = null)
     {
@@ -87,17 +87,17 @@ class Flock_Model extends TinyMVC_Model
                 return;
             }
         }
-        
+
         // Get the next available sheep ID
         $result = $this->db->query_init('select sheep_id from sheep where flock_id=? order by sheep_id desc', array($flock_id));
         $sheep_id = $result['sheep_id'] + 1;
         if ($first === null || $last === null) {
             $first = $last = $sheep_id;
         }
-        
+
         // Create the base directory for the new sheep
         $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock_id . DS . $sheep_id;
-        mkdir($sheepdir);
+        mkdir($sheepdir, 0777, TRUE);
 
         // Add sheep to the database, marked as incomplete
         $this->db->query('insert into sheep (flock_id, sheep_id, first, last, nframes, spex, state, start_time) values (?, ?, ?, ?, ?, ?, ?, ?)',

@@ -15,7 +15,7 @@ class Spex_Model extends TinyMVC_Model
         } else {
             $anim_params = ES_BASEDIR . DS . 'templates' . DS . $param_file;
         }
-        
+
         // Generate the spex
         $cmd = "env enclosed=0 template=$anim_params nframes=$nframes /usr/bin/flam3-genome";
         $spex = shell_exec($cmd);
@@ -29,7 +29,7 @@ class Spex_Model extends TinyMVC_Model
     {
         $param_file = 'anim_params.template';
         $anim_params = ES_BASEDIR . DS . 'templates' . DS . 'vib.' . $param_file;
-        
+
         $sym = 15 + mt_rand(0, 45);
         if (50 < mt_rand(0, 100)) {
             $sym = 0 - $sym;

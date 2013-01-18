@@ -46,12 +46,12 @@ class admin_Controller extends TinyMVC_Controller
         if ($confirm) {
             // Initialize new flock
             $this->flock->newFlock();
-        
+
             // Generate spex information for first sheep
             $spex = $this->spex->random_rotation($this->config->nframes);
-        
+
             // Create new sheep with the spex information
-            $this->flock->newSheep($spex, $this->config->nframes);
+            $this->flock->newSheep($this->flock->flock_id, $spex, $this->config->nframes);
         }
 
         $this->view->display('admin_reset_view');
@@ -100,7 +100,7 @@ class admin_Controller extends TinyMVC_Controller
                 $gz = gzopen(substr($_REQUEST['url'], 0, strpos($_REQUEST['url'], '/cgi/') + 4) . '/list', 'r');
                 $list = gzread($gz, 1000);
                 gzclose($gz);
-                
+
             }
 
             if (isset($spex_url) && isset($credit_url)) {
@@ -132,7 +132,7 @@ class admin_Controller extends TinyMVC_Controller
                 $spex = $this->spex->mate_rotation($this->config->flock_id, $parent0, $parent1, $this->config->nframes);
             }
             break;
-            
+
         }
 
         // Create new sheep with the spex information
@@ -162,7 +162,7 @@ class admin_Controller extends TinyMVC_Controller
             $first = isset($_REQUEST['first']) ? (int)$_REQUEST['first'] : null;
             $last = isset($_REQUEST['last']) ? (int)$_REQUEST['last'] : null;
             $sheep = $this->flock->findRandomEdge($this->config->flock_id, $first, $last);
-        
+
             if (is_array($sheep)) {
                 // Generate spex information for the edge
                 $spex = $this->spex->edge($this->config->flock_id, $sheep[0], $sheep[1], $this->config->nframes);
@@ -173,7 +173,7 @@ class admin_Controller extends TinyMVC_Controller
             $sheep[0] = isset($_REQUEST['first']) ? (int)$_REQUEST['first'] : null;
             $sheep[1] = isset($_REQUEST['last']) ? (int)$_REQUEST['last'] : null;
 
-            // Get spex file 
+            // Get spex file
             if ($sheep[0] !== null && $sheep[1] !== null) {
                 $spex = $this->spex->edge($this->config->flock_id, $sheep[0], $sheep[1], $this->config->nframes);
             }
@@ -212,15 +212,19 @@ class admin_Controller extends TinyMVC_Controller
         $this->load->model('sheep_model', 'sheep');
         $missing_edges_in = $this->sheep->getMissingEdges($this->config->flock_id, $sheep_id, 'in');
         $missing_edges_out = $this->sheep->getMissingEdges($this->config->flock_id, $sheep_id, 'out');
-                
-        for ($i = 0; $i < $numedges; $i++) {
-            $in = rand(0, count($missing_edges_in) - 1);
-            $spex = $this->spex->edge($this->config->flock_id, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last'], $this->config->nframes);
-            $this->flock->newSheep($this->config->flock_id, $spex, $this->config->nframes, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last']);
 
-            $out = rand(0, count($missing_edges_out) - 1);
-            $spex = $this->spex->edge($this->config->flock_id, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last'], $this->config->nframes);
-            $this->flock->newSheep($this->config->flock_id, $spex, $this->config->nframes, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last']);
+        for ($i = 0; $i < $numedges; $i++) {
+            if (!empty($missing_edges_in)) {
+              $in = rand(0, count($missing_edges_in) - 1);
+              $spex = $this->spex->edge($this->config->flock_id, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last'], $this->config->nframes);
+              $this->flock->newSheep($this->config->flock_id, $spex, $this->config->nframes, $missing_edges_in[$in]['first'], $missing_edges_in[$in]['last']);
+            }
+
+            if (!empty($missing_edges_out)) {
+              $out = rand(0, count($missing_edges_out) - 1);
+              $spex = $this->spex->edge($this->config->flock_id, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last'], $this->config->nframes);
+              $this->flock->newSheep($this->config->flock_id, $spex, $this->config->nframes, $missing_edges_out[$out]['first'], $missing_edges_out[$out]['last']);
+            }
         }
     }
 
@@ -240,7 +244,7 @@ class admin_Controller extends TinyMVC_Controller
             header('Location: /frame?sheep=' . $sheep_id . '&frame=' . $frame_id);
             exit;
         }
-        
+
         if ($sheep_id !== null) {
             $this->load->model('sheep_model', 'sheep');
             $this->sheep->deleteSheep($this->config->flock_id, $sheep_id, false);

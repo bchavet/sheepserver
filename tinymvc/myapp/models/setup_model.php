@@ -37,7 +37,7 @@ class Setup_Model extends TinyMVC_Model
             '$config[\'user\'] = \'' . $user . '\'; // db username' . "\n" .
             '$config[\'pass\'] = \'' . $pass . '\'; // db password' . "\n" .
             '$config[\'persistent\'] = ' . ($persistent ? 'true' : 'false') . '; // db connection persistence?' . "\n";
-        
+
         return $text;
     }
 

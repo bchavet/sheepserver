@@ -94,16 +94,24 @@ class Server_Model extends TinyMVC_Model
             foreach ($result as $sheep) {
                 $sheepdir = ES_BASEDIR . DS . 'gen' . DS . $flock . DS . $sheep['sheep_id'];
 
+                // Generate sheep name
+                $flock_id = str_pad($flock, 5, '0', STR_PAD_LEFT);
+                $sheep_id = str_pad($sheep['sheep_id'], 5, '0', STR_PAD_LEFT);
+                $first = str_pad($sheep['first'], 5, '0', STR_PAD_LEFT);
+                $last = str_pad($sheep['last'], 5, '0', STR_PAD_LEFT);
+                $name = $flock_id . '=' . $sheep_id . '=' . $first . '=' . $last;
+
                 // Encode sheep
-                $cmd = 'jpeg2yuv -f 30 -I p -v 0 -j ./%d.jpg | mpeg2enc --format 9 --no-constraints --video-bitrate 9000 --video-buffer 500 --quantisation 1 --frame-rate 5 --aspect 3 -o sheep.mpg --multi-thread 0 > encode_output 2>&1';
+                //$cmd = 'jpeg2yuv -f 30 -I p -v 0 -j ./%d.jpg | mpeg2enc --format 9 --no-constraints --video-bitrate 9000 --video-buffer 500 --quantisation 1 --frame-rate 5 --aspect 3 -o sheep.mpg --multi-thread 0 > encode_output 2>&1';
+                $cmd = 'mencoder mf://*.png -mf w=1920:h=1080:fps=30:type=png -ovc x264 -x264encopts pass=1:turbo=2:bframes=3 -oac copy -info artist=badllama.com:name=' . $name . ' -o ' . $name . '.avi';
                 shell_exec('cd ' . $sheepdir . ' && ' . $cmd);
 
                 // Update sheep status
-                $this->db->query('update sheep set state=?, size=?, end_time=? where flock_id=? and sheep_id=?', array('done', filesize($sheepdir . DS . 'sheep.mpg'), time(), $flock, $sheep['sheep_id']));
+                $this->db->query('update sheep set state=?, size=?, end_time=? where flock_id=? and sheep_id=?', array('done', filesize($sheepdir . DS . $name . '.avi'), time(), $flock, $sheep['sheep_id']));
 
                 // Cleanup
                 for ($i = 1; $i < $sheep['nframes']; $i++) {
-                    @unlink($sheepdir . DS . $i . '.jpg');
+                    @unlink($sheepdir . DS . $i . '.png');
                     @unlink($sheepdir . DS . $i . '.spex.gz');
                 }
             }
@@ -119,8 +127,8 @@ class Server_Model extends TinyMVC_Model
     function getList($flock)
     {
         // Start list XML
-        $list = "<list gen=\"$flock\">\n";
-        
+        $list = "<list gen=\"$flock\" size=\"1920 1080\" retry=\"600\">\n";
+
         // Get a list of sheep that need to be deleted
         $sheeplist = $this->db->query_all('select * from sheep where flock_id=? and state=?', array($flock, 'expunge'));
         foreach ($sheeplist as $sheep) {
@@ -130,7 +138,13 @@ class Server_Model extends TinyMVC_Model
         // Get a list of sheep that are ready to be downloaded
         $sheeplist = $this->db->query_all('select * from sheep where flock_id=? and state=?', array($flock, 'done'));
         foreach ($sheeplist as $sheep) {
-            $list .= '<sheep id="' . $sheep['sheep_id'] . '" type="0" state="done" time="' . $sheep['end_time'] . '" size="' . $sheep['size'] . '" rating="' . $sheep['rating'] . '" first="' . $sheep['first'] . '" last="' . $sheep['last'] . '" url="http://sheep.badllama.com/gen/' . $sheep['flock_id'] . '/' . $sheep['sheep_id'] . '/sheep.mpg"/>' . "\n";
+            $flock_id = str_pad($sheep['flock_id'], 5, '0', STR_PAD_LEFT);
+            $sheep_id = str_pad($sheep['sheep_id'], 5, '0', STR_PAD_LEFT);
+            $first = str_pad($sheep['first'], 5, '0', STR_PAD_LEFT);
+            $last = str_pad($sheep['last'], 5, '0', STR_PAD_LEFT);
+            $name = $flock_id . '=' . $sheep_id . '=' . $first . '=' . $last;
+
+            $list .= '<sheep id="' . $sheep['sheep_id'] . '" type="0" state="done" time="' . $sheep['end_time'] . '" size="' . $sheep['size'] . '" rating="' . $sheep['rating'] . '" first="' . $sheep['first'] . '" last="' . $sheep['last'] . '" url="http://sheep.badllama.com/gen/' . $sheep['flock_id'] . '/' . $sheep['sheep_id'] . '/' . $name . '.avi"/>' . "\n";
         }
 
         // Finish list XML

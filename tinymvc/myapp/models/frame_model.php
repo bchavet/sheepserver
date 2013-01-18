@@ -22,7 +22,7 @@ class Frame_Model extends TinyMVC_Model
         readgzfile($frame_file);
         $genome = ob_get_contents();
         ob_end_clean();
-        
+
         return $genome;
     }
 
@@ -55,7 +55,7 @@ class Frame_Model extends TinyMVC_Model
         // Generate frame spex information
         $frame_file = ES_BASEDIR . DS . 'gen' . DS . $flock_id . DS . $sheep_id . DS . $frame_id . '.spex.gz';
         $gz = gzopen($frame_file, 'w9');
-        gzwrite($gz, '<get gen="' . $flock_id . '" id="' . $sheep_id . '" type="0" prog="flame" args="bits=32 jpeg=100" frame="' . $frame_id . '">' . "\n");
+        gzwrite($gz, '<get gen="' . $flock_id . '" id="' . $sheep_id . '" type="0" prog="flame" args="bits=32 jpeg=100" job="' . $frame_id . '">' . "\n");
         if ($result['first'] == $result['last']) {
             $spex = shell_exec('env rotate=' . $tmp_spex_file . ' enclosed=0 frame=' . $frame_id . ' nframes=' . $result['nframes'] . ' /usr/bin/flam3-genome');
         } else {
@@ -64,7 +64,7 @@ class Frame_Model extends TinyMVC_Model
         gzwrite($gz, $spex);
         gzwrite($gz, '</get>' . "\n");
         gzclose($gz);
-        
+
         // Cleanup temp file
         unlink($tmp_spex_file);
     }

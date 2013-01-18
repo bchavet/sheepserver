@@ -39,8 +39,10 @@ foreach ($queue as $sheep) {
             echo '<img src="/images/anon-icon.jpg" class="thumbnail edgelast" />';
         }
     }
+
+    $done = $nframes == 0 ? 0 : (int)($sheep['complete'] / $nframes * 100);
     echo '</a></td><td>';
-    echo (int)($sheep['complete'] / $nframes * 100) . '%';
+    echo $done . '%';
     echo '</td></tr>';
 
 }

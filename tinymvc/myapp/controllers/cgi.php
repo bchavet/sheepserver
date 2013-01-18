@@ -69,9 +69,9 @@ class cgi_Controller extends TinyMVC_Controller
     {
         // Get raw POST data
         $data = file_get_contents('php://input');
- 
+
         // Submit the job
-        $result = $this->server->complete($this->config->flock_id, (int)$_GET['id'], (int)$_GET['f'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), $data);
+        $result = $this->server->complete($this->config->flock_id, (int)$_GET['id'], (int)$_GET['j'], $_SERVER['REMOTE_ADDR'], addslashes($_GET['u']), $data);
     }
 
     /**
